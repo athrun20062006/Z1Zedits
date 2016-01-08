@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<title>打印-$_SCONFIG[sitename]</title>
+<script language="javascript" src="template/default/js/jquery-1.js" type="text/javascript"></script>
+<link href="template/default/css/print.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="control">
+	<a href="javascript: window.print()">
+	<img align="absmiddle" src="image/print_48.png"> &nbsp;列印
+	</a>
+</div>
+<!--{if $type == 'place'}-->
+<div style="width:660px;" id="print_area">
+    <table style="width:640px; border-spacing: 5; border-collapse:separate;" class="tb-coupon">
+    <tbody>
+		<tr>
+			<td style="border-bottom:3px solid #333" colspan="2">
+				<img src="image/logo.png">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h1>{$info.placename}</h1>
+				<p>{$info.placedesc}</p>
+				<br>
+		
+			</td>
+		</tr>
+		<tr>
+			<td width="300">
+				<img style="width:300px" alt="{$info.placename}" src="{$place_cimg}">
+				<h3>地圖</h3>
+
+				<div id="google_map">
+					<img src="http://maps.google.com/maps/api/staticmap?zoom=17&amp;size=300x300&amp;maptype=roadmap&amp;sensor=false&amp;markers=color:red|{$info.mapaddress}" title="{$info.placedesc}">
+				</div>
+				
+			</td>
+			<td>
+				<table cellspacing="5" cellpadding="5" class="print_info">
+				<tbody>
+				 <!--#地址-->
+				  {if $info.placeaddress}
+					<tr>
+						<td width="60"><img src="image/ico_08.gif"/>：</td>
+						<td valign="middle">{$info.placeaddress}</td>
+					</tr> 
+				  {/if}
+				
+				  <!--#電話-->
+				  {if $info.placemobile}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_13.gif"/>：</td>
+						<td valign="middle">{$info.placemobile}</td>
+					</tr>
+				  {/if}
+				  
+				  <!--#營業時間-->
+				  {if $info.placetime}	
+					<tr valign="top">
+						<td width="60"><img src="image/ico_10.gif"/>：</td>
+						<td valign="middle">{$info.placetime}</td>
+					</tr>
+				  {/if}				  
+				
+				  <!--#價格-->
+				  {if $info.placeprice}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_11.gif"/>：</td>
+						<td valign="middle">{$info.placeprice}</td>
+					</tr>
+				  {/if}
+			  
+			      <!--#付款方式-->
+				  {if $info.placepay}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_12.gif"/>：</td>
+						<td valign="middle">{$info.placepay}</td>
+					</tr>
+				  {/if}
+			     
+				  <!--#分类-->
+				  {if $info.placecat}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_09.gif"/>：</td>
+						<td valign="middle">{$info.placecat}</td>
+					</tr>
+				  {/if}
+				  
+				  <!--#网址-->
+				  {if $info.placeurl}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_15.gif"/>：</td>
+						<td valign="middle"><a target="_blank" href="{$info.placeurl}">{$info.placeurl}</a></td>
+					</tr> 
+				  {/if}
+                      
+			      <!--#備註-->					  
+				  {if $placeinfo.placeremark}
+					<tr valign="top">
+						<td width="60"><img src="image/ico_14.gif"/>：</td>
+						<td valign="middle">{$placeinfo.placeremark}</td>
+					</tr>
+				  {/if}	
+						
+				  </tbody>
+				</table>           
+				<br><br>
+            
+				<table width="100%" cellspacing="5" cellpadding="0">
+                  <tbody>
+					<tr>
+						<td align="center" colspan="2">                
+							<table width="260" align="center" class="shop_credit">
+							  <thead>
+								<tr>
+									<td width="90" align="bottom"><img title="" alt="" src="template/default/images/view_zheng.gif"></td>
+									<td width="90" align="bottom"><img title="OK" alt="OK" src="template/default/images/view_zheng1.gif"></td>
+									<td width="90" align="bottom"><img title="" alt="" src="template/default/images/view_zheng2.gif"></td>
+								</tr>
+							  </thead>
+							  <tbody>
+								<tr>
+									<td>{$zscore}</td>
+									<td>{$dscore}</td>
+									<td>{$cscore}</td>
+								</tr>
+							  </tbody>
+							</table>
+						</td>
+					</tr>
+                  </tbody>
+				</table>
+				<br><br>
+            
+			</td>
+		</tr>
+      </tbody>
+	</table>
+</div>
+<!--{elseif $type == 'article'}-->
+<div style="width:660px;" id="print_area">
+    <table style="width:640px; border-spacing: 5; border-collapse:separate;" class="tb-coupon">
+    <tbody>
+		<tr>
+			<td style="border-bottom:3px solid #333" colspan="2">
+				<img src="image/logo.png">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h1>{$info.title}</h1>			
+				<br>
+		
+			</td>
+		</tr>
+		<tr>
+			<td width="300">
+				<img style="width:300px" alt="{$info.title}" src="{$info.thumb}">
+			</td>
+			<td>
+				<table cellspacing="5" cellpadding="5" class="print_info">
+				<tbody>
+				 
+					<tr valign="middle">
+						<td width="80">分類：</td>
+						<td valign="middle">{$info.site_category}</td>
+					</tr> 
+			     
+					<tr valign="middle">
+						<td>地區：</td>
+						<td valign="middle">{$info.startaddress}</td>
+					</tr>
+				 
+					<tr>
+						<td valign="middle">攻略日期：</td>
+						<td valign="middle">{if !empty($info.starttime)}{$info.starttime}{else}N/A{/if}</td>
+					</tr>
+					
+					<tr>
+						<td valign="middle">攻略地點：</td>
+						<td valign="middle">{if !empty($info.startaddress)}{$info.startaddress}{else}N/A{/if}</td>
+					</tr>
+					<tr>
+						<td valign="middle">攻略時間：</td>
+						<td valign="middle">{if !empty($info.endtime)}{$info.endtime}{else}N/A{/if}</td>
+					</tr>
+					<tr>
+						<td valign="middle">是次消費：</td>
+						<td valign="middle">每人平均約HK$ {if !empty($info.price)}{$info.price}{else}N/A{/if}</td>
+					</tr>
+						<tr>
+						<td valign="middle">前往方法：</td>
+						<td valign="middle">{if !empty($info.description)}{$info.description}{else}N/A{/if}</td>
+					</tr>
+				  </tbody>
+				</table>           
+				<br><br>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h3>攻略內容</h3>
+				<div id="google_map" >{$info.content}</div>
+			</td>
+		</tr>
+      </tbody>
+	</table>
+</div>
+<!--{elseif $type == 'comment'}-->
+<div style="width:660px;" id="print_area">
+    <table style="width:640px; border-spacing: 5; border-collapse:separate;" class="tb-coupon">
+    <tbody>
+		<tr>
+			<td style="border-bottom:3px solid #333" colspan="2">
+				<img src="image/logo.png">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h1>{$info.pcomment_title}</h1>			
+				<br>
+		
+			</td>
+		</tr>
+		<tr>
+			<td width="300">
+				<img style="width:300px" alt="{$info.pcomment_title}" src="{$info.pcomment_img}">
+			</td>
+			<td>
+				<table cellspacing="5" cellpadding="5" class="print_info">
+				<tbody>
+				 
+					<tr valign="middle">
+						<td width="80">進行日期：</td>
+						<td valign="middle"><!--{eval echo sgmdate('Y-m-d H:i', $info[start_time])}--></td>
+					</tr> 
+			     
+					<tr valign="middle">
+						<td>是次消費：</td>
+						<td valign="middle">{$info.pcomment_consume}HKD</td>
+					</tr>
+				 
+					<tr>
+						<td valign="middle">評分：</td>
+						<td valign="middle">{if $info.pcomment_type == 0}<img src="template/default/images/view_zheng0.gif"/>{elseif $info.pcomment_type == 1}<img src="template/default/images/view_zheng1.gif">{else}<img src="template/default/images/view_zheng2.gif"/>{/if} [{$info.pcomment_rank}]</td>
+					</tr>
+				  </tbody>
+				</table>           
+				<br><br>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<h3>評論內容</h3>
+				<div id="google_map" >{$info.content}</div>
+			</td>
+		</tr>
+      </tbody>
+	</table>
+</div>
+<!--{/if}-->
+
+</body>
+</html>

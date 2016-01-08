@@ -1,0 +1,212 @@
+		  	<script type="text/javascript">
+			function updateavatar()
+			{
+				window.location.reload();
+			}//探險家個人資料修改
+			</script>
+		<form action="space.php?do=home" onsubmit="return checkfrom()" method="post" class="rg_item">
+			<div class="explain"><a href="#teyue" style="color:#0000ff">　成為"特約"探險家</a></div>
+			<dl>
+				<dt>探險家照片：</dt>
+				<dd>
+					<div class="ulogol">
+						<img src="{$h_userinfo.avatarbig}" onerror='this.src="/ucenter/images/noavatar_big.gif";'>
+						<caption>
+							<h2>設置我的新頭像</h2>
+							<p>請選擇一張新照片進行上傳編輯。</p>
+							<p><font style="color:#FF0000;font-size:12px">上載完請按F5更新頁面</font></p>
+						</caption>
+					</div>
+					<div class="ulogor">
+							<!--lp 上传头像 begin-->
+							$uc_avatarflash
+							<!--lp 上传头像 end-->
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+			<dl class="user_url">
+				<dd><label>我的暱稱：</label><font>{$space.username}</font></dd>
+				<dd><label>Email：</label><font>{$space.email}</font></dd>
+			</dl>
+			<dl>
+				<dt class="user_ask">個人Facebook專頁連結：<font>http://www.facebook.com/{$space.facebook_url}</font></dt>
+				<dd>http://www.facebbook.com/ <input type="text" class="input_css" name="facebook_url" value="" style="width:280px;"/></dd>
+				<dd style="padding-top:0px"><font>#專頁會顯示在個人攻略頁面上,如http://www.facebook.com/seewide.hk</font></dd>
+				<div class="blank30"></div>
+			</dl>
+			<dl>
+				<dt class="user_ask">聯絡姓名：<font>{$space.real_name}</font></dt>
+				<dd><input type="text" class="input_css" name="real_name" value="" style="width:185px;"/></dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">探險家簡介：</dt>
+				<dd><textarea class="txtare_css" name="user_desc">{$space.user_desc}</textarea></dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">密碼：<font>******</font></dt>
+				<dd><label>原有密碼：</label></dd>
+				<dd style="padding-top:0px"><input type="password" name="opassword" class="input_css" style="width:188px;"/></dd>
+				<dd style="padding-top:0px"><label>設定新密碼：</label><font>(請輸入6個以上的英文與數字混合字元)</font></dd>
+				<dd style="padding-top:0px"><input type="password" name="password" class="input_css" style="width:188px;" id="pwd"/></dd>
+				<dd style="padding-top:0px"><label>再次輸入新密碼：</label></dd>
+				<dd style="padding-top:0px"><input type="password" name="confirmpassword" id="cpwd" class="input_css" style="width:188px;"/></dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">聯絡電話：<font>{$space.mobile}</font></dt>
+				<dd><input type="text" class="input_css"style="width:188px;" name="mobile" value=""/></dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">聯絡地址：<font>{$space.address}</font></dt><dd><input type="text" class="input_css" name="address" value="{$space.address}"/></dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">出生年份：<font>{$space.birthyear}</font></dt>
+				<dd>
+					<select name="birthyear" id="birthyear">
+						<option value="0">--請選擇</option>
+							$birthyeayhtml
+					</select>
+				</dd>
+			</dl>
+			<div class="blank30"></div>
+			<dl>
+				<dt class="user_ask">職業及收入：<font>{if $space.job}{$jobs[$space.job]}{/if} &nbsp;&nbsp;&nbsp;{if $space.income}{$wage[$space.income]}{/if}</font></dt>
+				<dd>
+					<select class="sel_css" name="job" style="width:150px">
+						{loop $jobs $key $job}
+						<option value="{$key}" {if $space.job == $key}selected{/if}>{$job}</option>
+						{/loop}
+					</select>
+					<select class="sel_css" name="income" style="width:150px;margin-left:30px;">
+						{loop $wage $wkey $wag}
+						<option value="{$wkey}" {if $space.income == {$wkey}}selected{/if} >{$wag}</option>
+						{/loop}
+					</select>
+				</dd>
+			</dl>
+			<div style="height:57px;clear:both;visibility: hidden;"></div>
+			<dl>
+				<dd><input type="checkbox" value="1" name="accede" id="accede" {if $space.accede}checked{/if}> <font>我明白並同意SeeWide取得我上面填寫的個人資料，並同意收取SeeWide及合作伙伴的優惠及最新推薦</font></dd>
+				<dd>
+				   {loop $useremail $key $uemail}
+						{if $key == 'all'}
+					<input type="checkbox" value="{$key}" class="all" itye="emsgitem" {if $all_email}checked="checked"{/if}> <font>{$uemail}</font>
+						{else}
+					<p style="padding-left:20px"><input class="emsgitem" type="checkbox" value="{$key}" name="umessages[]" {if in_array($key,$space['umessages'])}checked="checked"{/if}/>{$uemail}</p>
+						{/if}
+					  {/loop}
+				</dd>
+				<dd style="padding-left:260px;padding-top:30px;">
+					<input type="hidden" name="upuinfo" value="upuinfo"/>
+					<input type="submit" name="doUpdatebtn" class="register_btn" value=""/>
+				</dd>
+			</dl>
+		</form>
+			<script>
+				jQuery(".all").click(function(){
+					var check = jQuery(this).attr('checked');
+					var itype = jQuery(this).attr('itye');
+					
+					jQuery("."+itype).each(function(index, domEle){
+						if(check){
+							jQuery(domEle).attr('checked',check);
+						}else{
+							jQuery(domEle).removeAttr('checked');
+						}
+						
+					})
+				})
+				function checkfrom(){
+					var password = $('#pwd').val();
+					var cpwd = $('#cpwd').val();
+					if(password.legnth > 0 || password != ''){
+						if(/[\'\"\\]/.test(password)) {
+							alert('密碼空或包含非法字符');
+							return false;
+						}else if(password.length < 6){
+							alert('請輸入6個以上英文數字混合字元');
+							return false;
+						}else{
+							if(password != cpwd){
+								alert('兩次密碼輸入不同');
+								return false;
+							}
+						}
+					}else{
+						return true;
+					}
+				}
+			</script>
+		<div class="blank35"></div>
+		<a name="teyue"></a>
+		<div class="tx_user" style="{if $usercenter[is_special]}display:none;{/if}">
+			<h2>申請成為[特約] SeeWide 探險家</h2>
+			<p>鍾意飲飲食食，周遊列國，或喜歡戶外活動，享受陽光海灘，又或是充滿文化氣息，享受音樂藝術的你。無論你是男是女，是老是少，興趣或多或少，品味或高或低，我們歡迎你的加入，成為SeeWide[特約]探險家</p>
+			<ul class="hk">
+				<li><span>宗旨：</span>發掘生活點滴樂趣，與人分享日常品味，結識志同道合，介紹全方位享受攻略</li>
+				<li><span>回饋：</span>發表攻略 - 200瀏覽量 = 200探險里數 = 1個好幣</li>
+			</ul>
+			<h3>成為[特約]SeeWide探險家資格：</h3>
+			<table border="0" width="100%" cellspacing="5" cellpadding="6" class="zige">
+				<tr align="center">
+					<td bgcolor="#e8e8e8" height="50" width="30%">資格</td>
+					<td bgcolor="#e8e8e8" height="50" width="30%">現況</td>
+					<td bgcolor="#e8e8e8" height="50" width="30%">完成</td>
+				</tr>
+				<tr align="center" style="display:none">
+					<td bgcolor="#e8e8e8" height="50">1.電話認證</td>
+					<td bgcolor="#e8e8e8" height="50">
+                      <!--{if $space['is_true_phone'] ==1 }-->
+						<img src="template/default/images/yes.gif"/>
+                      <!--{else}-->
+						<img src="template/default/images/no.gif"/>
+                      <!--{/if}-->
+					</td>
+					<td bgcolor="#e8e8e8" height="50">
+                      <!--{if $space['is_true_phone'] ==1 }-->
+						<img src="template/default/images/yes.gif"/>
+                      <!--{else}-->
+						<img src="template/default/images/no.gif"/>
+                      <!--{/if}-->
+					</td>
+				</tr>
+				<tr align="center">
+					<td bgcolor="#e8e8e8" height="50">1.攻略數目(最近3個月)</td>
+					<td bgcolor="#e8e8e8" height="50">{$article_count}/1</td>
+					<td bgcolor="#e8e8e8" height="50">
+						<!--{if $article_count >=1 }--><img src="template/default/images/yes.gif"/><!--{else}--><img src="template/default/images/no.gif"/><!--{/if}-->
+					</td>
+				</tr>
+				<tr align="center">
+					<td bgcolor="#e8e8e8" height="50">2.攻略瀏覽量(最近3個月)</td>
+					<td bgcolor="#e8e8e8" height="50">{$article_click}/1</td>
+					<td bgcolor="#e8e8e8" height="50">
+							<!--{if $article_click >=0 }--><img src="template/default/images/yes.gif"/><!--{else}--><img src="template/default/images/no.gif"/><!--{/if}-->
+					</td>
+				</tr>
+			</table>
+			<br>
+			<a class="explain"># 慶祝開站，限時開放申請至2015年12月31日，攻略數目由原來要求30篇，降至１篇；攻略瀏覽量由3,000降至１瀏覽量，要把握良機呀！</a>
+			<div class="shuomin">我們收到你的申請後，將於三至五個工作天內，對你的帳戶進行評估，根據攻略的內容、及特約性等，回覆你的申請是否獲得通過</div>
+			<input type="checkbox" value="1" id="clause">我明白並同意<a  href="space.php?do=help&essay_id=24" target='blank' style="color:#3d71a0">使用條款</a>，經由或透過本網站購買或取得的任何好幣，SeeWide可因任何理由禁止你的兌換或交易，SeeWide不承擔任何直接、間接、附帶、特別、衍生性或懲罰性賠償
+			<div class="apply" id="applys">
+					<!--{if $article_click >= 0 && $article_count >= 1 }-->
+				<input type="button" onclick="location.href='space.php?do=home&s=1'" value="" style="cursor:pointer" class="apply_btn">
+					<!--{else}-->
+				<input type="button" onclick="location.href='space.php?do=home&s=1'" value="" style="cursor:pointer" class="apply_cbtn">
+					<!--{/if}-->
+			</div>
+		</div>
+		<div class="blank35"></div>
+		<div class="fline"></div>
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+		<div class="blank10"></div>
+		<div id="ad_lpagebotad">
+				<!--{ad($is_mobile,'lpagebotad')}-->
+		</div>
+			<!--{/if}-->

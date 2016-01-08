@@ -1,0 +1,527 @@
+<!--{template header}-->
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/h_slide.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	.uly{float: right;}
+	.imgul li{float: left;}
+	#pnl_scroll li {
+position: absolute;
+width: 370px;
+height: 230px;
+left: 0px;
+top: 0px;
+filter: alpha(opacity:0);
+opacity: 0;}
+#tFocus-btn li {
+height: 57px;
+width: 91px;
+padding-top: 7px;
+display: block;
+float: left;}
+#tFocus-btn {
+width: 340px;
+height: 68px;
+position: relative;
+left: 0;
+bottom: 0;
+overflow: hidden;
+float: left;
+margin-right: 3px;}
+#CouponDetail
+{	padding:10px;}
+#CouponDetail a
+{	color:#0000FF;
+	text-decoration:underline;
+	word-wrap: break-word;}
+#CouponDetail p
+{	padding-right:10px;
+	padding-left:10px;}
+#CouponDetail span
+{	font-size:13px;}
+#placeTabs a
+{	font-size:15px;}
+</style>
+<div id="ih_window_bg" class="ih_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>		
+<div id="h_window_bg" class="h_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>		
+<div class="mainbox clearfix" style="width:1220px; padding-left:0px; position:relative; margin-left:auto; margin-right:auto;">
+	<!--{template lbi_placeinfo_left}-->
+	<div class="AreaL">
+		<div class="gli_tit">
+			<a href="space.php?do=place"><h2 style="display:inline;">香港好去處</h2></a>{if !empty($category1)}&nbsp;&nbsp;>&nbsp;&nbsp;<h2 style="display:inline;">$category1</h2>{/if}{if !empty($category2)}&nbsp;&nbsp;>&nbsp;&nbsp;<h2 style="display:inline;">$category2</h2>{/if}{if !empty($category3)}&nbsp;&nbsp;>&nbsp;&nbsp;<h2 style="display:inline;">$category3</h2>{/if}&nbsp;&nbsp;>&nbsp;&nbsp;<a href="space-place-id-{$placeid}.html" style="color:black;"><h1 style="display:inline;">{$placeinfo.placename} {$placeinfo.placeengname}</h1></a>
+		</div>
+		<div class="clear"></div>
+		<div class="tit">
+			<div class="poingnum" style="text-align:right; font-weight:bolder; position:absolute; left:800px; top:25px;">
+				{if $placeinfo.placeavg>=5}
+				<img src="template/default/images/01_1.png"/>{$placeinfo.placeavg}
+				{elseif $placeinfo.placeavg>0}
+				<img src="template/default/images/01_2.png"/>{$placeinfo.placeavg}
+				{/if}
+			</div>
+			<h1>{$placeinfo.placename} {$placeinfo.placeengname}</h1>
+				{if $placeinfo.placesale}
+			<div class="hzbg">{$placeinfo.placesale}%</div>
+				{/if}
+		</div>
+		<div class="blank5"></div>
+		<div class="tab_tit">
+			<ul id="placeTabs">
+				<li {if $vtype==''}class="cur"{/if}><a href="space-place-id-{$placeid}.html">詳細介紹</a></li>
+				<li {if $vtype=='article'}class="cur"{/if}><a href="space-place-id-{$placeid}-varticle.html">攻略({$placeinfo.article_count})</a></li>
+				{if $img_count}<li><a href="javascript:firstimg()">價目表({$img_count})</a></li>{/if}
+				{if $couponnum}<li {if $vtype=='coupon'}class="cur"{/if}><a href="space-place-id-{$placeid}.html#coupon">優惠券({$couponnum})</a></li>{/if}
+				{if $placeinfo.traffic}<li {if $vtype == 'traffic'}class="cur"{/if}><a href="space-place-id-{$placeid}-vtraffic.html">前往方法</a></li>{/if}
+			</ul>
+			<ul class="uly">
+				<li style="margin-top:-3px; padding:0px 5px;"><a href="cp.php?ac=article&pid={$placeid}"><img src="template/default/images/btn_com.gif"/></a></li>
+				{if $placeinfo.is_collect}
+				<li style="margin-top:-2px; padding:0px 5px;" id="coll_div"><a href="javascript:;" onclick="collectarticle({$placeid},'place',1,'coll_div')"><img src="image/nbtn_colles.gif"/></a></li>
+				{else}
+				<li style="margin-top:-2px; padding:0px 5px;" id="coll_div"><a href="javascript:;" onclick="collectarticle({$placeid},'place',0,'coll_div')"><img src="image/btn_colles.gif"/></a></li>
+				{/if}
+				<li style="margin-top:-2px; padding:0px 5px;"><a href="javascript:openPrintWnd('{$placeid}','place')"><img src="image/share_b05.png"/></a></li>
+			</ul>
+			<script type="text/javascript">	
+				function openPrintWnd(id,vt)
+				{
+					jQuery.ajax({//ajax 调用数据
+						type: "POST",
+						cache:false,
+						url: "ajax_info.php",
+						data: "do=print&id="+id+"&vtype="+vt,
+						success: function(msg){
+							//$("#print").html(msg);
+							window.open('space.php?do=print&id='+id+'&type=place','Print','height=660,width=700,scrollbars=yes,toolbar=no,status=no');
+						}
+					});
+				}
+		</script>
+		</div>
+		<div class="blank5"></div>
+		<!--{if $vtype=='article'}-->
+		<!--{template space_place_article}-->
+		<!--{elseif $vtype=='traffic'}-->
+		<!--{template space_place_traffic}-->
+		<!--{elseif $vtype=='coupon'}-->
+		<!--{template space_place_coupon}-->
+	  <!--{else}-->
+	  <!--#景点详情-->
+		<!--#景点图片信息展示 start-->
+		<div class="viewBox clearfix" style="position:relative;">
+			<div class="mapl">
+				<div style="min-height:172px;">
+				<table style="width:100%; border-spacing:0 10px;">
+				  <!--#地址-->
+				  {if $placeinfo.placeaddress}
+					<tr>
+						<td style="width:21px; border-bottom:1px dashed #C0C0C0;"><img src="image/ico_08.gif"/></td>
+						<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{if $placeinfo.mapaddress}<a style="display:block; float:right;" href="javascript:;" onclick="display_block('h_window_bg');display_block('h_window');loadScript()"><img src="image/map_big.gif"/></a>{/if}{$placeinfo.placeaddress}</td>
+					</tr>
+				  {/if}
+				  <!--#電話-->
+				  {if $placeinfo.placemobile}
+					<tr>
+						<td style="width:21px; border-bottom:1px dashed #C0C0C0;"><img src="image/ico_13.gif"/></td>
+						<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{$placeinfo.placemobile}</td>
+					</tr>
+				  {/if}
+				  <!--#營業時間-->
+				  {if $placeinfo.placetime}
+					<tr>
+						<td style="width:21px; border-bottom:1px dashed #C0C0C0;"><img src="image/ico_10.gif"/></td>
+						<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{$placeinfo.placetime}</td>
+					</tr>
+				  {/if}
+				</table>
+				</div>
+				{if $place_cimg>0}
+				<div class="img_tab">
+					<div class="view_img" style="width:370px; height:62px;">
+						<div style="width:10px; position:absolute; right:0px; z-index:9999; top:200px;{if $place_cimg<=4}display:none;{/if}" id="biao">
+							<img src="image/01.png"></img>
+                        </div>
+                        <div id="tFocusBtn" class="play" style="height:60px; width:340px;">
+							<div id="tFocus-btn">
+								<ul class="imgul" style="left:0px;">
+									{loop $displace_img $key $timgs}
+									<li {if $key<1}class="on"{/if} style="overflow:hidden; width:85px; position:relative;"><a class="on" onclick="" href="javascript:void(0);"><div style="background:url({$timgs.place_original}) no-repeat center center;background-size: cover;width:84px;height:56px;"></div></a></li>
+									{/loop}	
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
+			</div>
+		  <!--#图片切换 start-->
+		  	<div class="view_img">
+			{if $place_cimg>0}
+				<div style="width:90px; height:20px; position:absolute; background:#333333;opacity: 0.5; left:280px; top:0px; z-index:999; color:#ffffff; font-size:14px; line-height:20px; text-align:left;">共有{$place_cimg}張圖片</div>
+				<div id="tFocus">
+					<ul id="pnl_scroll" class="map_tits">
+						{loop $displace_img $imgs}
+						<li>
+						{if $imgs.author_id}
+							<div class="img_source" style="left:0px;">圖片來自於 <a href="{$imgs.author_url}" target="_blank">{$imgs.author_name}</a> 的 <a href="{$imgs.article_url}" target="_blank">{$imgs.article_title}</a></div>
+						{/if}
+							<a rel="pnl_scroll" imcha="imcha" class="focus_limg" href="javascript:;" name="{$imgs.place_original}">
+								<div style="background:url({$imgs.place_original}) no-repeat center center; background-size:cover; width:370px; height:230px;"></div>
+							</a>
+						</li>
+						{/loop}
+					</ul>
+				</div>
+			{else}
+				<img src="image/pnullpic.jpg" style="min-width:370px; min-height:230px;">
+			{/if}
+			</div>
+			<!--#图片切换 end-->
+			<script language="javascript" src="template/default/js/script.js" type="text/javascript"></script>
+			<script type="text/javascript">
+			addLoadEvent(Focus());
+			</script>
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+			<div id="ad_lpinfobotad">
+				<!--{ad($is_mobile,'lpinfobotad')}-->
+			</div>
+			<!--{/if}-->
+<!--#景点详细信息 start-->
+			<div class="mapBox">
+				<div class="mapl" style="float:left">
+					<table style="border-spacing:0 10px;">
+					  <!--#网址-->
+					  {if $placeinfo.placeurl}
+						<tr>
+							<td style="border-bottom:1px dashed #C0C0C0;"><img src="image/ico_15.gif"/></td>
+							<td style="padding:0 0 10px 5px; cursor:pointer; border-bottom:1px dashed #C0C0C0; color:#006666;" onclick="window.open('{$placeinfo.placeurl}');">{$placeinfo.placeurl}</td>
+						</tr>
+					  {/if}
+					  <!--#價格-->
+					  {if $placeinfo.placeprice}
+						<tr>
+							<td style="border-bottom:1px dashed #C0C0C0;"><img src="image/ico_11.gif"/></td>
+							<td style="padding-left:5px; border-bottom:1px dashed #C0C0C0;">{$placeinfo.placeprice}</td>
+						</tr>
+					  {/if}
+					  <!--#付款方式-->
+					  {if $placeinfo.placepay}
+						<tr>
+							<td style="border-bottom:1px dashed #C0C0C0;"><img src="image/ico_12.gif"/></td>
+							<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{$placeinfo.placepay}</td>
+						</tr>
+					  {/if}
+					  <!--#備註-->
+					  {if $placeinfo.placeremark}
+						<tr>
+							<td style="border-bottom:1px dashed #C0C0C0;"><img src="image/ico_14.gif"/></td>
+							<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{$placeinfo.placeremark}</td>
+						</tr>
+					  {/if}
+						<tr>
+							<td style="width:21px; border-bottom:1px dashed #C0C0C0;"><img src="image/ico_26.gif"/></td>
+							<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;"><a href="{$placeinfo.add_author_url}" target="_blank" style="color:#006666;">{$placeinfo.add_author}</a> 發現這好去處</td>
+						</tr>
+					  <!--#贡献者-->
+					  {if $placeinfo.contuser}
+						<tr>
+							<td style="border-bottom:1px dashed #C0C0C0;"><img src="image/ico_28.gif"/></td>
+							<td style="padding:0 0 10px 5px; border-bottom:1px dashed #C0C0C0;">{loop $placeinfo.contuser $key $contuser}<a href="space-{$key}.html" target="_blank">{$contuser}</a> {/loop}對這好去處有傑出貢獻</td>
+						</tr>
+					  {/if}
+					  <!--if $placeinfo.common_author
+						<tr>
+							<td><img src="image/ico_27.gif"/></td>
+							<td><a href="{$placeinfo.common_author_url}" target="_blank">{$placeinfo.common_author}</a> 發布首篇評論</td>
+						</tr>
+					  /if-->
+						<tr>
+							<td colspan='2'><a href="cp.php?ac=place&id={$placeid}"><img src="image/g5.png"></a>{if $placeinfo.edittime}<span class="place_utime" style="position:relative; top:-10px; left:10px;">最近更新日期：{$placeinfo.edittime}</span>{/if}</td>
+						</tr>
+					</table>
+					<!--{template lbi_share_view}-->
+				</div>
+				<div class="view_txt">
+				<p><!--{eval echo nl2br(getstr($placeinfo[placedesc],150,1,0))}-->{$slh}</p>
+				</div>
+				<!--#優惠券圖片切換-->
+				<a name="coupon"></a>
+				{if $couponlist}
+				<link href="template/default/css/h_slide.css" type="text/css" rel="stylesheet"/>
+				<script src="template/default/js/h_slide.js" type="text/javascript"></script>
+				<div class="jd_mid">
+					<div id="ifocus">
+						<div class="ifocus_tit">
+							<div id="ifocus_btn">
+								<ul>
+									{loop $couponlist $item}<li class="current"><img src="image/ico_18.gif" alt="" /></li>{/loop}
+								</ul>
+							</div>
+						</div>
+						<div style="background:url(image/i.png); float:right; min-width:340px;">
+							<div id="ifocus_pic">
+								<div id="ifocus_piclist" style="left:-10px; top:0;">
+									<ul id="ifocus_tx">
+									{loop $couponlist $item}
+										<li>
+											<div class="roll_right">
+												<p class="roll_right_o"><a style="font-size: 12px;font-weight: bolder;color: #276166;" href="space-place-id-{$placeid}-vcoupon-v{$item.couponid}.html" target="_blank">{$item.title}</a></p>
+												<p class="roll_right_t">有效日期:<!--{eval echo sgmdate('Y-m-d',$item[validdate])}--></p>
+											</div>
+										</li>
+									{/loop}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/if}
+				<!--#優惠券圖片切換-->
+				<!-- #地图功能 -->
+				<div class="mapr">
+					<!-- #地图信息 start-->
+					{if $placeinfo.mapaddress}
+					<div class="blank15"></div>	
+					<script>
+						function initialize() {
+							var mapOptions = {
+								zoom: 15,
+								center: new google.maps.LatLng({$placeinfo.mapaddress}),	
+								panControl: true,
+								zoomControl: true,
+								mapTypeControl: true,//地图或是卫星
+								scaleControl: true,
+								streetViewControl: true,
+								overviewMapControl: true, 
+								mapTypeId: google.maps.MapTypeId.ROADMAP
+							}
+							var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+							var marker = new google.maps.Marker({
+								map: map,
+								position: map.getCenter()
+							});
+							var map = new google.maps.Map(document.getElementById("map_canvass"), mapOptions);
+							var marker = new google.maps.Marker({
+								map: map,
+								position: map.getCenter()
+							});
+						}				
+						function loadScript() {
+						  var script = document.createElement("script");
+						  script.type = "text/javascript";
+						  script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDTChFQiFr_ywqJIAhUXsGATvKYM8A_qXY&sensor=true&callback=initialize";
+						  document.body.appendChild(script);
+						}
+						window.onload = loadScript;
+					</script>
+					<div class="mapInfo" id="allmap" style="height:0px;">
+						<div id="map_canvas" style="width:100%;height:100%"></div>
+					</div>
+					{if !$couponlist}
+					<div id="ad_lpinfomap">
+					<!--{ad($is_mobile,'lpinfomap')}-->
+					</div>
+					{/if}
+					{/if}
+					<!-- #地图信息 end-->
+					<div class="btn_action">
+						<!--{template lbi_map}-->
+					</div>
+				</div>
+				<div class="s_clear"></div>
+				<div class="place_share"></div>
+			</div>
+<!--#景点详细信息 end-->
+			<div class="blank10"></div>
+			<div id="PlaceDetail">{$placeinfo.placedescs}</div>
+			<!--#景点下的攻略信息 start-->
+			{if $article}
+			<div class="blank10"></div>
+			<div class="place_article">
+				<div class="pa_right" style="width:490px;">
+					<div class="pagebar" id="pager">
+						{if $amulti}{$amulti}{else}&nbsp;{/if}
+					</div>
+					<div class="blank15"></div>
+					<div class="sort">排序：
+					<!--{loop $article_sort $key $asort}-->
+						<a href="{$ampurl1}&orderby={$key}&ordersc={if $_GET['orderby'] == $key && $_GET['ordersc']== 'desc'}asc{else}desc{/if}"><span class="{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}sortdesc{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }sortasc{/if}">{$asort}</span></a>
+					<!--{/loop}-->
+					</div>
+				</div>
+				<div class="pa_left">
+					<h4>探險家攻略</h4>
+					<p>共{$acount}篇攻略，正顯示第{$anum_start}-{$anum_end}篇攻略</p>
+				</div>
+			</div>
+			<div class="blank10"></div>
+			<!--{template lbi_article_main}-->
+			 {if $amulti}
+			  <div class="blank10"></div>
+			  <div class="place_article"><div class="gl_page"><div class="pagebar" id="pager">{$amulti}</div></div></div>
+			 {/if}
+			{/if}
+			<!--#景点下的攻略信息 end-->
+			{if $placelist}
+			<div>
+				<div class="blank10"></div>
+				<img src="template/default/POIbar4poi.jpg"/>
+				<div class="blank10"></div>
+			</div>
+			<div>
+			{loop $placelist $key $item}
+				<div class="pointItem">
+					<div class="pointCon">
+						<div class="pointimg">
+								{if $item.placesale}
+							<div class="psale">「{$item.placesale}%回赠」</div>
+								{/if}
+							<div style="height:104px;overflow:hidden">
+								<a class="laiyuan" href="space-place-id-{$item.placeid}.html" title="{$item.oplacename}"><img onload="resizeThumb(this,155,102);" src="{$item.placeimg1}" alt="{$item.altimg1}"/></a>
+							</div>
+						</div>
+						<div class="pinttit"><a style="color: #2989B6;" class="laiyuan" href="space-place-id-{$item.placeid}.html"><h3>{$item.placename}</h3></a></div>
+						<div class="clear"></div>
+						<div class="pointinfo">
+							<dl><dt>地區：</dt><dd>{$item.placeares}</dd></dl>
+							<dl><dt>消費：</dt><dd>{$item.placeprice}</dd></dl>
+							<dl><dt>分類：</dt><dd><h2>{$item.placecatname}</h2></dd></dl>
+						</div>
+						<div class="clear"></div>
+						<div class="poingnum">
+							{if $item.placeavg>=5}
+							{$item.placeavg}
+							<img src="template/default/images/01_1.png"></img>
+							{elseif $item.placeavg>0}
+							{$item.placeavg}
+							<img src="template/default/images/01_2.png"></img>
+							{/if}
+						</div>
+						<div class="clear"></div>
+						<div class="gl_num_1">{if $item.article_count>0}共有<a href="space-place-id-{$item.placeid}-varticle.html">{$item.article_count}篇攻略</a>{/if}</div>
+						<div class="pointView">{$item.clicknum}</div>
+						<div class="clear"></div>
+							{if $item.coupon}
+						<div class="coupon">
+							<marquee scrollAmount="2" width="160" onmouseover="stop()" onmouseout="start()">
+							{loop $item['coupon'] $coupon}
+								<a href="space-place-id-{$item.placeid}-vcoupon-v{$coupon.couponid}.html" target="_blank">{$coupon.title}</a> 
+							{/loop}
+							</marquee>
+						</div>{/if}
+					</div>
+				</div>
+			{/loop}
+			</div>
+		{/if}
+		</div>
+		<div class="blank5"></div>
+      <!--{/if}-->
+		<!--{if $img_list}-->
+		<div class="map_tit map_tits" id="map_tit" style="display:none;">
+			<!--{eval $j = 1;}-->
+			<!--{loop $img_list $art}-->
+				<a rel="map_tit" imcha="imcha" {if $j==1}id="first_img"{/if} name="{$art.img_url}" title="{$art.img_desc}">{$j}</a>	
+			<!--{eval $j++;}-->
+			<!--{/loop}-->
+		</div>
+		<!--{/if}-->
+		<script>
+			function firstimg(){
+				if(jQuery("#first_img")){
+					jQuery("#first_img").click();
+				}
+			}
+		</script>
+		<script type="text/javascript" src="js/ishop.js"></script>
+	</div>
+	<!--{template lbi_placeinfo_right}-->
+<script>
+	$(document).ready(function(){
+		var lv = load_diy();
+		if(lv){
+			var clv = lv.substring(lv.lastIndexOf('/')+1);	
+			if(clv.indexOf(".html")>0){
+				var cllv = clv.substring(0,clv.indexOf(".html"));
+			}else{
+				var cllv = clv.replace("&",":");
+			}		
+			
+			jQuery.ajax({
+				type: "POST",
+				url: "space.php?do=place",
+				data: "nplaceid={$placeid}&lv="+cllv,
+				dataType:'json',
+				success: aprenext
+			});	
+		}
+	});
+	function aprenext(msg){
+		/*if(msg.next){
+			$("#apre").attr('href',"space-place-id-"+msg.next+".html");
+			//$("#fapre").html('上一則：<a href="space-place-id-'+msg.next+'.html">'+msg.ntitle+'</a>');
+		}else{
+			$("#apre").attr('href','#');
+			$("#apre").css('color','#DBDBDB');
+			//$("#fapre").html('');
+		}
+		if(msg.pre){
+			$("#anext").attr('href',"space-place-id-"+msg.pre+".html");
+			//$("#fanext").html('下一則：<a href="space-article-id-'+msg.pre+'.html">'+msg.ptitle+'</a>');
+		}else{
+			$("#anext").attr('href',"#");
+			$("#anext").css('color','#DBDBDB');
+			//$("#fanext").html('');
+		}*/
+		$("#backurl").attr('href',msg.res);	
+	}
+	
+	
+	/* 读取本地攒机单数据 */
+	function load_diy(){
+		if("undefined" != typeof localStorage){
+			var local_code_value=localStorage.getItem('lay_list');
+		}else{
+			var local_code_value=hgetCookie('lay_list');
+			local_code_value=unescape(local_code_value);
+		}
+		return local_code_value;
+	}
+
+
+	/* 获取cookie信息 */
+	function hgetCookie(name){ 
+		var strCookie=document.cookie; 
+		var arrCookie=strCookie.split("; "); 
+		for(var i=0;i<arrCookie.length;i++){ 
+			var arr=arrCookie[i].split("="); 
+			if(arr[0]==name){
+				return arr[1];
+			}
+		} 
+		return ""; 
+	} 
+</script>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</div>
+<!--{if $placeinfo.gacode}-->
+{$placeinfo.gacode}
+<!--{/if}-->
+
+<!--{template footer}-->

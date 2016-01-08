@@ -1,0 +1,86 @@
+<link rel="stylesheet" href="js/ui/css/jquery-ui-1.10.3.custom.css">
+<script src="js/ui/jquery-ui-1.10.3.custom.js"></script>
+<div id="dialog" title=""></div>
+
+<script>
+function closediv(){
+	jQuery( "#dialog" ).dialog( "close" );
+}
+function doreport(op,type,id){
+	var supe_uid = '{$_SGLOBAL[supe_uid]}';
+	
+	if(supe_uid <= 0){
+		jQuery("#dialog").html('你需要先登錄才能繼續本操作！');
+		jQuery( "#dialog" ).dialog({			
+			autoOpen: true,
+			title:"消息",
+			height: 90,
+			width: 300
+		});
+		setTimeout(function(){jQuery("#dialog").dialog("close");},3000);	
+	}else{
+		var time = new Date();
+		jQuery.ajax({
+		   type: "get",
+		   url: "cp.php",
+		   data: "ac=common&op="+op+"&idtype="+type+"&id="+id+"&stime="+time.getMilliseconds().toString(),
+		   dataType:'json',
+		   success:putout_com
+		  
+		});
+	}	
+}
+function putout_com (msg) 
+{ 
+	if(msg.error > 0){
+		jQuery("#dialog").html(msg.msg);
+		jQuery( "#dialog" ).dialog({
+			autoOpen: true,
+			title: "消息",
+			height:90,
+			width:300
+		});
+		setTimeout(function(){jQuery("#dialog").dialog("close");},3000);	
+	}else{	
+		var content = "<form method='post' id='reportform_"+msg.id+"' name='reportform_"+msg.id+"' action='cp.php?ac=common&op=report&idtype="+msg.idtype+"&id="+msg.id+"'><table><tr><td>感謝你能協助我們一起管理SeeWide，我們會盡快處理你的舉報<br><textarea class='report' id='reason' name='reason' cols='62' rows='3' ></textarea></td></tr><tr><td><input class='report' type='hidden' name='reportsubmit' value='true'>";
+		
+		content += "<input class='report' type='hidden' name='refer' value='{$_SGLOBAL[refer]}'><button name='reportsubmit_btn' id='reportsubmit_btn' type='button' class='submit' value='true' onclick=\"reportpost('"+msg.idtype+"',"+msg.id+")\">確定</button>";
+		
+		content += "</td></tr></table><input class='report' type='hidden' name='formhash' value='<!--{eval echo formhash();}-->' /></form>";
+	
+		jQuery("#dialog").html(content);
+		jQuery( "#dialog" ).dialog({
+			autoOpen: true,
+			title: "舉報違規",	
+			width:500
+		});
+	}	
+}
+function reportpost(type,id){
+	var postval = new Array();
+	jQuery(".report").each(function(i){
+		postval[i] = jQuery(this).attr('name')+'='+jQuery(this).val();		
+	})
+	postval=postval.join('&');
+	
+	jQuery.ajax({
+	   type: "post",
+	   url: "cp.php?ac=common&op=report&idtype="+type+"&id="+id,
+	   data: postval,
+	   dataType:'json',
+	   success:putout_coms
+	  
+	});
+	//jQuery("#"+formid)
+}
+function putout_coms(msg){
+	jQuery("#dialog").html(msg.msg);
+	jQuery( "#dialog" ).dialog({
+		autoOpen: true,
+		title: "舉報違規",
+		height:90,	
+		width:300
+	});
+	setTimeout(function(){jQuery("#dialog").dialog("close");},3000);	
+}
+</script>

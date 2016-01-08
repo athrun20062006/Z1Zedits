@@ -1,0 +1,312 @@
+<!--{template header}-->
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+<div id="ih_window_bg" class="ih_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>	
+<!--/main-->
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="tit">
+			<div class="action" style="width:310px;">
+				<a style="float:right;" href="do-contact.html"><img src="template/default/images/btn_aff.gif"/></a>
+				<div style="float:right;padding:0px 5px;" id="coll_div">
+				{if $placeinfo.is_collect}
+					<a href="javascript:;" onclick="collectarticle({$placeid},'place',1,'coll_div')"><img src="image/nbtn_colles.gif"/></a>
+				{else}
+					<a href="javascript:;" onclick="collectarticle({$placeid},'place',0,'coll_div')"><img src="image/btn_colles.gif"/></a>
+				{/if}
+				</div>
+				<a style="float:right;" href="space.php?do=pcomment&id={$placeid}"><img src="template/default/images/btn_com.gif"/></a>
+			</div>
+			<h2>{if $placeinfo.placesale}<div class="hzbg">{$placeinfo.placesale}%</div>{/if}{$placeinfo.placename}</h2>
+		</div>
+		
+		<div class="blank5"></div>
+		<div class="tab_tit">
+			<ul>					
+				<li><a href="space-place-id-{$placeid}.html">詳細介紹</a></li>
+				<li><a href="space-place-id-{$placeid}-varticle.html">攻略({$placeinfo.article_count})</a></li>
+				<li class="cur"><a href="space-place-id-{$placeid}-vcomment.html">評論({$comment_count})</a><span></span></li>
+				<li><a href="space-place-id-{$placeid}.html#001">好去處資料</a></li>
+				{if $img_count}<li><a href="javascript:firstimg()">價目表({$img_count})</a></li>{/if}
+				{if $couponnum}<li><a href="space-place-id-{$placeid}.html#coupon">優惠券({$couponnum})</a></li>{/if}
+			</ul>
+			
+			
+			<!--{if $img_list}-->
+			<div class="map_tit map_tits" id="map_tit" style="display:none">
+				<!--{eval $j = 1;}-->						
+				<!--{loop $img_list $art}-->			  	
+					<a rel="map_tit" imcha="imcha" {if $j==1}id="first_img"{/if} name="{$art.img_url}" title="{$art.img_desc}">{$j}</a>	
+				<!--{eval $j++;}-->
+				<!--{/loop}-->			
+			</div>
+			<!--{/if}-->		
+			<script>
+				function firstimg(){
+					if(jQuery("#first_img")){
+						jQuery("#first_img").click();
+					}				
+				}
+			</script>
+			<script type="text/javascript" src="js/ishop.js"></script>	
+		</div>
+		<div class="blank10"></div>
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lindextotad']}-->	
+		<div id="ad_lindextotad"><!--{ad($is_mobile,'lindextotad')}--></div>
+		<div class="blank10"></div>	
+		<!--{/if}-->	
+		
+		<!--#main start-->
+		<div class="gli_tit">
+			<a {if $prev_place}href="{$prev_place.url}"{else}href="javascript:;" style="color:#DBDBDB"{/if} class="f_l">上一則評論</a><a href="space-place-id-{$placeid}-vcomment.html" class="f_l" style="width:465px;text-align:center">返回搜尋結果</a> <a {if $next_place}href="{$next_place.url}"{else}href="javascript:;" style="color:#DBDBDB"{/if} class="f_r">下一則評論</a>
+		</div>
+		<div class="clear"></div>
+		<div class="gli_top" style="height:auto">
+			<div class="f_r" style="width:120px;text-align:right;">
+				<div style="cursor:pointer; background:url(template/default/images/{$pcominfo.dian_bg}.gif) no-repeat scroll right center transparent;height:44px;line-height:44px" onclick="dian({$pcominfo.pcomment_id})" class="gli_dian" id="dian_{$pcominfo.pcomment_id}">{$pcominfo.diannum}</div>				
+				<div class="clear"></div>
+				<div id="coll_div">
+					{if $pcominfo.is_collect}
+						<a onclick="collectarticle({$pcominfo.pcomment_id},'comment',1,'coll_div')" href="javascript:;"><img src="image/nbtn_colles.gif"></a>
+					{else}
+						<a onclick="collectarticle({$pcominfo.pcomment_id},'comment',0,'coll_div')" href="javascript:;"><img src="image/btn_colles.gif"></a>
+					{/if}		
+				</div>	
+				<div class="blank5"></div>
+			</div>
+			<div class="f_l" style="width:480px;">
+				<h1>{$pcominfo.pcomment_title}</h1>
+				<p>由 {if $pcominfo.user_star == 2}<img class="star" src="image/sstar.gif"> {/if}<a href="space-{$pcominfo.user_id}.html" style="color:#C3C2C7">{$pcominfo.user_name}</a> 於 {$pcominfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$pcominfo.click_count}</p>
+			</div>
+			{if $pcominfo.admin_hot}<img src="template/default/images/tuijie1.gif" class="f_l"/>{/if}
+		</div>
+		
+		<div class="gli_con">
+			<div class="blank5"></div>
+		   <!--#是次消费以及攻略日期 start-->			
+			<div class="artpricer">
+				{if !empty($pcominfo.start_time)}<p>進行日期：{$pcominfo.start_time}</p>{/if}
+				{if !is_null($pcominfo.pcomment_consume)}<p>是次消費：每人平均約HK$ {$pcominfo.pcomment_consume}</p>{/if}
+			</div>
+			<!--#是次消费以及攻略日期 end-->
+			<div class="fb-like" data-href="http://www.seewide.com/space-pcominfo-{$placeid}-{$pcominfo.pcomment_id}.html" data-width="728" data-layout="standard" data-action="like" data-show-faces="false" data-share="false"></div>
+			<div class="blank20"></div>
+			{$pcominfo.content}
+			<div class="clear"></div>
+	<div class="gli_view">
+				<div class="f_r" style="width:260px">
+					<ul>
+						<li><a id="a_report" href="javascript:;"  onclick="doreport('report','jdsid','{$pcominfo.pcomment_id}')" class="jianju">檢舉</a><div class="clear"></div></li>
+					</ul>
+				</div>
+				<div class="f_l" style="width:440px;">
+					<ul>
+						<li class="clearfix">
+							{if $pcominfo.start_time}
+								<dd>進行日期：{$pcominfo.start_time}</dd>
+							{/if}
+							{if $pcominfo.pcomment_consume}
+							{if !is_null($pcominfo.pcomment_consume)}
+							<dd class="ddR">是次消費：每人平均約HK$ {$pcominfo.pcomment_consume}</dd>{/if}
+							{/if}
+						</li>							
+						<li class="clearfix" style="padding-bottom:0px;display:none">
+							<a href=""><img src="template/default/images/ah.gif"/></a>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+				<div class="share_msg">
+					<!--{template lbi_cshare_view}-->
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<div class="gli_but"></div>
+		<div class="blank20"></div>
+		<div class="dian_list pdian_list">
+			<div class="dian_userlist">
+				  {loop $dianlist $item}
+					<div class="dian_item">
+						{if $item.user_star == 2}<img class="bigstar" src="image/bstar1.gif">{/if}<a href="{$item.user_url}"><!--{avatar($item[userid],small)}--></a>
+					</div>
+				{/loop}
+			</div>
+			<div class="dian_right">
+				<div class="dian_btn">
+					<img style="cursor:pointer;" onclick="dian({$pcomment_id})" src="template/default/images/{$pcominfo.dian_img}.gif">
+					{if $pcominfo.is_collect}
+					<a href="javascript:;" onclick="collectarticle({$pcominfo.pcomment_id},'comment',1,'coll_div')"><img src="template/default/images/icon_02.gif"></a>
+					{else}
+					<a href="javascript:;" onclick="collectarticle({$pcominfo.pcomment_id},'comment',0,'coll_div')"><img src="template/default/images/icon_02.gif"></a>
+					{/if}
+				</div>
+				<div class="dian_num">共<span>{$pcominfo.diannum}</span>人比"掂",看全部&gt;</div>
+			</div>
+		</div>
+		<script>
+			function dian(aid){
+				/**fanny 修改评论掂过之后图片出错问题 2013-11-22*/
+				jQuery.ajax({
+				   type: "POST",
+				   url: "space.php?do=pcominfo",
+				   data: "ac=dian&pcid="+aid+"&pid="+'{$placeid}',
+				   dataType:'json',
+				   success:click_result
+				});
+			
+			}
+			function click_result (msg) {  
+				if(msg.error <= 0){
+					alert(msg.msg);
+				}else{
+					alert(msg.msg);
+					if(msg.error ==1){
+						location.href="space-pcominfo-"+msg.pid+"-"+msg.pcid+".html";
+					}
+				}
+
+				
+			}
+		</script>
+		<div class="blank20"></div>
+		{if $prev_place}
+		<p style="font-size:18px">上一則：<a href="{$prev_place.url}">{$prev_place.pcomment_title}</a></p>
+		{/if}
+		{if $next_place}
+		<p style="font-size:18px">下一則：<a href="{$next_place.url}">{$next_place.pcomment_title}</a></p>
+		{/if}
+		<div class="blank15"></div>
+		
+		
+		<!--#攻略评论信息 2014.01.08 start-->
+		<a name="header_1" id="header_1"></a>　
+		<div id="comcomment"></div>
+		<script>
+			jQuery(document).ready(function(){
+			   {if $_GET['cpage'] > 0}
+					scroller('header_1', 800);
+			   {/if}	
+			   ajaxget('ajax_info.php?do=comcomment&comid='+'{$pcomment_id}&page='+'{$cpage}', 'comcomment', 'comcomment');
+			});			
+		</script>
+		<!--#攻略评论信息 2014.01.08 end-->	
+		
+		
+		<!--{template lbi_report}-->
+		
+		<div class="gli_pl">
+			<!--{template space_pinglun}-->
+			<form action="comment.php" method="post">
+			<div class="acBox">
+				<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL['supe_uid']}.html"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></div>
+				<div class="acRight">
+					<textarea name="comment[content]" id="ccontent" maxlength="150"></textarea>
+					<p style="color:#B7B7B7">最多能輸入150字</p>
+					<div class="blank5"></div>
+					<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+					<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+					<input type="hidden" name="comment[type]" value="3" />
+					<input type="hidden" name="comment[articleid]" value="{$pcominfo.pcomment_id}" />
+					<!--<input type="checkbox" name="comment[is_private]" id="lp_is_private" value="1" /><font color="#BCBCBC">私人回應</font>-->
+					<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="回應" />
+					<div class="blank10"></div>
+					<div class="facebox1" id="face_list"></div>
+				</div>
+			</div>
+			</form>				
+		</div>
+		<script>
+			/** fanny 添加表情图片信息 2013-11-25 */
+			jQuery(document).ready(function(){					
+				document.getElementById("face_list").innerHTML ="";					
+				var faceul = document.createElement("ul");					
+				for(i=1; i<21; i++) {
+					getStatusFace(i, faceul); 
+				}					
+				document.getElementById('face_list').appendChild(faceul);
+
+			});
+			//获取表情
+			function getStatusFace(i, faceul) {
+				var faceli = document.createElement("li");
+				faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'ccontent\')"/>';				
+				faceul.appendChild(faceli);
+			}
+	
+			/*function check(t1) {
+				var regC = /[^ -~]+/g;
+				var regE = /\D+/g;
+				var str = t1.value;
+
+				if (regC.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+
+				if(regE.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+			}*/
+			function delcom(cid){
+				if(confirm('您確定要刪除該條數據嗎？')){
+					jQuery.ajax({//ajax 调用数据
+						type: "POST",
+						cache:false,
+						url: "comment.php",
+						data: "do=del&id="+cid,
+						success: function(msg){
+							if(msg < 0){
+								alert('沒有要執行操作的數據。');
+							}else{
+								jQuery("#gli_"+msg).css('display','none');
+							}
+						}
+					});
+				}
+			
+			}
+		</script>
+		
+		
+		
+		
+		<!--#main end-->	
+
+	</div>
+	<!--{template lbi_place_right}-->
+</div>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>	
+<!--{template footer}-->

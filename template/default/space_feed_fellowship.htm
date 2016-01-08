@@ -1,0 +1,39 @@
+		<div class="blank10"></div>
+		<div class="top_search">
+		    <form action="space.php" method="get">
+				<input type="text" name="username" id="sfollower" class="tuser" onblur="this.value==''?this.value='搜尋探險家':'';" onfocus="this.value=='搜尋探險家'?this.value='':'';" value="搜尋探險家"><input type="submit" value="" class="sfbtn" ><input type="hidden" name="do" value="home"/><input type="hidden" name="act" value="follusers"/>
+			</form>
+		</div>
+		<div class="blank5"></div>
+			<!--{if $folllist}-->
+		<div class="ucomment">
+			<div class="mcon">
+				<div class="ulist" >
+					<div class="ulBox">
+						 {loop $folllist $key $fl}
+						<div class="ulItem">
+							<div class="ulist_img"><a href="space-{$fl['uid']}.html" target="_blank"><img src="{$fl['image']}" onerror='this.src="/ucenter/images/noavatar_middle.gif";'></a></div>
+							<div class="ulist_txt"><div class="ulist_name"><a href="space-{$fl['uid']}.html" target="_blank">{$fl.username}</a></div>{$_SGLOBAL[grouptitle][$fl[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$fl[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$fl[groupid]][icon]}"/>{/if}</div>
+							<div class="clear"></div>
+						</div>
+						  {/loop}
+						<div class="clear"></div>
+					</div>
+				</div>
+					<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+				<div class="blank5"></div>
+				<div id="ad_lpagebotad">
+						<!--{ad($is_mobile,'lpagebotad')}-->
+				</div>
+					<!--{/if}-->
+				<div class="blank5"></div>
+				   {if $multi}
+				<div class="pagebar" id="pager">
+					<div class="page">
+							{$multi}
+					</div>
+				</div>
+					{/if}
+			</div>
+		</div>
+			<!--{/if}-->

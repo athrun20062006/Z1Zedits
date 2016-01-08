@@ -1,0 +1,77 @@
+<!--{template header}-->
+<link href="template/default/css/top.css" rel="stylesheet" type="text/css" />
+<div class="mainbox clearfix">
+		<div class="AreaL">
+			<div class="gll_header">
+				<a href="javascript:;" class="adbtn">探險家排行榜</a>
+			</div>
+            <div class="blank10"></div>
+			<div class="top_search"><form method="post" action="space.php?do=top"><input type="text" name="username" class="tuser" onblur="this.value==''?this.value='搜尋探險家':'';" onfocus="this.value=='搜尋探險家'?this.value='':'';" value="搜尋探險家"/><input type="hidden" name="view" value="{$view}"/><input type="hidden" value="topSearch" name="topSearch"/><input type="submit" value="" class="tbtn" name="topSearchSubmit"/></form></div>
+            <div class="blank10"></div>
+			<div class="tab" id="com_b">
+				<h2 {if $view == 'experience'} class="first-h2"{/if} name="first"><a href="space.php?do=top&view=experience">最高經驗值</a></h2>
+				<h2 {if $view == 'clicknum'} class="first-h2"{/if}><a href="space.php?do=top&view=clicknum">最高人氣</a></h2>
+				<h2 {if $view == 'count'} class="first-h2"{/if}><a href="space.php?do=top&view=count">最多攻略</a></h2>
+				<h2 {if $view == 'diannum'} class="first-h2"{/if}><a href="space.php?do=top&view=diannum">最多掂數</a></h2>
+				<h2 {if $view == 'admin_hot'} class="first-h2"{/if}><a href="space.php?do=top&view=admin_hot">最多推數</a></h2>
+			</div>
+			<div class="blank30"></div>
+			<div class="tab_con">
+				<div class="con">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" class="ta_tit">
+						<tr align="center">
+							<td><div class="td_tit">特搜探險家</div></td>
+							<td><div class="td_tit">{if $view == 'clicknum'}<img src="template/default/images/pic.gif" class="jy"/>{/if}人氣</div></td>
+							<td><div class="td_tit">等級</div></td>
+							<td><div class="td_tit">{if $view == 'count'}<img src="template/default/images/pic.gif" class="jy"/>{/if}攻略數目</div></td>
+							<td><div class="td_tit">{if $view == 'diannum'}<img src="template/default/images/pic.gif" class="jy"/>{/if}<img src="template/default/images/ico_20.gif"/>數</div></td>
+							<td><div class="td_tit">{if $view == 'admin_hot'}<img src="template/default/images/pic.gif" class="jy"/>{/if}<img src="template/default/images/ico_21.gif"/>數</div></td>
+							<td><div class="td_tit_last">{if $view == 'experience'}<img src="template/default/images/pic.gif" class="jy"/>{/if}總經驗</div></td>
+						</tr>
+                        {loop $list $key $item}
+						<tr align="center" bgcolor="#f6e9e1">
+							<td style="padding:5px 0px;width:32%">
+								<div class="td_con{if $key%2 == 0}1{/if}">
+									<ul>
+									<!--{if $item[sort]}-->
+										<li>{$key}{if $key > 3}{$sort}{else}&nbsp;&nbsp;{/if}</li>
+                                        <li>
+                                           {if $key <= 3 } <img src="template/default/images/ico_l0{$key}.gif" class="iteration"/>{/if}
+                                            <a href="space-{$item[uid]}.html" class="avatar78"><!--{avatar($item[uid],middle)}--></a>
+                                        </li>
+									<!--{else}-->
+									<!--{eval $sort = $key+($page-1)*10}-->
+                                        <li>{if $page > 1}{$sort}{else}{if $key > 3}{$sort}{else}&nbsp;&nbsp;{/if}{/if}</li>
+                                        <li>
+                                           {if $key <= 3 && $page <= 1} <img src="template/default/images/ico_l0{$key}.gif" class="iteration"/>{/if}
+                                            <a href="space-{$item[uid]}.html" class="avatar78"><!--{avatar($item[uid],middle)}--></a>
+                                        </li>
+									<!--{/if}-->
+                                        <li>{if $item.is_star == 2}<img class="star" src="image/sstar.gif">{/if}{$item.username}</li>
+								</div>
+							</td>
+							<td width="13%"><div class="td_con{if $key%2 == 0}1{/if}">{$item.clicknum}</div></td>
+							<td><div class="td_con{if $key%2 == 0}1{/if}">{$_SGLOBAL[grouptitle][$item[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$item[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$item[groupid]][icon]}"/> {/if}</div></td>
+							<td><div class="td_con{if $key%2 == 0}1{/if}">{$item.count}</div></td>
+							<td><div class="td_con{if $key%2 == 0}1{/if}">{$item.diannum}</div></td>
+							<td><div class="td_con{if $key%2 == 0}1{/if}">{$item.admin_hot}</div></td>
+							<td width="13%"><div class="td_con{if $key%2 == 0}1{/if}_last">{$item.experience}</div></td>
+						</tr>
+                        {/loop}
+					</table>					    
+					<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+					<div class="blank10"></div>   
+					<div id="ad_lpagebotad">
+						<!--{ad($is_mobile,'lpagebotad')}--> 
+					</div>
+					<!--{/if}-->
+					<div class="blank5"></div>
+
+				</div>
+			</div>
+			<div class="blank15"></div>
+		</div>
+		<!--{template lbi_right}-->
+	</div>
+    
+<!--{template footer}-->

@@ -1,0 +1,45 @@
+		<!--#优惠券-->
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->
+		<div id="ad_lpinfobotad">
+			<!--{ad($is_mobile,'lpinfobotad')}-->
+		</div>
+		<div class="blank10"></div>
+		<!--{/if}-->
+		<div class="coup_tit" style="position:relative;">
+			<div class="coup_txt">
+				{$placeinfo.placename}
+				<p>{$placeinfo.placeaddress}</p>
+				{if $placeinfo.placemobile}Tel:{$placeinfo.placemobile}{/if}
+			</div>
+			<div class="yh_time">
+				<table>
+					<tr>
+						<td>
+							有效日期：<!--{eval echo sgmdate('Y-m-d',$couponinfo[validdate])}-->
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div style="border:1px #C0C0C0 dashed; border-radius:16px; position:relative;">
+			<div id="CouponDetail">
+			{if ($couponinfo.is_open&$couponLocked) ==$couponLocked || $_SGLOBAL['timestamp']>$couponinfo.validdate}
+				<p style="font-size:72px; color:#FF0000; text-align:center;">（優惠劵已無效）</p>
+			{/if}
+				<div>
+					{if ($couponinfo.is_open&$printOnlyCoupon) !=$printOnlyCoupon && $couponinfo.validdate>$_SGLOBAL['timestamp']}
+					<img src="image/eCoupon.png" style="position:absolute; top:2px; left:-13px;"/>
+					{elseif $couponinfo.validdate>$_SGLOBAL['timestamp']}
+					<img src="image/pCoupon.png" style="position:absolute; top:2px; left:-13px;"/>
+					{/if}
+					<p style="font-size:36px; text-align:left; position:relative; left:108px; width:610px;">{$couponinfo.title}</p>
+				</div>
+				{$couponinfo.content}
+				{if ($couponinfo.is_open&$printOnlyCoupon) !=$printOnlyCoupon && $couponinfo.validdate>$_SGLOBAL['timestamp']}
+				<span style="color:#FF0000;">#電子優惠劵，不用列印，只需向商戶展示</span><br/>
+				{elseif $couponinfo.validdate>$_SGLOBAL['timestamp']}
+				<a href="space.php?do=place&id={$couponinfo.placeid}&vtype=coupon&couponid={$couponinfo.couponid}&status=print" class="print" target="_blank" style="float:left;">列印</a>
+				{/if}
+				<img src="image/ylko.png">
+			</div>
+		</div>

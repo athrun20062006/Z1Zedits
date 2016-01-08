@@ -1,0 +1,161 @@
+<!--{template header}-->
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+
+<!--/main-->
+	<div class="mainbox clearfix">
+		<div class="AreaL">
+			<div class="tit">
+				<div class="action">
+					<a href="space.php?do=pcomment&id={$place_id}"><img src="template/default/images/btn_com.gif"/></a>
+					<a href=""><img src="template/default/images/btn_colles.gif"/></a>
+					<a href="do-contact.html"><img src="template/default/images/btn_aff.gif"/></a>
+				</div>
+				<h2>{$placeinfo.placename}</h2>
+			</div>
+			<div class="blank5"></div>
+			<div class="tab_tit">
+				<ul>					
+					<li><a href="space-place-id-{$place_id}.html">詳細介紹</a></li>
+					<li><a href="space-place-id-{$place_id}-varticle.html">攻略({$placeinfo.article_count})</a></li>
+					<li class="cur"><a href="space-place-id-{$place_id}-vcomment.html">評論({$comment_count})</a><span></span></li>
+				</ul>
+			</div>
+			<div class="blank10"></div>			
+			
+			<!--{template data/adtpl/16}-->
+			<div class="blank10"></div>	
+			
+			<!--#main start-->				
+			<div class="clear"></div>
+			<div class="gli_top" style="height:auto">
+				<div class="f_r" style="width:120px;">
+					<div style="cursor:pointer; background:url(template/default/images/{$pcominfo.dian_bg}.gif) no-repeat scroll right center transparent;height:44px;line-height:44px" onclick="" class="gli_dian" id="dian_{$pcominfo.pcomment_id}">{$pcominfo.diannum}</div>				
+					<div class="clear"></div>
+					<a onclick="" href="javascript:;"><img src="template/default/images/btn_colles.gif"></a>	
+					<div class="blank5"></div>
+				</div>
+				<div class="f_l" style="width:480px;">
+					<h1>{$pcominfo.pcomment_title}</h1>
+					<p>由 <a href="space-{$pcominfo.user_id}.html" style="color:#C3C2C7">{$pcominfo.user_name}</a> 於 {$pcominfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$pcominfo.click_count}</p>
+				</div>
+				
+			</div>
+			
+			<div class="gli_con">
+				<div class="blank20"></div>
+				{$pcominfo.content}
+				<div class="clear"></div>
+				<div class="gli_view">
+					<div class="f_r" style="width:260px">
+						<ul>
+							<li><a id="a_report" href="javascript:;"  onclick="" class="jianju">檢舉</a><div class="clear"></div></li>
+						</ul>
+					</div>
+					<div class="f_l" style="width:440px;">
+						<ul>
+							<li class="clearfix">
+								<dd>進行日期：{$pcominfo.start_time}</dd><dd class="ddR">是次消費：每人平均約HK$ {$pcominfo.pcomment_consume}</dd>
+							</li>						
+							
+						</ul>
+					</div>
+					<div class="clear"></div>
+					<div class="share_msg">
+						<!--{template lbi_cshare_view}-->
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>			
+			<div class="gli_but"></div>
+			<div class="blank20"></div>
+			
+			<div class="dian_list pdian_list">
+				<div class="dian_userlist">
+					  {loop $dianlist $item}
+						<a href="space-{$item[userid]}.html"><!--{avatar($item[userid],small)}--></a>
+					{/loop}
+				</div>
+				<div class="dian_right">
+					<div class="dian_btn">
+						<img style="cursor:pointer;" onclick="" src="template/default/images/{$pcominfo.dian_img}.gif">
+						<img src="template/default/images/icon_02.gif">
+					</div>
+					<div class="dian_num">共<span>{$pcominfo.diannum}</span>人比"掂",看全部&gt;</div>
+				</div>
+			</div>
+			<div class="blank20"></div>	
+			<!--{template data/adtpl/21}-->			
+			<div class="blank15"></div>		
+		
+			<div class="gli_pl">
+				<!--{template space_pinglun}-->	
+				<div class="acBox">
+					<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL['supe_uid']}.html"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></div>
+					<div class="acRight">
+						<textarea name="comment[content]" id="ccontent" maxlength="150"></textarea>
+						<p style="color:#B7B7B7">最多能輸入150字</p>
+						<div class="blank5"></div>
+						<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+						<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+						<input type="hidden" name="comment[type]" value="3" />
+						<input type="hidden" name="comment[articleid]" value="{$pcominfo.pcomment_id}" />
+						<!--<input type="checkbox" name="comment[is_private]" id="lp_is_private" value="1" /><font color="#BCBCBC">私人回應</font>-->
+						<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="回應" />
+						<div class="blank10"></div>
+						<div class="facebox1" id="face_list"></div>
+					</div>
+				</div>	
+			</div>	
+			<script>
+				/** fanny 添加表情图片信息 2013-11-25 */
+				jQuery(document).ready(function(){					
+					document.getElementById("face_list").innerHTML ="";					
+					var faceul = document.createElement("ul");					
+					for(i=1; i<21; i++) {
+						getStatusFace(i, faceul); 
+					}					
+					document.getElementById('face_list').appendChild(faceul);
+
+				});
+				//获取表情
+				function getStatusFace(i, faceul) {
+					var faceli = document.createElement("li");
+					faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'ccontent\')"/>';				
+					faceul.appendChild(faceli);
+				}
+				
+				function check(t1) {
+					var regC = /[^ -~]+/g;
+					var regE = /\D+/g;
+					var str = t1.value;
+
+					if (regC.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+
+					if(regE.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+				}
+			</script>		
+			<!--#main end-->			
+
+		</div>
+		<!--{template lbi_place_right}-->
+	</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>	
+	
+<!--{template footer}-->

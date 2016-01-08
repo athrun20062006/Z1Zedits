@@ -1,0 +1,52 @@
+				<!--#信息展示 start-->
+			<div class="comment">
+				<div class="mcon" id="con_1">
+					   {loop $placelist $key $item}
+					<div class="pointItem">
+						<div class="pointCon">
+							<div class="pointimg">
+								<a class="laiyuan" href="space-place-id-{$item.placeid}.html" title="{$item.oplacename}"><img onload="resizeThumb(this,155,102);" src="{$item.placeimg1}" alt="{$item.altimg1}" /></a>
+							</div>
+							<div class="pinttit"><a class="laiyuan" style="color: #2989B6;" href="space-place-id-{$item.placeid}.html">{$item.placename}</a></div>
+							<div class="clear"></div>
+							<div class="pointinfo">
+								<dl><dt>地區：</dt><dd>{$item.placearea}</dd></dl>
+								<dl><dt>消費：</dt><dd>{$item.dollar}</dd></dl>
+								<dl><dt>分類：</dt><dd>{$item.placecatlinks}</dd></dl>
+							</div>
+							<div class="clear"></div>
+							<div class="poingnum">
+								{if $item.placeavg>=5}
+								<strong>{$item.placeavg}</strong>
+								<img src="template/default/images/01_1.png"></img>
+								{elseif $item.placeavg >0}
+								<strong>{$item.placeavg}</strong>
+								<img src="template/default/images/01_2.png"></img>
+								{/if}
+							</div>
+							<div class="clear"></div>
+							<div class="gl_num_1">{if $item.article_count > 0}共有<a href="space-place-id-{$item.placeid}-varticle.html">{$item.article_count}篇攻略</a>{/if}</div>
+							<div class="pointView">{$item.clicknum}</div>
+							<div class="clear"></div>
+							{if $item.coupons}
+							<div class="coupon">
+								<marquee scrollAmount="2" width="160" onmouseover="stop()" onmouseout="start()">
+							{loop $item['coupons'] $coupon}
+								<a href="space.php?do=place&id={$item.placeid}&vtype=coupon&couponid={$coupon.couponid}" target="_blank">{$coupon.title}</a>
+							{/loop}
+								</marquee>
+							</div>{/if}
+						</div>
+					</div>
+						{/loop}
+					<div class="blank5"></div>
+					   {if $multi}
+					<div class="pagebar" id="pager">
+						<div class="page">
+								{$multi}
+						</div>
+					</div>					
+						{/if}
+				</div>
+			</div>
+				<!--#信息展示 end-->

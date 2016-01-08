@@ -1,0 +1,184 @@
+<!--{template header}-->
+	<link href="template/default/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="template/default/css/h_style.css" rel="stylesheet" type="text/css" />
+	<script charset="utf-8" src="template/default/js/checkform.js"></script>
+	<script charset="utf-8" src="js/jquery.json-2.4.js"></script>
+	<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+	<link href="template/default/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
+	<link href="template/default/css/gongl.css" rel="stylesheet" type="text/css" />
+		<script>var kid = 'placedescs';</script>
+	<!--{template kindEditor}-->
+	<style type="text/css">
+.subcategory
+{
+	display:none;
+	clear:both;
+	border-top: 1px;
+	border-top-color:#000000;
+	border-top-style:dashed;
+	padding-top: 5px;
+}
+.subcategory label
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.subarea
+{
+	display:none;
+	clear:both;
+	border-top: 1px;
+	border-top-color:#000000;
+	border-top-style:dashed;
+	padding-top: 5px;
+}
+.subarea label
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.areatitle
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.cattitle
+{
+	width:80px;
+	height:100%;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.additionalDetails
+{
+	display:none;
+}
+	</style>
+	<script charset="utf-8" src="js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+	jQuery(function(){
+		jQuery(".cateclick").change(function(){
+			if(jQuery(this).attr('checked') == "checked"){
+				jQuery(this).after("<input type='hidden' value='"+jQuery(this).attr('catname')+"' name='place[placecatname][]' />");
+			} else {
+				jQuery(this).next().remove();
+			}
+			
+		})
+	})
+</script>
+<div class="mainbox clearfix">
+	<style type="text/css">
+	.p_div .infocs{
+		position: absolute;
+		left: 23px;
+		top: 35px;
+		}
+</style>
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="My97/WdatePicker.js"></script>
+<script charset="utf-8" src="template/default/js/jquery.imgareaselect.pack.js"></script>
+<script>var kid = 'content'; var kids='artdesc';</script>
+<!--{template kindEditor}--> 
+<script charset="utf-8" src="js/ajaxfileupload.js"></script>
+<div style="font-size:12px; color:#174E7E;" class="gli_tit">
+	<a href="http://www.seewide.com">SeeWide特搜網</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="cp-check.html">發現新大陸</a>
+</div>
+<table style="width:100%;" cellspacing="0" cellpadding="0">
+	<tr>
+		<td style="border: solid #CCDDDA;">
+			<div>
+				<div style="background:aliceblue; height:30px; line-height:30px">
+					<strong style="color:#174E7E; font-size:16px;margin-left:20px;">搜尋好去處關鍵字，查看好去處是否已經存在！</strong>
+				</div>
+				<div style="position:relative; text-align:left; padding-top:5px;">
+					<div>
+						<strong style="font-size:16px; color:#174E7E; margin-left:20px">好去處名稱：</strong>
+						<input type="input" style="font-size:16px; margin-left:15px; width:384px; height:30px; line-height:30px;" class="input_css infocs" placeholder="輸入好去處關鍵字" onkeydown="enter()" id="placeName"/>
+						<input type="button" id="findPlaceName" style="margin:5px 0; background:url(template/default/images/802.png); width:128px; height:42px; text-align:center; border:0px; cursor:pointer;"/>
+					</div>
+					<div class="mcon" id="con_1" style="min-height:340px;"></div>
+					<div id="pager" style="margin-bottom:10px; position:absolute; left:500px; bottom:0px;">
+						<div class="page"></div>
+					</div>
+					<script>
+					jQuery(".bq").click(function(){
+						if(jQuery(this).attr("checked")=="checked"){
+							jQuery("#add").removeAttr('disabled');
+						}
+						else{
+							jQuery("#add").attr('disabled','disabled');
+						}
+					})//Auto list JQuery START
+					jQuery(function() {
+						var placearr = {$msg};
+						var strs=placearr["placearr"].toString().split(",");
+						if(strs){
+							jQuery( ".selector" ).autocomplete({ autoFocus: true });
+							jQuery( "#placeName" ).autocomplete({
+								source: strs,
+								select: function( event, ui ) {
+									var placeName = ui.item.value;
+									page(1,placeName);
+								}
+							});
+						}
+						jQuery("#findPlaceName").click(function(){
+							var placeName = jQuery("#placeName").val();
+							page(1,placeName);
+						})
+						jQuery("#info input").click(function(){
+							if(jQuery(this).val() == "1"){
+								jQuery("#info").next().show();
+								jQuery("#pager").css("margin-top","20px");
+							}
+							else {
+								jQuery("#info").next().hide();
+								jQuery("#pager").css("margin-top","20px");
+								jQuery(".page").children().remove();
+								jQuery("#con_1").children().remove();
+								jQuery("#placeName").val("");
+							}
+						}) 
+					})
+					function enter(){
+						if(event.keyCode==13){
+							var placeName = jQuery("#placeName").val();
+							if(placeName != ""){
+								jQuery( ".ui-corner-all" ).hide();
+								page(1,placeName);
+							}
+						}
+					}
+					function openurl(url){	window.open(url);	}
+					function page(page,text){
+						jQuery.post("space.php?do=findplace",{page:page,text:text},function(data){
+							if(data){
+								var msg;
+								if(window.JSON){	msg = JSON.parse(data);		} 
+								else {	msg= eval("("+data+")");	}
+								jQuery("#con_1").html(msg["div"]);
+								jQuery(".page").html(msg["multi"]);
+							}	 
+						})
+					document.getElementById('addplace').style.display='block';
+					}
+					</script>
+				</div>
+			</div>
+			<div class="blank20"></div>
+		</td>
+	</tr>
+</table>
+<div id="addplace" style="clear:both; padding-top:10px; display:none;">
+	<img src="/template/default/images/803.png" onclick="window.open('cp-place.html');"/>
+</div>
+		<!--{template data/adtpl/12}-->
+	<!--{template place_footer}-->

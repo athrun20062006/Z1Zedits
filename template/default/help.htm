@@ -1,0 +1,123 @@
+<!--{eval $_TPL['titles'] = array('幫助');}-->
+<!--{template header}-->
+
+	<div id="content">
+		<table cellpadding="0" cellspacing="0" class="formtable">
+		
+<!--{if $_GET['ac']=='register'}-->
+		<caption>
+			<h2>註冊</h2>
+		</caption>
+		<tr><td>
+		註冊非常簡單，只需選擇自己想要用戶名、密碼，輸入一個可用的郵箱地址，就可以立即註冊成為站內一員。<br /><br />
+		<img src="image/help/register.gif" alt="" /><br /><br />
+		</td></tr>
+		
+<!--{elseif $_GET['ac']=='home'}-->
+		<caption>
+			<h2>在首頁查看好友的最新動態和通知</h2>
+		</caption>
+		<tr><td>
+		<h2>好友的最新動態</h2>
+		登錄後，在首頁你可以一目瞭然地看到好友們的最新動態，包括他們最新發佈的記錄、日誌、上傳的圖片、分享以及發起的話題等等。<br /><br />
+		<img src="image/help/home.gif"><br /><br />
+		</td></tr>
+		<tr><td>
+		<h2>最新通知</h2>
+		在首頁右側，你可以處理最新的好友申請、站內的通知和朋友們的招呼等等。<br /><br />
+		<img src="image/help/home2.gif"><br /><br />
+		</td></tr>
+		
+<!--{elseif $_GET['ac']=='space'}-->
+		<caption>
+			<h2>我的主頁</h2>
+		</caption>
+		<tr><td>
+		這裡記錄著你的全部動作，是你的朋友瞭解你的窗口。你可以在「我的主頁」填寫個人資料、完善個人群組等等。<br /><br />
+		<img src="image/help/space.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='doing'}-->
+		<caption>
+			<h2>記錄</h2>
+		</caption>
+		<tr><td>
+		可以非常方便的用一句話記錄自己的點點滴滴與好友分享。<br /><br />
+		<img src="image/help/doing.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='blog'}-->
+		<caption>
+			<h2>日誌</h2>
+		</caption>
+		<tr><td>
+		可以撰寫圖文並茂的日誌。<br /><br />
+		<img src="image/help/blog.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='album'}-->
+		<caption>
+			<h2>相冊</h2>
+		</caption>
+		<tr><td>
+		可以非常方便的批量上傳自己的圖片，也可進行大頭貼拍照。<br /><br />
+		<img src="image/help/album.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='share'}-->
+		<caption>
+			<h2>分享</h2>
+		</caption>
+		<tr><td>
+		輕鬆分享站內的主頁、日誌、相冊、圖片、話題、群組等各類信息。<br /><br />
+		<img src="image/help/share1.gif"><br /><br />
+		也可以與好友一起分享一個網址。<br /><br />
+		<img src="image/help/share2.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='mtag'}-->
+		<caption>
+			<h2>群組</h2>
+		</caption>
+		<tr><td>
+		加入自己感興趣的群組，可以與更多的朋友一起討論話題。<br /><br />
+		<img src="image/help/mtag1.gif" /><br /><br />
+		不同的群組隨你選擇，由你做主。<br /><br />
+		<img src="image/help/mtag2.gif"><br /><br />
+		加入群組後就可以發起話題了。<br /><br />
+		<img src="image/help/mtag3.gif"><br /><br />
+		</td></tr>
+
+<!--{elseif $_GET['ac']=='cp'}-->
+		<caption>
+			<h2>空間設置</h2>
+		</caption>
+		<tr><td>
+		可以設置自己的空間屬性、選擇主頁風格、隱私設置。<br /><br />
+		<img src="image/help/cp.gif"><br /><br />
+		通過隱私設置，自己的主頁由誰看，自己說了算。<br /><br />
+		<img src="image/help/cp2.gif"><br /><br />
+		</td></tr>
+<!--{/if}-->
+		</table>
+	</div>
+	
+	<div id="sidebar">
+		<div class="sidebox">
+		<h2 class="title">幫助</h2>
+		<ul class="line_list">
+			<li$actives[register]><a href="help.php?ac=register">註冊</a></li>
+			<li$actives[home]><a href="help.php?ac=home">我的首頁</a></li>
+			<li$actives[space]><a href="help.php?ac=space">我的主頁</a></li>
+			<li$actives[doing]><a href="help.php?ac=doing">記錄</a></li>
+			<li$actives[blog]><a href="help.php?ac=blog">日誌</a></li>
+			<li$actives[album]><a href="help.php?ac=album">相冊</a></li>
+			<li$actives[share]><a href="help.php?ac=share">分享</a></li>
+			<li$actives[mtag]><a href="help.php?ac=mtag">群組</a></li>
+			<li$actives[cp]><a href="help.php?ac=cp">空間設置</a></li>
+		</ul>
+		</div>
+	</div>
+
+
+<!--{template footer}-->

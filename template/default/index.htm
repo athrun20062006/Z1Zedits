@@ -1,0 +1,204 @@
+<!--{template header_index}-->
+<script language="javascript" src="template/default/js/im.js" type="text/javascript"></script>
+<script charset="utf-8" src="/js/resizeThumbs.js"></script>
+<script language="javascript" type="text/javascript" src="js/index_ajax.js"></script>
+<script>
+    {if $ac=='place'}
+        var index_is_place=1,operat="get_index_place_img";
+    {else}
+        var index_is_place=2,operat="get_index_img";
+    {/if}
+	var myself={$_SGLOBAL['supe_uid']};
+</script>
+<style>
+.picfilter
+{
+	color:#C0C0C0;
+}
+</style>
+<div class="blank15"></div>
+    <div class="mainbox clearfix" style="width:1220px; padding-left:0px; position:relative; margin-left:auto; margin-right:auto;">
+	<!--{template lbi_index_left}-->
+        <div class="AreaL">
+            <div class="flashbox"{if $ac!='place'}style="height:340px; background-color:rgba(1,1,1,0);"{/if}>
+                     {if $ac=='place'}
+                <div class="flash_l">
+                        <!--{loop $tag_index_place_img $key $item}-->
+                        <div class="fl_tab {if $key == 1} fl_tabcur{/if}" id="{$key}" >{$item}</div>
+                        <!--{/loop}-->
+                </div>
+                <div class="flash_r" id="flash_img_1">
+                    <div class="play">
+                        <ul id="pnl_scroll"></ul>
+                    </div>
+                    <div class="tab">
+                        <ul id="pnl_btn"></ul>
+                    </div>
+                </div>
+                    {else}
+                <div id="flash_img_1" class="flash_r" style="width:730px;">
+                    <div class="play" style="width:730px; height:340px;">
+                        <ul id="pnl_scroll"></ul>
+                    </div>
+                    <div class="tab" style="height:320px; position:absolute; top:10px; right:300px;">
+                        <ul id="pnl_btn"></ul>
+                    </div>
+                </div>
+                    {/if}
+            </div>
+			<script>get_ajax_info(operat,1);</script>
+            <div class="blank15"></div>
+			<!--#快捷键-->
+			<!--{template lbi_shortcuts}-->
+            <!--{if $_SGLOBAL['ad'][$is_mobile]['lindextopad']}-->
+			<div class="glnav">
+				<div id="ad_lpagebotad"><!--{ad($is_mobile,'lindextopad')}--></div>
+			</div>
+			<div class="blank15"></div>
+			<!--{/if}-->
+            <div class="addnl">
+			  {if $ac == 'place'}<a class="adbtn" href="cp-check.html">發現好去處</a>{else}<a class="adbtn" href="cp-article.html">發表新攻略</a>{/if}
+                <a href="/" {if $ac != 'place'} class="acur"{/if}>探險家攻略</a> / <a href="index-place.html" {if $ac == 'place'}class="acur"{/if}>香港好去處</a>
+            </div>
+            <div class="blank5"></div>
+			{if $ac=='place'}
+			  <!--#好去處-->
+			  <div class="com_b">
+                {loop $tag_place $key $item}
+                <h6 id="{$key}" class="place_tag" {if $tag==$key}class="h2bg"{/if} onclick="location.href='index-place-tag-{$key}.html'">{$item}</h6>
+                {/loop}
+			  </div>
+              <div class="blank20"></div>
+			  <div class="comment">
+				<div class="mcon" id="index_place">
+				  <!--{loop $place $pl}-->
+					<div class="pointItem">
+						<div class="pointCon">
+							<div class="pointimg">
+								<a href="space-place-id-{$pl.placeid}.html" title="{$pl.oplacename}"><img src="{$pl.placeimg1}" alt="{$pl.altimg1}"/></a>
+							</div>
+                            <div class="pinttit"><!--{if {$pl.urlkeywords}}--><a style="color: #2989B6;" class="laiyuan" href="{$pl.urlkeywords}"><!--{else}--><a style="color: #2989B6;" class="laiyuan" href="space-place-id-{$pl.placeid}.html"><!--{/if}-->{$pl.placename}</a></div>
+							<div class="clear"></div>
+							<div class="pointinfo">
+								<dl><dt>地區：</dt><dd>{$pl.placeares}</dd></dl>
+								<dl><dt>消費：</dt><dd>{$pl.placeprice}</dd></dl>
+								<dl><dt>推介：</dt><dd>{$pl.placedesc}</dd></dl>
+							</div>
+							<div class="clear"></div>
+							<div class="poingnum">
+                            {if $pl.placeavg>=5}
+                            <strong>{$pl.placeavg}</strong>
+                            <img src="template/default/images/01_1.png"></img>
+                            {else if $pl.placeavg>0}
+                            <strong>{$pl.placeavg}</strong>
+                            <img src="template/default/images/01_2.png"></img>
+                            {/if}
+                            </div>
+							<div class="clear"></div>
+                            <div class="gl_num_1">{if $pl.article_count>0}共有<a href="space-place-id-{$pl.placeid}-varticle.html">{$pl.article_count}篇攻略</a>{/if}</div>
+							<div class="pointView">{$pl.clicknum}</div>
+						</div>
+					</div>
+				  <!--{/loop}-->
+                    <div class="blank5"></div>
+                    <div class="pagebar" id="pager">{$multi}</div>
+				</div>
+					<div class="blank5"></div>
+					<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+					<!--{/if}-->
+			  </div>
+			{else}
+			  <!--#攻略 -->
+					<script>var ysmindex=0;</script>
+			  <div class="com_b">
+                {loop $tag_article $key $item}
+                <h6 id="{$key}" class="article_tag {if $tag==$key}h2bg{/if}" onclick="location.href='index.php?tag={$key}'" nopics={$nopics} >{$item}</h6>
+                {/loop}
+			  </div>
+              <div class="blank20"></div>
+			  <div class="comment">
+                <div id="index_article" class="mcon">
+					<div style='text-align:right; color:#C0C0C0;'>篩選：<a class="picfilter" {if !$nopics}style="color:#000000;"{/if} onclick="get_ajax_info('index_article',2,0)">圖文並茂</a> <a class="picfilter" {if $nopics}style="color:#000000;"{/if} onclick="get_ajax_info('index_article',2,1)">所有攻略</a></div>
+				    {loop $article $key $item}
+                    <ul style="position:relative;">
+                        <li class="thumb"><a href="space-article-id-{$item.articleid}.html"><img src="{$item.thumb}" alt="{$item.thumb_alt}" width="165" height="108" onload="resizeThumb(this,165,108);"/></a></li>
+                        <li class="txt">
+				{if $item.placeid}
+							<p style="position:absolute; padding:0px; top:110px; left:207px;">
+					{if $item.article_rank>=5}
+							<img src="template/default/images/01_3.png"/>
+					{elseif $item.article_rank>0}
+							<img src="template/default/images/01_4.png"/>
+					{elseif $item.userid==$_SGLOBAL['supe_uid']}
+							<a style="color:#708090; text-decoration:underline;" href="cp-article-{$item.articleid}-{$item.placeid}.html">我要為好去處評分！</a>
+					{/if}
+								<strong style="color:#FF8000; font-size:12px;">
+									攻略涉及好去處&nbsp;:&nbsp;
+									<a style="color:#708090; font-size:12px; text-decoration:underline;" href="space-place-id-{$item.placeid}.html">{if empty($item.placename)}不知名好去處{else}{$item.placename}{/if}</a>
+								</strong>
+							</p>
+				{/if}
+							<a href="space-article-id-{$item.articleid}.html">{$item.title}</a>
+							<p>
+								作者：{if $item[uinfo][user_star]==2}<img src="image/sstar.gif" class="star"/>{/if}
+								<a href="space.php?uid={$item.userid}" style="font-size:12px;color:#000;">{$item[uinfo][username]}</a>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;發表日期：<font color="#B32D46">{$item.addtime}</font>
+							</p>
+							{$item.content}
+						</li>
+                        <li class="views" style="position:absolute; overflow:visible; float:none; top:0px; right:0px;">
+                            {if $item.admin_hot==1}<div class="tj_ico"><img src="image/tuijie.png"/></div>{/if}
+                            <div class="click_num">{$item.clicknum}/{$item.commentnum}</div>
+							<div class="clear"></div>
+						    <div id="dian_{$item.articleid}" class="art_dian" name="{$item.diannum}">{$item.diannum}</div>
+                            <p><img id="img_{$item.articleid}" src="template/default/images/{$item.dian_img}.gif" class="dian" onclick="dian({$item.articleid})"/></p>  
+							{if !is_null($item.price)}
+							<div class="clear"></div>
+							<div class="f_r">是次消費：每人平均約HK$ {$item.price}</div>
+							{/if}
+						</li>
+                    </ul>
+                    {if $key==0||$key==4||$key==9||$key==14||$key==19}<script>ysmindex++;document.write('<ul style="position:relative;background-color:#f9f9fc;height: 100%;" id="ysm_index'+ysmindex+'"></ul>');</script>{/if}
+                    {/loop}
+                    <div class="blank5"></div>
+					<div class="pagebar" id="pager">{$multi}</div>
+                </div>
+					<div class="blank5"></div>
+                    <!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+					<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+					<!--{/if}-->	
+              </div>
+			{/if}
+        </div>
+        <!--{template lbi_right}-->
+    </div>
+<script type="text/javascript">
+  var sectionCode = sectionCode || [];
+  sectionCode.push("a00c7d81-18b7-482f-a783-5438b539d8fb");
+  (function(){
+    var script = document.createElement("script");
+    script.async = true;
+    script.src = "https://s.yimg.com/av/gemini/ga/gemini.js";
+    document.body.appendChild(script);
+  })();
+</script>
+<!--{template index_footer}-->
+<script>
+var uni=document,txt='',partner_pm='uni_hk_seewide_pm',partner_ctxt='uni_hk_seewide_ctxt',urlfilter_pm='uni_hk',maxcount=6,j=6,r=0,bi=function(a){return uni.getElementById(a);};
+if($('.h2bg')){unikeyword=$('.h2bg').text();}else{unikeyword='';}
+function ljs(e,t)
+{if(e)
+{backfill=1;tag="https://js-apac-ss.ysm.yahoo.com/d/search/p/standard/js/hk/flat/mpd/rlb/?Keywords="+encodeURIComponent(e)+"&Partner="+partner_pm+"&keywordCharEnc=uft8&outputCharEnc=utf8&mkt=hk&cb="+(""+Math.random()).substring(2,6)+"&maxCount="+maxcount+"&urlFilters=uni_hk&serveUrl="+encodeURIComponent(location.href)}
+else
+{backfill=0;tag="https://hk-cm.ysm.yahoo.com/js_flat_1_0/?config=20840581828&source="+partner_ctxt+"&ctxtUrl="+encodeURIComponent(location.href)+"&ctxtId=entertainment&ctxtCat=hk_t1_default_entertainment&maxCount="+maxcount+"&mkt=hk&cb="+(""+Math.random()).substring(2,6)}
+var n=uni.createElement("script"),r=false,i=uni.getElementsByTagName("head")[0];
+n.src=tag;
+n.onload=n.onreadystatechange=function()
+{if(!r&&(!this.readyState||this.readyState=="loaded"||this.readyState=="complete")){r=true;t();n.onload=n.onreadystatechange=null;i.removeChild(n)}};
+i.appendChild(n)}
+ljs(unikeyword,function(){var zl=zSr.length,e=6;if(e<zl){write(zSr,e);}if(zl==6 && backfill){ljs('',function(){write(zSr,e);})}})
+function write(zSr,e){var zl=zSr.length;
+if(typeof(ysmindex)!=="undefined"){for(var i=1;i<=ysmindex;i++){if(e<zl){var d=zSr[e++],u1=zSr[e++],c=zSr[e++],t=zSr[e++],s=zSr[e++],u2=zSr[e++];txt='<li class="thumb" style="cursor:pointer;" onclick="window.open(\''+c+'\')"><img src="http://ysm.unimhk.com/thumbnail.php?l='+s+'" width="165" height="108" style="height:108px;width:165px;visibility:visible;"></li><li class="txt" style="cursor:pointer;height:110px" onclick="window.open(\''+c+'\')"><a>'+t+'</a><p>'+s+'</p>'+d+'</li><li class="views" style="cursor:pointer;" onclick="window.open(\''+c+'\')"><div class="click_num">0/0</div><div class="clear"></div><div class="art_dian">0</div><p><img src="template/default/images/dian.gif" class="dian"></p><div class="clear"></div></li><div style="position:absolute;right:5px;bottom:5px;cursor:pointer" onclick="window.open(\'http://hk.searchmarketing.yahoo.com/?o=HK0025\')">Ads by Yahoo</div>';bi("ysm_index"+i).innerHTML=txt;}}}
+}
+</script>

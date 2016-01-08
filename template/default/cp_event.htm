@@ -1,0 +1,861 @@
+<!--{template header}-->
+
+<!--{if empty($topic) && in_array($op,array("edit", "pic", "thread", "members", "comment", "invite", "eventinvite"))}-->
+<!--//管理頁頁頭//-->
+<style type="text/css">
+	.poster_pre{
+		max-width: 80px; max-height: 104px;}
+	.poster{
+		max-width: 200px; max-height: 260px;}
+</style>
+<div id="mainarea">
+    <h2 class="title"><img src="image/app/event.gif" />活動 <!--{if $eventid}-->- <a href="space.php?do=event&id=$event[eventid]">$event[title]</a><!--{/if}--></h2>
+    <div class="tabs_header">
+        <ul class="tabs">
+			<!--{if $eventid}-->
+				<!--{if $allowmanage}-->
+	            <li $menus[edit]><a href="cp.php?ac=event&op=edit&id=$eventid"><span>修改活動</span></a></li>
+				<!--{/if}-->
+				<!--{if $_SGLOBAL[supe_userevent][status] > 1 && ($_SGLOBAL[supe_userevent][status] >= 3 || $event[allowinvite])}-->
+				<li $menus[invite]><a href="cp.php?ac=event&op=invite&id=$eventid"><span>邀請好友</span></a></li>
+				<!--{/if}-->
+				<!--{if  $_SGLOBAL[supe_userevent][status] >= 3}-->
+				<li $menus[members]><a href="cp.php?ac=event&op=members&id=$eventid"><span>成員管理</span></a></li>
+				<!--{/if}-->
+				<!--{if $allowmanage}-->
+				<li $menus[pic]><a href="cp.php?ac=event&op=pic&id=$eventid"><span>照片管理</span></a></li>
+					<!--{if $event[tagid]}-->
+				<li $menus[thread]><a href="cp.php?ac=event&op=thread&id=$eventid"><span>話題管理</span></a></li>
+					<!--{/if}-->
+				<!--{/if}-->
+			<!--{else}-->
+				<!--{if "eventinvite"==$op}-->
+				<li class="active"><a href="cp.php?ac=event&op=eventinvite"><span>活動邀請</span></a></li>
+				<!--{else}-->
+				<li class="active"><a href="cp.php?ac=event"><span>發起活動</span></a></li>
+				<!--{/if}-->
+			<!--{/if}-->
+			<li><a href="space.php?do=event&id=$eventid"><span>返回活動首頁</span></a></li>
+        </ul>
+        <!--{if $menus[members]}-->
+        <form action="cp.php" method="get" id="searchform" name="searchform">
+		<div style="margin: 0pt 6px 5px 0pt; float: right;">
+		<table cellspacing="0" cellpadding="0">
+		<tbody>
+		<tr>
+		<td style="padding: 0pt;"><input type="text" style="border-right: medium none; width: 160px;" tabindex="1" class="t_input" onfocus="if(this.value=='搜索成員')this.value='';" value="搜索成員" name="key" id="key"/></td>
+		<td style="padding: 0pt;"><a href="javascript:$('searchform').submit();"><img alt="搜索" src="image/search_btn.gif"/></a></td>
+		</tr>
+		</tbody>
+		</table>
+		</div>
+		<input type="hidden" value="event" name="ac"/>
+		<input type="hidden" value="$eventid" name="id"/>
+		<input type="hidden" value="members" name="op"/>
+		<input type="hidden" value="$_GET[status]" name="status"/>
+		<input type="hidden" value="<!--{eval echo formhash();}-->" name="formhash"/>
+		</form>
+        <!--{/if}-->
+    </div>
+<!--{/if}-->
+
+<!--{if "join"==$op}-->
+	<!--{if $event[allowfellow] || $event[template]}-->
+	<div>
+		<h1>填寫報名信息</h1>
+		<form action="cp.php?ac=event&op=join&id=$event[eventid]" method="post" style="padding: 5px 10px;">
+			<!--{if $event[allowfellow]}-->
+			<p>
+				<span>攜帶人數</span>
+				<input name="fellow" type="text" size="4" value="<!--{if  empty($_SGLOBAL[supe_userevent][fellow])}-->0<!--{else}-->$_SGLOBAL[supe_userevent][fellow]<!--{/if}-->" />
+				<span class="tiptext">（如果你帶朋友參加，請註明攜帶人數）</span>
+			</p>
+			<!--{/if}-->
+			<!--{if $event[template]}-->
+			<p>
+				<span>報名信息</span><span class="tiptext">（請按活動發起者給出的模板填寫）</span><br />
+				<textarea name="template" rows="4" style="width: 320px;"><!--{if  empty($_SGLOBAL[supe_userevent][template])}-->$event[template]<!--{else}-->$_SGLOBAL[supe_userevent][template]<!--{/if}--></textarea>
+			</p>
+			<!--{/if}-->
+			<p class="btn_line"><br />
+				<input type="submit" class="submit" name="joinsubmit" value="確定" />
+				<input type="button" class="button" value="取消" onclick="hideMenu()" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+	<!--{else}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=join&id=$eventid">
+			<h1>您確定<!--{if $event[verify]}-->報名<!--{else}-->參加<!--{/if}-->此活動嗎？</h1>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="joinsubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+	<!--{/if}-->
+<!--{elseif $op == "follow"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=follow&id=$eventid">
+			<h1>您確定關注此活動嗎？</h1>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+				<input type="submit" name="followsubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->">
+		</form>
+	</div>
+<!--{elseif $op == "cancelfollow"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=cancelfollow&id=$eventid">
+			<h1>您確定取消關注此活動嗎？</h1>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="cancelfollowsubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "quit"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=quit&id=$eventid">
+			<h1>您確定退出此活動嗎？</h1>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="quitsubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "delete"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=delete&id=$eventid">
+			<h1>您確定取消此活動嗎？</h1>
+			<p>活動取消將刪除所有活動相關信息。<br />此操作不可恢復！</p>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="deletesubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "member"}-->
+	<div id="memberevent">
+		<div><a class="float_del" title="關閉" href="javascript:hideMenu();">關閉</a></div>
+		<br clear="both" />
+		<form method="post" name="eventform" id="eventmember_$uid" action="cp.php?ac=event&op=member&id=$eventid">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+			<input type="hidden" name="uid" value="$userevent[uid]">
+			<p>
+				設為：
+				<select name="status">
+					<option value="2">普通成員</option>
+					<!--{if $_SGLOBAL[supe_uid]==$event[uid]}-->
+					<option value="3">組織者</option>
+					<!--{/if}-->
+					<!--{if $event[verify]}-->
+					<option value="0">待審核</option>
+					<!--{/if}-->
+					<option value="-1">踢出成員</option>
+				</select> &nbsp;
+				<input type="submit" name="membersubmit" value="提交" class="submit" />
+			</p>
+		</form>
+	</div>
+<!--{elseif $op == "print"}-->
+	<div>
+		<div><a class="float_del" title="關閉" href="javascript:hideMenu();">關閉</a></div>
+		<br clear="both" />
+		<form method="post" target="_blank" name="eventform" action="cp.php?ac=event&op=print&id=$eventid">
+			<h2>設置打印選項</h2>
+			<p>內容：
+				<!--input type="checkbox" id="ckavatarbig" name="avatarbig" /> <lable for="ckavatarbig">大頭像</lable-->
+				<input type="checkbox" id="ckavatarbig" name="avatarsmall" checked="checked" /> <lable for="ckavatarsmall">頭像</lable>
+				<input type="checkbox" id="ckusername" name="username" checked="checked" /> <lable for="ckusername">姓名</lable>
+				<!--{if $event[allowfellow]}-->
+				<input type="checkbox" id="ckfellow" name="fellow" checked="checked" /> <lable for="ckfellow">攜帶人數</lable>
+				<!--{/if}-->
+				<!--{if $event[template]}-->
+				<input type="checkbox" id="cktemplate" name="template" checked="checked" /> <lable for="cktemplate">報名信息</lable>
+				<!--{/if}-->
+			</p>
+			<p>選項：
+				<input type="checkbox" id="ckadmin" name="admin" /> <lable for="ckadmin">包括組織者</lable>
+			</p>
+			<p class="btn_line">
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="printsubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "close"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=close&id=$eventid">
+			<h1>您確定要關閉活動嗎？</h1>
+			<p>活動關閉之後將只允許進行瀏覽。</p>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="closesubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "open"}-->
+	<div>
+		<form method="post" name="eventform" action="cp.php?ac=event&op=open&id=$eventid">
+			<h1>您確定要重新開啟活動嗎？</h1>
+			<p class="btn_line"><br />
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+				<input type="submit" name="opensubmit" value="確定" class="submit" />
+				<input type="button" name="btnclose" value="取消" onclick="hideMenu();" class="button" />
+			</p>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $op == "calendar"}-->	
+	<div class="calendar">
+		<div id="calendar_pre" class="floatleft"><a href="#" onclick="showcalendar('$premonth'); this.blur(); return false;">&lt;&lt;</a></div>
+		<div id="calendar_next" class="floatright"><a href="#" onclick="showcalendar('$nextmonth'); this.blur(); return false;">&gt;&gt;</a></div>
+		<span id="thecalendar_year">$year</span>年 <span id="thecalendar_month">$month</span>月
+		<ul>
+			<li class="calendarli calendarweek">日</li>
+			<li class="calendarli calendarweek">一</li>
+			<li class="calendarli calendarweek">二</li>
+			<li class="calendarli calendarweek">三</li>
+			<li class="calendarli calendarweek">四</li>
+			<li class="calendarli calendarweek">五</li>
+			<li class="calendarli calendarweek">六</li>	
+			<!--{eval echo str_repeat('<li class="calendarblank">&nbsp;</li>', $week)}-->
+			<!--{loop $days $key $value}-->		
+				<!--{if $value[count]}-->		
+			<li class="calendarli $value[class]" onmouseover="$('day_$key').style.display='block';" onmouseout="$('day_$key').style.display='none';">
+				<a href="$url&date=$year-$month-$key">$key</a>
+				<div class="dayevents" id="day_$key" style="display:none;">
+					<ul class="news_list">
+					<!--{loop $value[events] $event}-->
+						<li class="dayeventsli"><a href="space.php?do=event&id=$event[eventid]">$event[title]</a></li>
+					<!--{/loop}-->
+					</ul>
+				</div>
+			</li>
+				<!--{else}-->
+			<li class="calendarli">$key</li>
+				<!--{/if}-->
+			<!--{/loop}-->
+		</ol>
+	</div>
+<!--{elseif $op == "invite"}-->
+	<!--{if $event[grade] == -2}-->
+	<div id="content">
+		<p>您現在不能給好友發送邀請，因為此活動已經關閉。</p>
+	</div>
+	<!--{elseif $event[grade] <= 0}-->	
+	<div id="content">
+		<p>您現在不能給好友發送邀請，因為活動還未通過審核。</p>
+	</div>
+	<!--{elseif $_SGLOBAL[timestamp] > $event[deadline]}-->
+	<div id="content">
+		<p>您現在不能給好友發送邀請，因為活動已經截止報名了。</p>
+	</div>
+	<!--{elseif $event[limitnum]>0 && $event[limitnum]<=$event[membernum]}-->
+	<div id="content">
+		<p>您現在不能給好友發送邀請，因為活動人數已滿。</p>
+	</div>
+	<!--{else}-->
+	<div id="content" style="width: 640px;">
+		<form id="edit_form" name="edit_form" class="c_form" method="post" action="cp.php?ac=event&op=invite&id=$event[eventid]&group=$_GET[group]&page=$page">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			<div class="h_status">
+				您可以給未加入本活動的好友們發送邀請。
+			</div>
+			<div class="h_status">
+				<!--{if $list}-->
+				<ul class="avatar_list">
+				<!--{loop $list $value}-->
+					<li><div class="avatar48"><a href="space.php?uid=$value[fuid]" title="{$_SN[$value[fuid]]}"><!--{avatar($value[fuid],small)}--></a></div>
+						<p>
+						<a href="space.php?uid=$value[fuid]" title="{$_SN[$value[fuid]]}">{$_SN[$value[fuid]]}</a>
+						</p>
+						<p><!--{if empty($joins[$value[fuid]])}--><input type="hidden" name="names[]" value="$value[fusername]"><input type="checkbox" name="ids[]" value="$value[fuid]">選定<!--{else}-->已邀請<!--{/if}--></p>
+					</li>
+				<!--{/loop}-->
+				</ul>
+				<div class="page">$multi</div>
+				<!--{else}-->
+				<div class="c_form">還沒有好友。</div>
+				<!--{/if}-->
+			</div>
+			<p>
+				<input type="checkbox" id="chkall" name="chkall" onclick="checkAll(this.form, 'ids')"><label for="chkall">全選</label> &nbsp;
+				<input type="hidden" name="invitesubmit" value="1" />
+				<input type="submit" name="bnt_invitesubmit" value="邀請" class="submit" />
+			</p>
+		</form>
+	</div>
+	<div id="sidebar" style="width: 150px;">
+		<div class="cat">
+			<h3>好友分類</h3>
+			<ul class="post_list line_list">
+				<li<!--{if $_GET[group]==-1}--> class="current"<!--{/if}-->><a href="cp.php?ac=event&id=$eventid&op=invite&group=-1">全部好友</a></li>
+				<!--{loop $groups $key $value}-->
+				<li<!--{if $_GET[group]==$key}--> class="current"<!--{/if}-->><a href="cp.php?ac=event&id=$eventid&op=invite&group=$key">$value</a></li>
+				<!--{/loop}-->
+			</ul>
+		</div>
+	</div>
+	<!--{/if}-->
+<!--{elseif $op == "members"}-->
+	<div id="content" style="width: 640px;">
+		<form id="edit_form" name="edit_form" class="c_form" method="post" action="cp.php?ac=event&op=members&status=$_GET[status]&id=$event[eventid]">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />	
+			<div class="h_status">
+				選擇相應的用戶進行用戶狀態變更。
+				<!--{if $event[limitnum]}--><span style="color:#f00">剩餘 <!--{eval echo $event[limitnum]-$event[membernum]}-->  個活動成員名額</span><!--{/if}-->
+			</div>	
+			<div class="h_status">
+				<!--{if $list}-->
+				<table >
+					<tbody>
+					<!--{loop $list $value}-->
+					<tr>
+						<td width="40"><input type="checkbox" name="ids[]" value="$value[uid]"></td>
+						<td width="80">
+							<div><a href="space.php?uid=$value[uid]" target="_blank"><!--{avatar($value[uid],small)}--></a></div>
+							<p><a href="space.php?uid=$value[uid]">$_SN[$value[uid]]</a></p>
+						</td>
+						<td>
+							<!--{if $event[allowfellow]}--><h2>攜帶人數：<!--{eval echo intval($value[fellow])}--></h2><!--{/if}-->
+							<!--{if $event[template]}-->
+							<h2>報名信息：</h2>
+							<p><!--{eval echo nl2br(htmlspecialchars($value[template]))}--></p>
+							<!--{/if}-->
+						</td>
+					</tr>
+					<!--{/loop}-->
+					</tbody>
+				</table>
+				<div class="page">$multi</div>
+				<!--{else}-->
+				<div class="c_form">還沒有相關成員。</div>
+				<!--{/if}-->
+			</div>
+			<p>
+				<input type="checkbox" id="chkall" name="chkall" onclick="checkAll(this.form, 'ids')"><label for="chkall">全選</label> &nbsp;
+				設為：
+				<select name="status">
+					<option value="2">普通成員</option>
+					<!--{if $_SGLOBAL[supe_uid]==$event[uid]}-->
+					<option value="3">組織者</option>
+					<!--{/if}-->
+					<!--{if $event[verify]}-->
+					<option value="0">待審核</option>
+					<!--{/if}-->
+					<option value="-1">踢出成員</option>
+				</select>
+				<input type="submit" name="memberssubmit" value="提交" class="submit" />
+			</p>
+		</form>
+	</div>
+	
+	<div id="sidebar" style="width: 150px;">
+		<div class="cat">
+			<h3>成員狀態</h3>
+			<ul class="post_list line_list">
+				<li<!--{if $_GET[status]==0}--> class="current"<!--{/if}-->><a href="cp.php?ac=event&op=members&id=$eventid&status=0">待審核</a></li>
+				<li<!--{if $_GET[status]==2}--> class="current"<!--{/if}-->><a href="cp.php?ac=event&op=members&id=$eventid&status=2">普通成員</a></li>
+				<li<!--{if $_GET[status]==3}--> class="current"<!--{/if}-->><a href="cp.php?ac=event&op=members&id=$eventid&status=3">組織者</a></li>
+			</ul>
+		</div>
+	</div>
+<!--{elseif $op == "thread"}-->
+	<div id="d_edit_form">
+		<form id="edit_form" name="edit_form" class="c_form" method="post" action="cp.php?ac=event&op=thread&id=$event[eventid]" onsubmit="return confirm('此操作不可恢復，確認嗎?')">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			<!--{if $threadlist}-->
+			<div class="topic_list">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<td width="30">選擇</td>
+							<td class="subject">主題</td>
+							<td class="author">作者 (回應/閱讀)</td>
+							<td class="lastpost">最後更新</td>
+						</tr>
+					</thead>
+					<tbody>
+						<!--{loop $threadlist $key $value}-->
+						<tr <!--{if $key%2==1}-->class="alt"<!--{/if}-->>
+							<td>
+								<input type="checkbox" name="ids[]" value="$value[tid]" />
+							</td>
+							<td class="subject">
+							<a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]&eventid=$eventid">$value[subject]</a>
+							</td>
+							<td class="author"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a><br><em>$value[replynum]/$value[viewnum]</em></td>
+							<td class="lastpost"><a href="space.php?uid=$value[lastauthorid]" title="{$_SN[$value[lastauthorid]]}">{$_SN[$value[lastauthorid]]}</a><br><!--{date('m-d H:i',$value[lastpost],1)}--></td>
+						</tr>
+						<!--{/loop}-->
+					</tbody>
+				</table>
+				<p>
+					<input type="checkbox" id="chkall" name="chkall" onclick="checkAll(this.form, 'ids')"><label for="chkall">全選</label> &nbsp;
+					<input type="submit" name="delthreadsubmit" value="刪除" class="submit" />
+				</p>
+			</div>
+			<!--{else}-->
+			<div class="c_form" style="text-align:center;">還沒有相關話題。</div>
+			<!--{/if}-->
+		</form>
+	</div>
+		
+<!--{elseif $op == 'edithot'}-->
+
+<h1>調整熱度</h1>
+<a href="javascript:hideMenu();" class="float_del" title="關閉">關閉</a>
+<div class="popupmenu_inner">
+	<form method="post" action="cp.php?ac=event&op=edithot&id=$eventid">
+		<p class="btn_line">
+			新的熱度：<input type="text" name="hot" value="$event[hot]" size="5"> 
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="hidden" name="hotsubmit" value="true" />
+			<input type="submit" name="btnsubmit" value="確定" class="submit" />
+		</p>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+</div>
+
+<!--{elseif $op == "pic"}-->
+	<div id="d_edit_form">
+		<form id="edit_form" name="edit_form" class="c_form" method="post" action="cp.php?ac=event&op=pic&id=$event[eventid]" onsubmit="return confirm('此操作不可恢復，確認嗎?')">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			<div id="album" class="article">
+				<!--{if sizeof($photolist) > 0}-->
+				<table width="100%" cellspacing="6" cellpadding="0" class="photo_list">
+					<tbody>
+						<tr>
+						<!--{loop $photolist $key $value}-->
+							<td>
+								<a href="space.php?do=event&id=$eventid&view=pic&picid=$value[picid]"><img src="$value[pic]" alt="$value[title]" /></a>
+								<br />
+								<input type="checkbox" value="$value[picid]" name="ids[]"/>選定
+							</td>
+							<!--{if $key%4==3}--></tr><tr><!--{/if}-->
+						<!--{/loop}-->
+						</tr>
+					</tbody>
+				</table>
+				<div class="page">$multi</div>
+				<p>
+					<input type="checkbox" id="chkall" name="chkall" onclick="checkAll(this.form, 'ids')"><label for="chkall">全選</label> &nbsp;
+					<input type="submit" name="deletepicsubmit" value="刪除選定" class="submit" />
+				</p>
+				<!--{else}-->
+				<p align="center">還沒有活動照片</p>
+				<!--{/if}-->
+				</div>
+		</form>
+	</div>
+<!--{elseif $op == "eventinvite"}-->
+	<div class="h_status">
+		您的好友邀請您加入以下活動
+		<!--{if !empty($eventinvites)}-->
+			<span class="pipe">|</span>
+			<a href="cp.php?ac=event&op=eventinvite&&r=1"><span>忽略所有邀請</span></a>
+		<!--{/if}-->
+	</div>
+	
+	<div class="c_form">
+		<!--{if !empty($eventinvites)}-->
+		<table cellspacing="4" cellpadding="4" class="formtable">
+		<!--{loop $eventinvites $value}-->
+		<tr>
+			<td width="100px">
+				<div>
+					<a href="space.php?do=event&id=$value[eventid]" target="_blank">
+						<img src="$value[pic]" alt="$value[title]" class="poster_pre">
+					</a>
+				</div>
+			</td>
+			<td class="h_status">
+				<p><a href="space.php?do=event&id=$value[eventid]" target="_blank" style="font-size:14px;font-weight:bold;">
+				$value[title]</a></p>
+				<br>活動時間：<!--{eval echo sgmdate("n月d日 G:i", $value[starttime])}--> - <!--{eval echo sgmdate("n月d日 G:i", $value[endtime])}-->
+							<!--{if $value[endtime]<$_SGLOBAL[timestamp]}-->
+							<span class="event_state"> 已結束</span>
+							<!--{elseif $value[deadline]<$_SGLOBAL[timestamp]}-->
+							<span class="event_state"> 報名截止</span>
+							<!--{/if}-->
+				<br>活動地點：$value[province] - $value[city] $value[location]
+				<br>發起人：<a href="space.php?uid=$value[uid]">$_SN[$value[uid]]</a>
+				<div id="eventinvite_$value[eventid]" style="padding:0.5em 0 0.5em 0;">
+					邀請好友：<a href="space.php?uid=$value[uid]" target="_blank">{$_SN[$value[uid]]}</a>
+					<br>邀請時間：<!--{eval echo sgmdate('Y-m-d H:i', $value[invitetime], 1)}-->
+					<p style="padding:1em 0 0 0;">
+						<a id="a_accept" href="cp.php?ac=event&op=acceptinvite&id=$value[eventid]" class="submit" onclick="ajaxget(this.href, 'eventinvite_$value[eventid]'); return false;">接受邀請</a>
+						<a href="cp.php?ac=event&op=eventinvite&id=$value[eventid]&r=1" class="button">忽略</a>
+					</p>
+				</div>
+			</td>
+		</tr>
+		<!--{/loop}-->
+		</table>
+		<!--{else}-->
+		暫時沒有新的活動邀請。
+		<!--{/if}-->
+	</div>
+<!--{else}-->
+
+	<!--{if $topic}-->
+		<!--{template cp_topic_menu}-->
+	<!--{/if}-->
+
+	<div class="c_form">
+		<form id="edit_form" name="edit_form" method="post" enctype="multipart/form-data" action="cp.php?ac=event&op=edit&id=$eventid">
+			<table class="infotable" width="100%" cellspacing="4" cellpadding="4">				
+				<tbody>					
+					<tr>
+						<th>活動名稱 *</th>
+						<td>
+							<input class="t_input" id="title" name="title" value="$event[title]" size="56" type="text" maxlength="80">
+						</td>
+					</tr>
+					<tr>
+						<th>活動城市 *</th>
+						<td id="citybox">
+							<script type="text/javascript" src="source/script_city.js" charset="$_SC[charset]"></script>
+                            <script type="text/javascript" charset="$_SC[charset]">
+								showprovince('province', 'city', '$event[province]', 'citybox');
+                                showcity('city', '$event[city]', 'province', 'citybox');
+                            </script>
+						</td>
+					</tr>
+					<tr>
+						<th>活動地點</th>
+						<td>
+							<input class="t_input" id="location" name="location" value="$event[location]" size="56" type="text" maxlength="80">
+						</td>
+					</tr>
+					<tr>
+						<th>活動時間 *</th>
+						<td>
+							<script type="text/javascript" src="source/script_calendar.js" charset="$_SC[charset]"></script>
+							<input type="text" name="starttime" id="starttime" value="<!--{eval echo sgmdate('Y-m-d H:i', $event[starttime])}-->"  onclick="showcalendar(event,this,1,'<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp])}-->', '<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp] + 3600 * 24 * 60)}-->')" />
+						 至
+							<input type="text" name="endtime" id="endtime" value="<!--{eval echo sgmdate('Y-m-d H:i', $event[endtime])}-->"  onclick="showcalendar(event,this,1,'<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp])}-->', '<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp] + 3600 * 24 * 60)}-->')" />
+						</td>
+					</tr>
+					<tr>
+						<th>報名截止 *</th>
+						<td>
+							<input type="text" name="deadline" id="deadline" value="<!--{eval echo sgmdate('Y-m-d H:i', $event[deadline])}-->"  onclick="showcalendar(event,this,1,'<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp])}-->', '<!--{eval echo sgmdate('Y-m-d H:i', $_SGLOBAL[timestamp] + 3600 * 24 * 60)}-->')" />
+						</td>
+					</tr>
+					<tr>
+						<th width="100" style="vertical-align: top;">活動分類 *</th>
+						<td>
+							<select name="classid" id="classid" onchange="reset_eventclass(this.value)">
+								<option value="-1">
+									請選擇活動分類
+								</option>
+								<!--{loop $_SGLOBAL[eventclass] $key $value}-->
+								<option value="$key" <!--{if $event[classid] == $key}--> selected<!--{/if}--> >$value[classname]</option>
+								<!--{/loop}-->
+							</select>
+							<div id="classid_info"></div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+						<a id="doodleBox" href="magic.php?mid=doodle&showid=blog_doodle&target=uchome-ttHtmlEditor&from=editor" style="display:none"></a>
+						<textarea class="userData" name="detail" id="uchome-ttHtmlEditor" style="height:100%;width:100%;display:none;border:0px">$event[detail]</textarea>
+						<iframe src="editor.php?charset=$_SC[charset]&allowhtml=0&doodle=<!--{if isset($_SGLOBAL[magic][doodle])}-->1<!--{/if}-->" name="uchome-ifrHtmlEditor" id="uchome-ifrHtmlEditor" scrolling="no" border="0" frameborder="0" style="width:100%;border: 1px solid #C5C5C5;" height="400"></iframe></td>
+					</tr>
+					<tr>
+						<th style="vertical-align: top;">活動海報</th>
+						<td>
+							<input type="file" name="poster" /> 圖片將上傳到您的默認相冊。<br />
+							<input type="checkbox" id="sharepic" name="sharepic" value="1" />
+							<label for="sharepic">同時把海報共享到活動相冊</label>
+						</td>
+					</tr>
+					<!--{if $mtags}-->
+					<tr>
+						<th>關聯群組</th>
+						<td>
+							<select name="tagid">
+							<option value="">選擇關聯群組</option>
+							<!--{loop $mtags $value}-->
+							<option value="$value[tagid]" <!--{if $value[tagid]==$event[tagid]}-->selected<!--{/if}--> >$value[tagname]</option>
+							<!--{/loop}-->
+							</select>
+							必須是您自己創建的群組，關聯後活動話題會同步到該群組。
+						</td>
+					</tr>
+					<!--{/if}-->
+				</tbody>
+			</table>
+			<table class="infotable" width="100%" cellspacing="4" cellpadding="4">
+				<tbody>
+				<tr>
+					<td colspan="2">
+						<a id="toggle_advanced" href="#" onclick="toggle_advanced(); this.blur(); return false;">
+						展開高級設置</a>						
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			<table id="advanced_info" class="infotable" width="100%" cellspacing="4" cellpadding="4" style="display:none">
+				<tbody>
+					<tr>
+						<th width="100">活動人數</th>
+						<td>
+							<input name="limitnum" value="$event[limitnum]" id="limitnum" type="text" size="4" maxlength="8">
+                            <span class="tiptext">
+                                活動參加人數限制，設為 0 表示無限制。
+                            </span>
+						</td>
+					</tr>
+					<tr>
+						<th width="100" style="vertical-align: top;">活動隱私</th>
+						<td>
+							<select name="public" id="public">
+								<option <!--{if $event[public]==2}-->selected="selected"<!--{/if}--> value="2">公開活動，所有人可見可加入</option>
+								<option <!--{if $event[public]==1}-->selected="selected"<!--{/if}--> value="1">半公開活動，所有人可見, 邀請才能加入</option>
+								<option <!--{if $event[public]==0}-->selected="selected"<!--{/if}--> value="0">私密活動，被邀請者可見</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th width="100" style="vertical-align: top;">活動選項</th>
+						<td>
+							<input name="allowinvite" id="allowinvite" value="1" type="checkbox"<!--{if $event[allowinvite]}--> checked="checked"<!--{/if}-->>
+                            <label for="allowinvite">
+                                允許參與者邀請好友，被邀請者加入活動不需要審核
+                            </label>
+                            <br>
+							<input name="allowpic" id="allowpic" value="1" type="checkbox"<!--{if $event[allowpic]}--> checked="checked"<!--{/if}-->>
+                            <label for="allowpic">
+                                允許參與者共享活動照片
+                            </label>
+                            <br>
+							<input name="allowpost" id="allowpost" value="1" type="checkbox"<!--{if $event[allowpost]}--> checked="checked"<!--{/if}-->>
+                            <label for="allowpost">
+                                允許所有人發佈留言
+                            </label>
+                            <br>
+                            <input name="verify" id="verify" value="1" type="checkbox"<!--{if $event[verify]}--> checked="checked"<!--{/if}-->>
+                            <label for="verify">
+                                參加活動需要審批
+                            </label>
+							<br>
+                            <input name="allowfellow" id="allowfellow" value="1" type="checkbox"<!--{if $event[allowfellow]}--> checked="checked"<!--{/if}-->>
+                            <label for="allowfellow">
+                                允許參加者攜帶朋友，攜帶朋友數會佔用活動參與者名額
+                            </label>
+						</td>
+					</tr>
+					<tr>
+						<th width="100" style="vertical-align: top;">報名信息</th>
+						<td>
+							如果要求參加者填寫報名信息（最多255個字符），你可以在此處給出一個格式模板。留空表示不要求填寫。<br />
+                            <textarea id="template" name="template" rows="4" cols="72">$event[template]</textarea>
+						</td>
+					</tr>
+					</tr>
+				</tbody>
+			</table>
+			<!--{if checkperm('seccode')}-->
+			<table class="infotable" width="100%" cellspacing="4" cellpadding="4">
+				<tbody>
+				<!--{if $_SCONFIG['questionmode']}-->
+				<tr>
+					<th width="100" style="vertical-align: top;">請回答驗證問題</th>
+					<td>
+						<p><!--{eval question();}--></p>
+						<input type="text" id="seccode" name="seccode" value="" size="15" class="t_input" />
+					</td>
+				</tr>
+				<!--{else}-->
+				<tr>
+					<th width="100" style="vertical-align: top;">請填寫驗證碼</th>
+					<td>
+						<script type="text/javascript" charset="$_SC[charset]">seccode();</script>
+						<p>請輸入上面的4位字母或數字，看不清可<a href="javascript:updateseccode()">更換一張</a></p>
+						<input type="text" id="seccode" name="seccode" value="" size="15" class="t_input" />
+					</td>
+				</tr>
+				<!--{/if}-->
+				</tbody>
+			</table>
+			<!--{/if}-->
+			<table class="infotable" width="100%" cellspacing="4" cellpadding="4">
+				<tbody>
+					<!--{if empty($eventid)}-->
+					<tr>
+						<th width="100">動態選項</th>
+						<td>
+							<input type="checkbox" name="makefeed" id="makefeed" value="1"<!--{if ckprivacy('event', 1)}--> checked<!--{/if}-->> 產生動態 (<a href="cp.php?ac=privacy#feed" target="_blank">更改默認設置</a>)
+						</td>
+					</tr>
+					<!--{/if}-->
+					<tr>
+						<th width="100">&nbsp;</th>
+						<td>
+							<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+                            <input type="hidden" name="topicid" value="$topicid" />
+                            <input type="hidden" name="eventsubmit" value="1" />
+                            <input class="submit" value="<!--{if $_GET[id]}-->保存<!--{else}-->提交<!--{/if}-->" type="button" onclick="check_eventpost()"/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<script type="text/javascript" src="image/editor/editor_function.js" charset="$_SC[charset]"></script>
+	<script type="text/javascript" charset="$_SC[charset]">
+		//活動分類
+		var eventclass = [];
+		<!--{loop $_SGLOBAL[eventclass] $key $value}-->
+		eventclass["$key"] = {};
+		<!--{loop $value $k $v}-->
+			eventclass["$key"]["$k"] = '<!--{eval echo str_replace(array("\r\n","\r","\n"), "<br>", $v)}-->';
+		<!--{/loop}-->
+		<!--{/loop}-->
+		function reset_eventclass(classid){
+			var selclass = eventclass[classid];
+			var o = $("uchome-ifrHtmlEditor").contentWindow.document.getElementById("HtmlEditor").contentWindow.document.body;
+			var append =false;// 是否添加
+			if(selclass && selclass['template'] && (trim(o.innerHTML.replace(/<br[ \/]*>|<div><\/div>/img, '')) == "" || confirm("要添加站長設定的活動分類模板到活動介紹嗎？"))){
+				append = true;
+			}
+			if (append){
+				o.innerHTML = selclass['template'] + "<br/>" + o.innerHTML;				
+				$("classid_info").innerHTML = "請參考站長設定的模板填寫活動介紹";				
+			}
+		}
+		
+		//展開高級設置
+		function toggle_advanced(){
+			var el = $("advanced_info");
+			if (el.style.display == "none"){
+				el.style.display = "";
+				$("toggle_advanced").innerHTML = "隱藏高級設置";
+			} else {
+				el.style.display = "none";
+				$("toggle_advanced").innerHTML = "展開高級設置";
+			}
+		}
+		
+		//檢查提交
+		function check_eventpost(){			
+			// 活動類型
+			if (parseInt($("classid").value) < 0){
+				alert("活動類型必須選擇。");
+				$("classid").focus();
+				return false;
+			}	
+			// 標題
+			var val = trim($("title").value);
+			if ( val == "" ){
+				alert("活動標題不能為空！");
+				$("title").focus();
+				return false;
+			} else if (val.replace(/[^\x00-\xff]/g, "**").length > 80){
+				alert("活動標題太長，請限制在80個字符內！");
+				$("title").focus();
+				return false;
+			}	
+			// 活動地點
+			if($('city').value == ""){
+				alert("活動舉辦城市不能為空。");
+				$("city").focus();
+				return false;
+			}			
+			// 報名時間，起始-結束時間
+			var deadline = parsedate($("deadline").value).getTime();
+			var starttime = parsedate($("starttime").value).getTime();
+			var endtime = parsedate($("endtime").value).getTime();
+			<!--{if !$eventid}-->
+			var nowtime = new Date().getTime();
+			if (starttime < nowtime){
+				alert("活動開始時間不能早於現在。");
+				$("starttime").focus();
+				return false;
+			}
+			<!--{/if}-->
+			if (endtime - deadline < 0){
+				alert("報名截止時間不能晚於活動結束時間。");
+				$("deadline").focus();
+				return false;
+			}
+			if (endtime - starttime < 0){
+				alert("活動結束時間不能早於開始時間。");
+				$("endtime").focus();
+				return false;
+			}
+			if (endtime - starttime > 60 * 24 * 3600 * 1000){
+				alert("活動持續時間不能超過 60 天。");
+				$("endtime").focus();
+				return false;
+			}
+			// 限制人數
+			if (! /^[0-9]{1,8}$/.test($("limitnum").value)){
+				alert("活動人數輸入不正確。");
+				$("limitnum").focus();
+				return false;
+			}
+			
+		    var makefeed = $('makefeed');
+		    if(makefeed) {
+		    	if(makefeed.checked == false) {
+		    		if(!confirm("友情提醒：您確定此次發佈不產生動態嗎？\n有了動態，好友才能及時看到你的更新。")) {
+		    			return false;
+		    		}
+		    	}
+		    }
+		    
+		    // 編輯器內容同步
+			edit_save();
+			// 活動描述，默認可能有一個<br/>或<div></div>，需要去掉再判斷
+			val = trim($("uchome-ttHtmlEditor").value.replace(/<br[ \/]*>|<div><\/div>/img,''));
+			if (val == ""){
+				alert("活動描述不能為空。");
+				return false;
+			}						
+			//驗證碼
+			if($('seccode')) {
+				var code = $('seccode').value;
+				var x = new Ajax();
+				x.get('cp.php?ac=common&op=seccode&code=' + code, function(s){
+					s = trim(s);
+					if(s.indexOf('succeed') == -1) {
+						alert(s);
+						$('seccode').focus();
+		           		return false;
+					} else {
+						$("edit_form").submit();
+					}
+				});
+		    } else {
+		    	$("edit_form").submit();
+		    }
+		}
+	</script>
+<!--{/if}-->
+<!--{if in_array($op,array("edit", "pic", "thread", "members", "comment", "invite", "eventinvite"))}-->
+<!--//管理頁面頁尾//-->
+</div>
+<!--{/if}-->
+<!--{template footer}-->

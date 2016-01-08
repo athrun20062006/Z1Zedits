@@ -1,0 +1,27 @@
+<div class="blank15"></div>
+{if $multi}<div id="pager" class="pagebar">{$multi}</div>{/if}
+<div class="blank15"></div>
+{loop $comment $key $item}
+<div class="gli_msg" id="gli_{$item.commentid}">
+	<ul>
+		<li><!--{if $item.user_star == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$item[userid]}.html"><img src="{$item.avatar}" onerror='this.src="/ucenter/images/noavatar_middle.gif";' style="max-width:72px;"></a></li>
+		<li class="gli_mtxt"><a href="space-{$item[userid]}.html"><font><span id="user_{$item.userid}">{$item.username}</span></font></a> 於{$item.addtime} 留言
+		<!--私人回应-->
+		<!--{if $item.is_private==1}-->
+		<span style="font-size:12px;color:#D82E49;">(私人回應)</span>
+		<!--{/if}-->
+		 <!--{if $item.parentid>0}-->
+		<div class="msgquote">原文由 {$item.parent_user} 於 {$item.paddtime} 發表<div class="conquote">{$item.pcontent}</div></div>
+		 <!--{/if}-->
+		<div style="color:#000000;padding-top:10px;">{$item.content}</div></li>
+		<li class="gli_action">
+		{if $is_delcom}<a style="margin-right:17px" href="javascript:;" onclick="delcom({$item.commentid})">刪除</a>{/if}
+		<a id="lp_a_report" href="javascript:;"  onclick="doreport('report','glplid','{$item.commentid}')" style="margin-right:17px">舉報</a>
+		<a href="#lp_hf" onclick="reply_mark({$item.userid},{$item.commentid},{$item.is_private});" style="color:#3399ff;">回覆</a></li>
+		<li class="gli_sort">No.<!--{eval echo ($start+1+$key);}--></li>
+	</ul>
+	<div class="blank15"></div>
+</div>		
+{/loop}
+{if $multi}<div id="pager" class="pagebar">{$multi}</div>{/if}
+<div class="blank15"></div>

@@ -1,0 +1,400 @@
+<!--{eval $_TPL['titles'] = array('通知');}-->
+<!--{template header}-->
+<link href="template/default/css/user.css" rel="stylesheet" type="text/css" />
+<div id="h_window_bg" class="h_window_bg"  style="display:none" onclick="display_none('h_window_bg');display_none('h_window');"></div>
+<div class="mainbox clearfix">
+	<div class="AreaL">	
+		<div id="wrap" style="width:738px;overflow:hidden;">
+			<h2 class="title"><img src="image/icon/pm.gif">通知</h2>
+			<div class="tabs_header">
+				<ul class="tabs">		
+					<li$actives[notice]><a href="space.php?do=notice"><span>通知</span></a></li>
+					<li$actives[usermsg]><a href="space.php?do=notice&view=usermsg"><span>個人訊息</span></a></li>
+					<!--{if $_SCONFIG['my_status']}-->
+					<li$actives[userapp]><a href="space.php?do=notice&view=userapp"><span>應用消息</span></a></li>
+					<!--{/if}-->
+				</ul>
+			</div>
+<!--{if $view == 'usermsg'}-->
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+	<div id="content">
+		
+		<div class="h_status">
+		提示：當你感覺有些通知對你造成騷擾，請點擊通知右側的屏蔽小圖標，屏蔽此類通知。
+		</div>		
+		<!--{if $list}-->
+		<table cellpadding="0" cellspacing="0" width="100%" class="topic_list">
+		<!--{loop $list $key $value}-->
+			<tbody>
+			<tr>
+			<td width="60" valign="top">
+			<!--{if $value[sender_id]}-->
+				<div class="avatar48">
+					<a href="space-{$value[sender_id]}.html" target="_blank" class="avatarlink"><img src="{$value.image}" onerror='this.src="/ucenter/images/noavatar_small.gif";'></a>
+				</div>
+				<p style="width:60px;text-align:center"><a href="space-{$value[sender_id]}.html" target="_blank" class="avatarlink">{$value['username']}</a></p>
+			<!--{else}-->
+				<div class="avatar48"><img src="image/systempm.gif" width="48" height="48"/></div>
+			<!--{/if}-->
+			</td>
+			<td>
+					<a href="space.php?do=notice&view=usermsg&op=del&msgid={$value[message_id]}" onclick="if(confirm('你確定要刪除該條數據嗎？')){return true;}return false;" class="float_delete">刪除</a>
+					<div class="clear"></div>
+					<a href="cp.php?ac=common&op=ignore&authorid=$value[sender_id]&type=$value[type]" id="a_note_$value[id]" onclick="ajaxmenu(event, this.id)" class="float_cancel" style="display:none">屏蔽</a>
+
+					<div style="padding:10px 0 5px 0;$value[style]">					
+						<div id="smsg_{$value[message_id]}">
+						{if $value[is_views]}$value[smessages]{else}{$value[message]}{/if}
+						{if $value[is_views]}<a href="javascript:;" id="{$value[message_id]}" class="show_views">(查看詳情)</a>{/if}</div>
+						<div id="msg_{$value[message_id]}" style="display:none">{$value[message]}</div>
+						<p class="time">&nbsp;<!--{date('Y-m-d H:i:s',$value[send_time])}--></p>						
+					</div>			
+					<p class="receive_msg" style="padding-top:0px"><a href="javascript:;" onclick="supe_message({$value[sender_id]},'{$value[username]}')">回覆留言</a></p>	
+				</td>
+			</tr>
+			</tbody>
+		<!--{/loop}-->
+		
+		<!--{if $view!='userapp' && $space[notenum]}-->
+			<tbody>
+			<tr>
+			<td width="60">
+			</td>
+			<td align="center"><a href="space.php?do=notice&ignore=all">&raquo; 將後續頁面所有未讀新通知視為已讀</a></td>
+			</tr>
+			</tbody>
+		<!--{/if}-->
+		
+		</table>
+		
+		<div id="pager" class="pagebar">{$multi}</div>
+		
+		<!--{else}-->
+		<div class="c_form">
+		沒有新的通知。
+		</div>
+		<!--{/if}-->
+	</div>
+	<script>
+		jQuery(".show_views").click(function(){
+			var mid = jQuery(this).attr('id');
+			jQuery("#smsg_"+mid).css('display','none');
+			jQuery("#msg_"+mid).css('display','block');
+		})
+	</script>
+	<script type="text/javascript" src="/js/jquery.json-2.4.js"></script>
+<div style="left:50%;display:none" class="h_window" id="h_window" >
+	<div class="h_window_title">
+		<span class="mclose" onclick="display_none('h_window_bg');display_none('h_window');" >×</span>
+		<span>發送消息</span>
+    </div>
+    <div class="h_window_content">
+		<div class="gli_pl" style="width:auto;padding-top:14px;">	
+			<form method="post" action="comment.php">			
+			<div class="acBox">
+				<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL[supe_uid]}.html" target="_blank"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></div>
+				<div class="acRight" style="width:515px">			
+					<div class="suname"></div>
+					<textarea maxlength="500" id="message" name="message" class="commcon" ></textarea>
+					<p style="color:#B7B7B7">最多能輸入500字</p>
+					<div class="blank5"></div>	
+					<input type="hidden" name="receiver_id" id="receiver_id" class="commcon" value=""/>
+					<input type="button" id="sendmsg" value="回應" class="f_r send_msg"  name="dosubmit">
+					<div class="blank10"></div>
+					<div id="face_list" class="facebox1"></div>
+				</div>
+			</div>
+			</form>
+			<div class="clear"></div>
+			<script>
+				function check(t1) {
+					var regC = /[^ -~]+/g;
+					var regE = /\D+/g;
+					var str = t1.value;
+
+					if (regC.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+
+					if(regE.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+				} 
+				/** fanny 添加表情图片信息 2013-11-25 */
+				jQuery(document).ready(function(){					
+					document.getElementById("face_list").innerHTML ="";					
+					var faceul = document.createElement("ul");					
+					for(i=1; i<21; i++) {
+						getStatusFace(i, faceul); 
+					}					
+					document.getElementById('face_list').appendChild(faceul);
+
+				});
+				//获取表情
+				function getStatusFace(i, faceul) {
+					var faceli = document.createElement("li");
+					faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'message\')"/>';				
+					faceul.appendChild(faceli);
+				}
+		
+				jQuery("#sendmsg").click(function(){
+					var content = jQuery('#message').val();
+					
+					if(content.length>0)
+					{
+						var obj = new Object();
+						jQuery(".commcon").each(function(i){
+							if(jQuery(this).attr('name') == 'message'){
+								var lpcon = jQuery(this).val().replace(/[\n]/gm,"<br/>");
+								obj[jQuery(this).attr('name')] = encodeURIComponent(lpcon);
+							}else{
+								obj[jQuery(this).attr('name')] = encodeURIComponent(jQuery(this).val());
+							}							
+						});						
+						
+						jQuery.ajax({
+						   type: "POST",
+						   cache: false,
+						   url: "ajax_info.php",
+						   dataType: "text",
+						   data: 'do=sendmsg&dosubmit='+jQuery.toJSON(obj),
+						   success: function(msg){
+							  if(msg == -1){
+								alert('您需要先登錄才能繼續本操作');
+							  }else if(msg == -2){
+								alert('操作出錯，請重新操作。');
+							  }else if(msg == -3){
+								alert('自己不能給自己發送消息');
+							  }else if(msg == -4){
+							  	alert('接收人信息不存在！');
+							  }else if(msg == -5){
+								alert('今天您已達到發佈上限！');
+								display_none('h_window_bg');
+								display_none('h_window');
+							  }else if(msg == 0){
+								alert('消息發送失败，請稍後再試！');
+								display_none('h_window_bg');
+								display_none('h_window');
+							  }else{	
+								alert('消息已發送成功！');
+								display_none('h_window_bg');
+								display_none('h_window');
+								if(msg == -6){fshowreward();}		
+							  }
+							  jQuery('select').each(function(i){
+									jQuery(this).css('display','block');
+							  })
+						   }
+						});
+					}else{
+						alert("请输入内容！");
+						return false;
+					}
+				})
+			</script>
+		</div>
+    </div>
+    <div class="h_window_footer"></div>
+</div>
+<script>
+	function test1(f){
+		var d = document.getElementById('h_window_bg'),wh = getWH(f);
+		d.style.cssText +=";width:"+wh.w+'px;height:'+wh.h+'px'
+	}
+	var getWH = function (){
+		var d = document,doc = d[d.compatMode == "CSS1Compat"?'documentElement':'body'];
+		return function(f){
+			return {
+				w:doc[(f?'client':'scroll')+'Width'],
+				h:f?doc.clientHeight:Math.max(doc.clientHeight,doc.scrollHeight)
+			}
+		}
+	}()
+	
+    function display_none(div_id){
+      document.getElementById(div_id).style.display='none';
+    }
+	function supe_message(rid,username){	
+		jQuery('select').each(function(i){
+			jQuery(this).css('display','none');
+		})
+		jQuery("#receiver_id").val(rid);
+		jQuery(".suname").html('致 <a href="space-'+rid+'.html" target="_blank">'+username+"</a>：");
+		display_block('h_window_bg');
+		display_block('h_window');
+	}
+    function display_block(div_id){
+		test1();
+		document.getElementById(div_id).style.display='';
+    }
+</script>
+<!--{elseif $view=='userapp'}-->
+
+	
+	<script type="text/javascript">
+		function manyou_add_userapp(hash, url) {
+			if(isUndefined(url)) {
+				$(hash).innerHTML = "<tr><td colspan=\"2\">成功忽略了該條應用消息</td></tr>";
+			} else {
+				$(hash).innerHTML = "<tr><td colspan=\"2\">正在引導您進入...</td></tr>";
+			}
+			var x = new Ajax();
+			x.get('do.php?ac=ajax&op=deluserapp&hash='+hash, function(s){
+				if(!isUndefined(url)) {
+					location.href = url;
+				}
+			});
+		}
+	</script>
+	
+	<div id="content">
+
+		<style>
+			.topicList table{width:100%;margin:10px 0 5px 0;}
+			.topicList td{color:#333;}
+		</style>
+		<!--{if $list}-->
+		<div class="m_box">
+		<!--{loop $list $key $invite}-->
+			<h3 class="feed_header">
+				<a href="space.php?do=notice&view=userapp&op=del&appid=$invite[0][appid]" class="r_option">忽略該應用的所有邀請</a>
+				<a href="userapp.php?id=$invite[0][appid]&uid=$space[uid]" title="$apparr[$invite[0][appid]]"><img src="http://appicon.manyou.com/icons/$invite[0][appid]" alt="$apparr[$invite[0][appid]]" align="absmiddle" /></a> 
+				您有 <!--{eval echo count($invite);}--> 個 $invite[0][typename] <!--{if $invite[0][type]}-->請求<!--{else}-->邀請<!--{/if}-->
+			</h3>
+			<table cellpadding="0" cellspacing="0" width="100%" class="topic_list">
+			<!--{loop $invite $value}-->
+				<tbody>
+				<tr>
+					<td width="60" valign="top">
+						<div class="avatar48">
+							<a href="space.php?uid=$value[fromuid]" class="avatarlink"><!--{avatar($value[fromuid],small)}--></a>
+						</div>
+					</td>
+					<td id="$value[hash]">
+						$value[myml]
+					</td>
+				</tr>
+				</tbody>
+			<!--{/loop}-->
+			</table>
+		<!--{/loop}-->
+		</div>
+		<div id="pager" class="pagebar">$multi</div>
+		<!--{else}-->
+		<div class="c_form">
+			沒有新的應用請求或邀請
+		</div>
+		<!--{/if}-->
+	</div>
+	
+	<div id="sidebar">
+		<div class="sidebox">
+		<h2 class="title">應用分類</h2>
+		<ul class="line_list">
+			<li><a href="space.php?do=notice&view=userapp">查看全部應用消息</a></li>
+			<!--{loop $apparr $type $val}-->
+			<li><a href="userapp.php?id=$val[0][appid]&uid=$space[uid]" title="$val[0][typename]"><img src="http://appicon.manyou.com/icons/$val[0][appid]" alt="$val[0][typename]" /></a><a href="space.php?do=notice&view=userapp&type=$val[0][appid]"> <!--{eval echo count($val);}--> 個 $val[0][typename] <!--{if $val[0][type]}-->請求<!--{else}-->邀請<!--{/if}--></a></li>
+			<!--{/loop}-->
+		</ul>
+		</div>
+	</div>
+
+<!--{else}-->
+	
+	<div id="content">
+		
+		<div class="h_status">
+		提示：當你感覺有些通知對你造成騷擾，請點擊通知右側的屏蔽小圖標，屏蔽此類通知。
+		</div>
+			
+		<!--{if $newnum}-->
+		<div class="mgs_list">
+			<!--{if $space[notenum]}--><div><img src="image/icon/notice.gif"><a href="space.php?do=notice"><strong>$space[notenum]</strong> 條新通知</a></div><!--{/if}-->
+			<!--{if $space[addfriendnum]}--><div><img src="image/icon/friend.gif" alt="" /><a href="cp.php?ac=friend&op=request"><strong>$space[addfriendnum]</strong> 個好友請求</a></div><!--{/if}-->
+			<!--{if $space[mtaginvitenum]}--><div><img src="image/icon/mtag.gif" alt="" /><a href="cp.php?ac=mtag&op=mtaginvite"><strong>$space[mtaginvitenum]</strong> 個群組邀請</a></div><!--{/if}-->
+			<!--{if $space[eventinvitenum]}--><div><img src="image/icon/event.gif" alt="" /><a href="cp.php?ac=event&op=eventinvite"><strong>$space[eventinvitenum]</strong> 個活動邀請</a></div><!--{/if}-->
+			<!--{if $space[myinvitenum]}--><div><img src="image/icon/userapp.gif" alt="" /><a href="space.php?do=notice&view=userapp"><strong>$space[myinvitenum]</strong> 個應用消息</a></div><!--{/if}-->
+			<!--{if $space[pokenum]}--><div><img src="image/icon/pm.gif" alt="" /><a href="space.php?do=notice&view=usermsg"><strong> $space[pokenum]</strong> 個訊息</a></div><!--{/if}-->
+		</div>
+		<!--{/if}-->
+
+		
+		<!--{if $list}-->
+		<table cellpadding="0" cellspacing="0" width="100%" class="topic_list">
+		<!--{loop $list $key $value}-->
+			<tbody>
+			<tr>
+			<td width="60" valign="top">
+			<!--{if $value[authorid]}-->
+				<div class="avatar48">
+					<a href="space-{$value[authorid]}.html" target="_blank" class="avatarlink"><img src="{$value.image}" onerror='this.src="/ucenter/images/noavatar_small.gif";'></a>
+				</div>
+			<!--{else}-->
+				<div class="avatar48"><img src="image/systempm.gif" width="48" height="48" /></div>
+			<!--{/if}-->
+			</td>
+			<td>
+				
+					<a href="cp.php?ac=common&op=ignore&authorid=$value[authorid]&type=$value[type]" id="a_note_$value[id]" onclick="ajaxmenu(event, this.id)" class="float_cancel">屏蔽</a>
+
+					<div style="padding:10px 0 5px 0;$value[style]">
+						<!--{if $value[authorid]}-->
+						<a href="space.php?uid=$value[authorid]">{$_SN[$value[authorid]]}</a>
+						<!--{/if}-->
+						$value[note]
+						<p class="time">&nbsp;<!--{date('Y-m-d H:i:s',$value[dateline],1)}--></p>
+					</div>
+					
+					<!--{if $value[authorid] && !$value[isfriend]}-->
+					<p style="display:none">
+						<a href="cp.php?ac=friend&op=add&uid=$value[authorid]" id="add_note_friend_$value[authorid]" onclick="ajaxmenu(event, this.id, 1)">加為好友</a>
+						<span class="pipe">|</span>
+						<a href="cp.php?ac=poke&op=send&uid=$value[authorid]" id="a_poke_$value[authorid]" onclick="ajaxmenu(event, this.id, 1)">打個招呼</a>
+					</p>
+					<!--{/if}-->
+					
+				</td>
+			</tr>
+			</tbody>
+		<!--{/loop}-->
+		
+		<!--{if $view!='userapp' && $space[notenum]}-->
+			<tbody>
+			<tr>
+			<td width="60">
+			</td>
+			<td align="center"><a href="space.php?do=notice&ignore=all">&raquo; 將後續頁面所有未讀新通知視為已讀</a></td>
+			</tr>
+			</tbody>
+		<!--{/if}-->
+		
+		</table>
+		
+		<div id="pager" class="pagebar">$multi</div>
+		
+		<!--{else}-->
+		<div class="c_form">
+		沒有新的通知。
+		</div>
+		<!--{/if}-->
+	</div>
+	
+	<div id="sidebar" style="display:None">		
+		<div class="sidebox">
+			<h2 class="title">通知分類</h2>
+			<ul class="line_list">
+				<li><a href="space.php?do=notice">查看全部通知</a></li>
+				<!--{loop $noticetypes $type $name}-->
+				<li><a href="space.php?do=notice&type=$type">$name</a></li>
+				<!--{/loop}-->
+			</ul>
+		</div>
+		
+	</div>
+	
+<!--{/if}-->
+</div>
+</div>
+		<!--{template lbi_right_ads}-->
+</div>
+<!--{template footer}-->

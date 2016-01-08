@@ -1,0 +1,169 @@
+			<!--#追随者用户信息-->
+		<div class="blank10"></div>
+		<div class="top_search">
+			<input type="text" name="username" id="sfollower" class="tuser" placeholder="搜尋探險家"><input type="button" class="sfbtn" value=""/>
+		</div>
+			<script>
+			 //根据名称获取相应的追随者信息
+			  jQuery(".sfbtn").click(function(){
+				var uname = jQuery("#sfollower").val();
+			    uname = uname.replace(/(^\s*)|(\s*$)/g, "");
+				if(uname == '搜尋探險家'){
+					uname= '';
+				}
+				ajaxget('ajax_info.php?do=sfollowers&uname='+uname,'folluser','folluser');
+			  })
+			</script>
+		<div class="blank5"></div>
+		<div id="folluser"></div>
+			<script>
+				jQuery(document).ready(function(){
+				  ajaxget('ajax_info.php?do=sfollowers&uname=','folluser','folluser');
+				});
+				function show_more(obj){
+					var uit = jQuery("#ulist_item").attr("class");
+					if(uit == 'ulist_item'){
+						jQuery("#ulist_item").removeClass('ulist_item');
+						jQuery("#ulist_item").addClass('ulist_item1');
+						jQuery(obj).addClass('upmore');
+						jQuery(obj).html('收起');
+					}else{
+						jQuery("#ulist_item").removeClass('ulist_item1');
+						jQuery("#ulist_item").addClass('ulist_item');
+						jQuery(obj).removeClass('upmore');
+						jQuery(obj).html('更多...');
+					}
+				}
+			</script>
+			<!--{if $ftype=='article'}-->
+				<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select><option>攻略</option></select>
+				<select name="startaddress" >
+					<option value="">選擇地區</option>
+						   {loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+							{/loop}
+				</select>
+				<select name="site_cat">
+					<option value="">探險分類</option>
+							{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+							{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="$_GET['title']" placeholder="關鍵字輸入"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="followers"/>
+				<input type="hidden" name="ftype" value="{$ftype}"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+				<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+					<!--#排序 start-->
+					<!--{eval $st = 'desc'; $scss = '';}-->
+					{if $_GET['ordersc'] == 'desc'}
+					<!--{eval $st = 'asc'}-->
+					<!--{eval $scss = 'sortdesc' }-->
+					{else}
+					<!--{eval $st = 'desc'}-->
+					<!--{eval $scss = 'sortasc'}-->
+					{/if}
+			<div class="sortBox clearfix">
+				<div class="sort">排序：
+					<a href="{$mpurl1}&orderby=addtime&ordersc={if $_GET['orderby']=='addtime'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'addtime'} class="{$scss}" {/if}>發表日期</span></a>
+					<a href="{$mpurl1}&orderby=diannum&ordersc={if $_GET['orderby']=='diannum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'diannum'} class="{$scss}"{/if}>"掂"數</span></a>
+					<a href="{$mpurl1}&orderby=clicknum&ordersc={if $_GET['orderby']=='clicknum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'clicknum'}class="{$scss}"{/if}>人氣</span></a>
+					<a href="{$mpurl1}&orderby=commentnum&ordersc={if $_GET['orderby']=='commentnum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'commentnum'}class="{$scss}"{/if}>留言</span></a>
+				</div>
+				<div class="share_tab"><a href="space-home-followers.html" style="color:#e31a3e">攻略</a></div>
+			</div>
+					<!--#排序 end-->
+			<!--{template lbi_article_pain}-->
+		</div>
+				<script>
+					$(".laiyuan").live('click',function(){
+						loacl_cuanji();
+					})
+				</script>
+			<!--{elseif $ftype == 'comment'}-->
+				<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select><option>評論</option></select>
+				<select name="startaddress">
+					<option value="">選擇地區</option>
+						   {loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+							{/loop}
+				</select>
+				<select name="site_cat">
+					<option value="">探險分類</option>
+							{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+							{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="followers"/>
+				<input type="hidden" name="ftype" value="{$ftype}"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+				<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+					<!--#排序 start-->
+					<!--{eval $st = 'desc'; $scss = '';}-->
+					{if $_GET['ordersc']=='desc'}
+					<!--{eval $st = 'asc'}-->
+					<!--{eval $scss = 'sortdesc'}-->
+					{else}
+					<!--{eval $st = 'desc'}-->
+					<!--{eval $scss = 'sortasc'}-->
+					{/if}
+			<div class="sortBox clearfix">
+				<div class="sort">排序：
+					<a href="{$mpurl1}&orderby=addtime&ordersc={if $_GET['orderby'] == 'addtime'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'addtime'} class="{$scss}" {/if}>發表日期</span></a>
+					<a href="{$mpurl1}&orderby=diannum&ordersc={if $_GET['orderby'] == 'diannum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'diannum'}class="{$scss}"{/if}>'掂'數</span></a>
+					<a href="{$mpurl1}&orderby=click_count&ordersc={if $_GET['orderby'] == 'click_count'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'click_count'}class="{$scss}"{/if}>人氣</span></a>
+					<a href="{$mpurl1}&orderby=admin_hot&ordersc={if $_GET['orderby'] == 'admin_hot'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'admin_hot'} class="{$scss}"{/if}>編輯推薦</span></a>
+				</div>
+				<div class="share_tab"><a href="space-home-followers.html">攻略</a></div>
+			</div>
+					<!--#排序 end-->
+			<div class="comment">
+				<div class="mcon">
+							{loop $placecomment $place}
+					<ul>
+						<li class="thumb"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html" target="_blank"><img src="{$place.pcomment_img}"  onload="resizeThumb(this,165,108);"></a></li><li class="txt"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html" target="_blank">{$place.pcomment_title}</a><p>作者：<a href="space-{$place.user_id}.html" target="_blank">{$place.user_name}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;發表日期：<font color="#B32D46">{$place.addtime}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店家/好去處：<a target="_blank" href="space-place-id-{$place.place_id}.html" target="_blank" style="color:#000000;font-size:12px;font-weight:500"><font>{$place.placename}</font></a></p>{$place.content}</li>
+						<li class="views">
+								  {if $place.admin_hot}<div class="tj_ico"><img src="image/tuijie.png"></div>{/if}
+							<div class="click_num">{$place.click_count}/{$place.diannum}</div>
+							<p><img src="template/default/images/view_zheng{$place.pcomment_type}.gif"></p>
+						</li>
+						<div class="clear"></div>
+						<div class="f_r">是次消費：每人平均約HK$ {$place.pcomment_consume}</div>
+					</ul>
+					<div class="clear"></div>
+						  {/loop}
+							<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div class="blank5"></div>
+					<div id="ad_lpagebotad">
+								<!--{ad($is_mobile,'lpagebotad')}-->
+					</div>
+							<!--{/if}-->
+					<div class="blank5"></div>
+						   {if $multi}
+					<div class="pagebar" id="pager">
+						<div class="page">
+									{$multi}
+						</div>
+					</div>
+							{/if}
+				</div>
+			</div>
+		</div>
+			<!--{/if}-->

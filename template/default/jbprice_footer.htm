@@ -1,0 +1,72 @@
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<div  id="fot_num"></div>
+<div class="blank15"></div>
+<div class="block_main">
+	<div class="bybg">
+		<div class="footer">
+			<a href="/">首頁</a> &nbsp;&nbsp;<a href="space-article.html">探險家攻略</a> &nbsp;&nbsp;<a href="space-place.html">香港好去處</a> &nbsp;&nbsp;<a href="space-top.html">探險家排行榜</a> &nbsp;&nbsp;<a href="space-help.html">新手指南</a> &nbsp;&nbsp;<a href="do-contact.html">聯絡我們</a>
+			<p style="padding:25px 0px 10px 0px">「Copyright@2014 seewide.com All Right Reserved 版權所有，不得轉載」</p>
+			<p style="padding-bottom:10px">網站上的資訊及圖片，若閣下為部份資訊的版權擁有者，如有觸犯你的知識版權，請來信info@seewide.com，我們接到投訴後即時處理</p>
+			<p style="padding-bottom:10px">重要聲明：本網站是以即時上載留言等的方式運作，對所有留言的真實性、完整性及立場等，不負任何法律責任。而一切留言之言論只代表留言者個人意見，並非本網站之立場，讀者及用戶不應信賴內容，並應自行判斷內容之真實性。由於本網站受到「即時上載留言」運作方式所規限，故不能完全監察所有留言，若讀者及用戶發現有留言出現問題，請聯絡我們。</p>
+			</div>
+	</div>
+</div>	
+<div class="blank15"></div>
+<script>		
+	function showview(con,nu,nm){
+		for(var i=1;i<=con;i++)
+		{
+			jQuery("#"+nm+'_'+i).css('display','none');
+		}
+		
+		jQuery("#"+nm+'_'+nu).css('display','block');
+	}
+</script>
+ 
+ 
+ 
+<!--{if $_SCOOKIE[reward_log]}-->
+	<script type="text/javascript">nshowreward();</script>
+<!--{/if}-->
+
+<div class="m-gotopbtn">
+	<a rel="nofollow" title="返回頂部" hidefocus="true" href="javascript:void(0);"></a>
+</div>
+<SCRIPT type=text/javascript>
+ jQuery(document).ready(function(){
+		gotopbtn();
+    });
+
+	function gotopbtn() {		
+		jQuery('<div class="m-gotopbtn"><a href="javascript:void(0);" hidefocus="true" title="返回頂部" rel="nofollow"></a></div>').find("a").bind("click",
+		function() {
+			jQuery("html,body").animate({
+				scrollTop: 0
+			},
+			500)
+		}).end().appendTo(jQuery("body"));
+		jQuery(window).bind("scroll",
+		function() {
+			if (jQuery(document).scrollTop() > 500) {
+				if (jQuery(".m-gotopbtn a").position().top == 100) {
+					jQuery(".m-gotopbtn a").animate({
+						top: -95
+					},
+					300)
+				}
+			} else {
+				if (jQuery(".m-gotopbtn a").position().top == -95) {
+					jQuery(".m-gotopbtn a").animate({
+						top: 100
+					},
+					300)
+				}
+			}
+		})
+	}
+</SCRIPT>
+
+</body>
+</html>
+<!--{/if}-->
+

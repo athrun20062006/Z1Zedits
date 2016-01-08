@@ -1,0 +1,266 @@
+<!--{template header}-->
+<link href="template/default/css/h_style.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css"  type="text/css" rel="stylesheet"/>
+<script charset="utf-8" src="template/default/js/checkform.js"></script>
+<script charset="utf-8" src="My97/WdatePicker.js"></script>
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script>var kid = 'content';</script>
+<!--{template kindEditor}--> 
+<script charset="utf-8" src="js/ajaxfileupload.js"></script>
+<!--/main-->
+	<div class="mainbox clearfix">
+		<div class="AreaL">
+            <div class="comment_top">
+			  <!--#fanny 修改图片显示问题 2013-11-21 start-->
+                <div class="comment_img f_l"><img src="{$placeinfo.placeimg1}" alt="{$placeinfo.altimg1}" width="170" height="112" onload="resizeThumb(this,170,112);" /></div>
+			   <!--#fanny 修改图片显示问题 2013-11-21 end-->	
+                <div class="comment_info f_l">
+                    <p class="category"><a href='javascript:;' >{$placeinfo.placecat}</a></p>
+                    <p class="title">{$placeinfo.placename}</p>
+                    <p class="address">{$placeinfo.placeaddress}</p>
+                </div>
+            </div>
+            <div class="blank20"></div>
+			<div class="yjt">
+                <!-- <span class="f_r get_tj"><a href="javascript:;" onclick="getdirections(2)" class="c6d6d6d">如何獲得「推介」?</a></span> -->               
+                發表評論<font color="#ff0000">(*必須輸入)</font>
+            </div>
+			<form action="space.php?do=pcomment" method="post" id="commentform" enctype="multipart/form-data">
+				<input type="hidden" name="MAX_FILE_SIZE" value="512000" />
+				<div class="yjm">
+					<table border="0"  cellpadding="8" cellspacing="0">
+						<tr>
+							<td colspan="2">
+								<font color="#ff0000">*</font><font class="font1">評論標題：</font><input type="text" name="comment[pcomment_title]" class="input_css" dataType="LimitB" min="1" msg="評論標題必須填寫！" value="{$coms_info.pcomment_title}"/>
+							</td>
+							
+						</tr>
+						<tr>
+							<td><font color="#ff0000">*</font><label  class="font1">評論內文：</label></td>						
+						</tr>
+						<tr>
+							<td colspan="2">
+								<textarea name="comment[content]" id="content" style="width:699px;height:630px;visibility:hidden;" dataType="LimitB" min="1" msg="好去處評論內文必須填寫！">{$coms_info.content}</textarea>
+								
+							</td>
+						</tr>
+					</table>
+					<table border="0"  cellpadding="8" cellspacing="0">
+						<tr>
+							<td valign="top" >評論封面：</td>
+							<td>
+								<div class="f_l" style="width:355px">	
+									<div><img id="loading" src="image/loading1.gif" style="display:none;"></div>
+									<input id="fileToUpload" type="file" name="fileToUpload" size="30"/>
+									<button id="buttonUpload" onclick="return ajaxFileUpload();">上傳</button>
+									<input type="hidden" name="comment[pcomment_img]" value="{$coms_info[pcomment_img]}" id="img_url"/>
+									{if $coms_info.pcomment_img}
+									<div class="edit_img"><img id="artimg" src="{$coms_info.pcomment_img}" width="165" height="108"  onload="resizeThumb(this,165,108);"/></div>
+									{else}
+									<p><img id="artimg" src="image/nopic.jpg" width="178" height="119"/></p>
+									{/if}
+								</div>
+								<div class="f_l" style="width:187px"><font color="#737373">(如沒有封面圖片，系統會自動以內文第一張圖片取代)</font></div>								
+							</td>
+						</tr>
+						<tr>
+							<td>進行日期：</td>
+							<td><input type="text" class="select_css" value="{$coms_info.start_time}" name="comment[start_time]" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd H:m:s'})" /></td>
+						</tr>
+						<tr>
+							<td width="150">是次消費：每人平均約HKD</td>
+							<td><input type="text" style="width:86px;height:20px;" class="input_css" value="{$coms_info.pcomment_consume}" name="comment[pcomment_consume]"/></td>
+						</tr>
+					</table>
+					<div class="blank20"></div>
+					<div class="fen">
+					  {if $coms_info.place_id}
+						<input type="radio" id="zheng" name="comment[pcomment_type]" value="0" style="display:none" />
+						<img src="image/comment_zheng.gif" onclick="commentRank('zheng',this)" class="pcomment_img {if $coms_info.pcomment_type == 0}pcomment_cur{/if}" name="pimg" />
+						<input type="radio" id="de" name="comment[pcomment_type]" value="1" style="display:none"/>
+						<img src="image/comment_de.gif"  onclick="commentRank('de',this)" class="pcomment_img {if $coms_info.pcomment_type == 1}pcomment_cur{/if}" name="pimg"/>
+						<input type="radio" id="cha" name="comment[pcomment_type]" value="2" style="display:none" dataType="Group"  msg="必須評分"/>
+						<img src="image/comment_cha.gif"  onclick="commentRank('cha',this)" class="pcomment_img {if $coms_info.pcomment_type == 2}pcomment_cur{/if}" name="pimg"/>
+					  {else}
+					    <input type="radio" id="zheng" name="comment[pcomment_type]" value="0" style="display:none" />
+						<img src="image/comment_zheng.gif" onclick="commentRank('zheng',this)" class="pcomment_img" name="pimg"/>
+						<input type="radio" id="de" name="comment[pcomment_type]" value="1" style="display:none"/>
+						<img src="image/comment_de.gif"  onclick="commentRank('de',this)" class="pcomment_img" name="pimg"/>
+						<input type="radio" id="cha" name="comment[pcomment_type]" value="2" style="display:none" dataType="Group"  msg="必須評分"/>
+						<img src="image/comment_cha.gif"  onclick="commentRank('cha',this)" class="pcomment_img" name="pimg"/>
+					  {/if}
+						
+					</div>
+					<div class="blank20"></div>
+					<div class="blank5"></div>
+					<span class="f_r mr55 c6d6d6d"><input type="checkbox" name="copyr" value="" class="f_l" >我確定所提交的內容及相片並不含任何侵犯版權內容</span>
+					<div class="blank20"></div>
+				</div>
+				<div class="yjb">
+					<div class="gl_qr">
+						<input type="hidden" name="acttype" value="" id="acttype"/>
+					  <!--{if $coms_info['pcomment_id'] }-->
+						<input type="hidden" name="pcomment_id" value="{$cid}"/>
+						<input type="hidden" name="comment[place_id]" value="{$coms_info.place_id}"/>
+						<input type="hidden" name="comment[pcomment_img1]" value="{$coms_info.pcomment_img}"/>
+						<!--{if $coms_info['is_draft'] == 1}-->
+						<input type="button" id="doSubmit" name="doSubmit" value="發表" class="btn_bg4" disabled="disabled"/>
+						<input type="button" name="draftSubmit" id="draftSubmit" value="修改" class="btn_bg4"/>
+						<!--{else}-->
+						<input type="button" id="doSubmit" name="doSubmit" value="修改" class="btn_bg4" disabled="disabled"/>
+						<!--{/if}-->
+					  <!--{else}-->
+						<input type="hidden" name="comment[place_id]" value="{$placeid}"/>						
+						<input type="button" id="doSubmit" name="doSubmit" value="發表" class="btn_bg4" disabled="disabled"/><input type="button" name="draftSubmit" id="draftSubmit" value="儲存為草稿" class="btn_bg5"/><input type="button" value="預覽" name="viewSubmit" id="viewSubmit" class="btn_bg4"/><input type="button" value="取消" class="btn_bg4" onclick="javascript:history.go(-1)"/>
+					  <!--{/if}-->					
+						
+					</div>
+				</div>
+			</form>
+			 <script>
+				jQuery(document).ready(function(){
+					if(jQuery("input[name='copyr']").attr("checked")){
+						jQuery("#doSubmit").removeAttr('disabled');
+					}else{
+						jQuery("#doSubmit").attr('disabled','disabled');
+					}
+				});
+				jQuery("input[name='copyr']").click(function(){
+					if(jQuery(this).attr("checked")){
+						jQuery("#doSubmit").removeAttr('disabled');
+					}else{
+						jQuery("#doSubmit").attr('disabled','disabled');
+					}
+				})
+				//表单提交
+				jQuery("#doSubmit").click(function(){
+					if(Validator.Validate(document.getElementById('commentform'),3)){    
+						jQuery('#acttype').val('doSubmit');
+						jQuery("#commentform").submit();					
+					}
+				});
+			    jQuery("#draftSubmit").click(function(){
+					if(Validator.Validate(document.getElementById('commentform'),3)){    
+						jQuery('#acttype').val('draftSubmit');
+						
+						
+						
+						jQuery("#commentform").submit();
+					}
+				});
+				  jQuery("#viewSubmit").click(function(){
+					if(Validator.Validate(document.getElementById('commentform'),3)){    
+						jQuery('#acttype').val('viewSubmit');
+						jQuery("#commentform").attr('target','_blank');
+						jQuery("#commentform").submit();
+					}
+				});
+				function commentRank(pty,obj)
+				{
+					jQuery("input[type='radio']").each(function(i){
+						jQuery(this).attr('checked',false);
+					});
+					jQuery("img[name='pimg']").each(function(i){
+						jQuery(this).removeClass('pcomment_cur');
+						jQuery(this).addClass('pcomment_img');
+					});
+					jQuery('#'+pty).attr('checked',true);
+					obj.className = 'pcomment_cur';
+				}
+			</script>	
+				
+			<div class="blank10"></div>
+			<!--{template data/adtpl/16}-->
+		</div>
+		<!--{template lbi_place_right}-->
+	</div>
+	<script>
+		function getdirections(essayid){
+			jQuery.ajax({
+			   type: "get",
+			   url: "ajax_info.php",
+			   data: "do=article&essayid="+essayid,
+			   dataType:'json',
+			   success:update_page
+			  
+			});
+		}
+		function update_page (msg) {  
+			var dialog = KindEditor.dialog({
+				width : 500,
+				title : msg.title,
+				body : msg.content,
+				closeBtn : {
+					name : '关闭',
+					click : function(e) {
+						dialog.remove();
+					}
+				},
+				yesBtn : {
+					name : '确定',
+					click : function(e) {
+						dialog.remove();
+					}
+				}
+			});
+		} 
+	</script>
+	<script type="text/javascript">
+		function ajaxFileUpload()
+		{
+			jQuery("#loading")
+			.ajaxStart(function(){
+				jQuery(this).show();
+			})
+			.ajaxComplete(function(){
+				jQuery(this).hide();
+			});
+
+			jQuery.ajaxFileUpload
+			(
+				{
+					url:'doajaxfileupload.php',
+					secureuri:false,
+					fileElementId:'fileToUpload',
+					dataType: 'json',
+					data:{utype:'comment'},
+					success: function (data, status)
+					{
+						if(typeof(data.error) != 'undefined')
+						{
+							if(data.error != '')
+							{
+								alert(data.error);
+							}else
+							{
+								jQuery("#img_url").val(data.msg);
+								jQuery("#artimg").attr('src',data.msg);
+								//alert(data.msg);
+							}
+						}
+					},
+					error: function (data, status, e)
+					{
+						alert(e);
+					}
+				}
+			)
+			
+			return false;
+
+		}
+	</script>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>	
+<!--{template footer}-->

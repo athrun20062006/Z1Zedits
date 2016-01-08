@@ -1,0 +1,118 @@
+<!--{if !empty($uploadResponse)}-->
+<uploadResponse>
+	<message><!--{if $status=="success"}-->完成<!--{else}-->$uploadfiles<!--{/if}--></message>
+	<status>$status</status>
+	<proid>$proid</proid>
+	<albumid>$albumid</albumid>
+	<picid>$picid</picid>
+	<!--{if $fileurl}--><filepath>$fileurl</filepath><!--{/if}-->
+</uploadResponse>
+<!--{else}-->
+<parameter>
+	<!--{if $iscamera}-->
+		<images>
+			<!--{loop $dirarr $key $val}-->
+			<categories name="$val[0]" directory="$val[1]">
+				<!--{loop $val[2] $ikey $value}-->
+					<img name="$value"/>
+				<!--{/loop}-->
+			</categories>
+			<!--{/loop}-->
+		</images>
+	<!--{elseif $isdoodle}-->
+		<background>
+			<!--{loop $filearr $key $filename}-->
+			<bg url="./image/doodle/big/{$filename}" thumb="./image/doodle/thumb/{$filename}"/>
+			<!--{/loop}-->
+		</background>
+	<!--{elseif $isupload}-->
+		<allowsExtend>
+			<extend depict="All Image File(*.jpg,*.jpeg,*.gif,*.png)">*.jpg,*.gif,*.png,*.jpeg</extend>
+		</allowsExtend>
+	<!--{/if}-->
+	<language>
+			<create>創建</create>
+			<notCreate>取消</notCreate>
+			<albumName>相冊名</albumName>
+			<createTitle>創建新相冊</createTitle>
+		<!--{if !$isdoodle}-->
+			<okbtn>繼續</okbtn>
+			<cancelbtn>查看</cancelbtn>
+			<!--{if $isupload}-->
+				<fileName>文件名</fileName>
+				<depict>描述(單擊修改)</depict>
+				<size>文件大小</size>
+				<stat>上傳進度</stat>
+				<aimAlbum>上傳到:</aimAlbum>
+				<browser>瀏覽</browser>
+				<delete>刪除</delete>
+				<upload>上傳</upload>
+				<okTitle>上傳完成</okTitle>
+				<okMsg>所有文件上傳完成!</okMsg>
+				<uploadTitle>正在上傳</uploadTitle>
+				<uploadMsg1>總共有</uploadMsg1>
+				<uploadMsg2>個文件等待上傳,正在上傳第</uploadMsg2>
+				<uploadMsg3>個文件</uploadMsg3>
+				<bigFile>文件過大</bigFile>
+				<uploaderror>上傳失敗</uploaderror>
+			<!--{elseif $iscamera}-->
+				<desultory>抓拍</desultory>
+				<series>連拍</series>
+				<save>保存</save>
+				<pageup>上一頁</pageup>
+				<pagedown>下一頁</pagedown>
+				<clearbg>清除相框</clearbg>
+				<reload>重載</reload>
+				<cancel>取消</cancel>
+				<siteerror>參數錯誤,系統載入失敗</siteerror>
+				<ver1>程序需FlashPlayer 9.0.45以上版本您的播放器版本為</ver1>
+				<ver2>請升級</ver2>
+				<refuse>在您的機器上檢測到攝象頭但您拒絕了攝象頭的使用</refuse>
+				<countdown>倒數</countdown>
+				<second>秒</second>
+				<nocam>在您的機器上沒有檢測到攝象頭或者您的攝象頭設備正在使用中</nocam>
+				<autoShooting>秒自拍</autoShooting>
+				<explain>參數設置：</explain>
+				<okTitle>上傳完成</okTitle>
+				<okMsg>大頭貼上傳完成</okMsg>
+				<saveTitle>正在上傳</saveTitle>
+				<saveToNote>保存到</saveToNote>
+				<saveMsg1>總共有</saveMsg1>
+				<saveMsg2>張大頭貼,正在保存第</saveMsg2>
+				<saveMsg3>張大頭貼。</saveMsg3>
+			<!--{/if}-->
+		<!--{else}-->
+			<reload>重畫</reload>
+			<save>保存</save>
+			<notDraw>沒有任何塗鴉動作，無法保存</notDraw>
+		<!--{/if}-->
+	</language>
+	<config>
+		<userid>$_SGLOBAL[supe_uid]</userid>
+		<hash>$hash</hash>
+		<maxupload>$max</maxupload>
+		<!--{if $iscamera}-->
+			<countdown>3</countdown>
+			<countBy>2000</countBy>
+		<!--{/if}-->
+	</config>
+	<!--{if $isdoodle}-->
+	<filters>
+		<filter id="0">禁用</filter>
+		<filter id="1">陰影</filter>
+		<filter id="2">模糊</filter>
+		<filter id="3">發光</filter>
+		<filter id="4">水彩</filter>
+		<filter id="5">噴濺</filter>
+		<filter id="6">布紋</filter>
+	</filters>
+	<!--{/if}-->
+	<albums>
+		<album id="-1">請選擇相冊</album>
+		<!--{loop $albums $key $value}-->
+			<album id="$value[albumid]">$value['albumname']</album>
+		<!--{/loop}-->
+		<album id="add">+新建相冊</album>
+	</albums>
+</parameter>
+<!--{/if}-->

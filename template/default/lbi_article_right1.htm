@@ -1,0 +1,177 @@
+<div class="AreaR">	
+
+	<div class="blank10"></div>
+	<div class="userBox">
+		<div class="userinfo">
+			<div class="u_name"><a href="space-{$user_right.uid}.html">{$user_right.username}</a></div><div class="u_level">{$_SGLOBAL[grouptitle][$user_right[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$user_right[groupid]][icon]}<img style="" src="{$_SGLOBAL[grouptitle][$user_right[groupid]][icon]}"/> {/if}</div><div class="u_desc">簡介：<a href="space-{$user_right[uid]}.html" title="{$user_right.ouser_desc}">{$user_right.user_desc}</a></div>
+			<div id="rfollbtn" class="zuisui">
+			{if $user_right.is_follower}<a onclick="qfollowers({$user_right.uid})" href="javascript:;"><img src="image/qattention.gif"/></a>{else}<a onclick="followers({$user_right.uid})" href="javascript:;"><img src="image/attention.gif"/></a>{/if}
+			</div>
+		</div>
+		<div class="userimg">{if $user_right[is_star] == 2}<img src="image/bstar.gif" class="bigstar"/>{/if}<!--{avatar($user_right[userid],big)}--></div>
+		<div class="clear"></div>
+	</div>
+	<div class="blank25"></div>
+	{if $user_right.facebook_url}
+	<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/zh_HK/all.js#xfbml=1";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	<div class="fb-like-box" data-href="http://www.facebook.com/{$user_right.facebook_url}" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
+	<div class="blank25"></div>
+	{/if}
+	<div class="searBox">
+		
+		<form action="space.php" method="GET" id="article_form">			
+			<input type="hidden" name="uid" value="{$user_right.uid}"/>	
+			<div class="inputBox">
+				<input type="text" name="title" value="關鍵字輸入" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';" class="sinput"/><input name="dosubmit" value="提交" type="submit" class="sbtn" style="text-indent:-100px;" />
+			</div>			
+		</form>
+	</div>
+	<div class="blank25"></div>
+	<div class="msgBox" style="padding:0px;">
+		
+	</div>
+	<div class="blank10"></div>
+
+	<!--#探險攻略-->
+	{if $usercats}
+	<div class="box">
+		<img src="template/default/images/tit_01.gif"/>
+		<div class="boxcon" id="cate">
+			{loop $usercats $key $items}
+			<dl>
+				<dt class="tab_first">
+					<div class="num">{$items.atriclenum}</div>
+					<img src="image/btn_unfold.gif" class="cat-ico" id="{$key}" name="ucat"><a href="space-{$items.userid}-u{$items.ucatid}.html">{$items.catname}</a>
+					<div class="clear"></div>
+				</dt>			
+				<ul id="ucat_s{$key}" class="tab_two">
+					{loop $items.child $childitem}
+					<dd><div class="num">{$childitem.atriclenum}</div><a href="space-{$childitem.userid}-u{$childitem.ucatid}.html">{$childitem.catname}</a></dd>
+					{/loop}
+				</ul>
+				<div class="clear"></div>	
+			</dl>
+			{/loop}
+		</div>
+	</div>		
+	<div class="blank10"></div>
+	{/if}
+	<!--探險日記-->
+	{if $datelist}
+	<div class="box">
+		<img src="template/default/images/tit_02.gif"/>
+		<div class="boxcon" id="datelist">
+			{loop $datelist $key $item}
+			<dl>
+				<dt class="tab_first">
+					<div class="num">{$item.num}</div>
+					<img src="image/btn_unfold.gif" class="cat-ico" id="{$key}" name="date"><a href="space-{$item.userid}-t{$key}.html">{$item.name}</a>
+					<div class="clear"></div>		
+				</dt>	
+				<ul id="date_s{$key}" class="tab_two">
+					{loop $item.child $childkey $childitem}
+					<dd style="padding-right:0px"><div class="num">{$childitem.num}</div><a href="space-{$item.userid}-t{$key}{$childkey}.html">{$childitem.name}</a></dd>
+					{/loop}
+				</ul>
+				<div class="clear"></div>	
+			</dl>
+			{/loop}
+		
+		</div>
+	</div>
+	<script>
+		jQuery(".cat-ico").click(function(){
+			var cid = jQuery(this).attr('id');
+			var cname = jQuery(this).attr('name');
+			
+			if(jQuery('#'+cname+'_s'+cid).is(':visible')){
+				jQuery('#'+cname+'_s'+cid).hide();
+				jQuery(this).attr('src', "image/btn_fold.gif");
+			}else{
+				jQuery('#'+cname+'_s'+cid).show();
+				jQuery(this).attr('src', "image/btn_unfold.gif");
+			}		
+		})
+		/*jQuery(".tab_first").live("click",function(){
+			 if(jQuery(this).parent().find(".tab_two").css('display')=='none'){
+					jQuery(this).parent().find(".tab_two").css('display','block');
+					jQuery(this).find(".cat-ico").attr('src',"image/btn_unfold.gif")
+			 }else{
+				jQuery(this).parent().find(".tab_two").css('display','none');
+				jQuery(this).find(".cat-ico").attr('src',"image/btn_fold.gif")
+			 }
+			}			
+		);*/
+	</script>
+	<div class="blank10"></div>
+	{/if}
+	<!--探險情況-->
+	<div class="box">
+		<img src="template/default/images/tit_03.gif"/>
+		<div class="boxcon">
+			<div class="qk">
+				<p>累積瀏覽 {$user_right.totalclick}</p>
+			<!--<p>累積人次 {$user_right.totalhuman}</p>
+				<p>今日人次 {$user_right.todayhuman}</p>-->
+				<p>全部攻略 {$user_right.totalarticle}</p>
+				<p>全部回應 {$user_right.replaycomment}</p>
+			</div>
+		</div>
+	</div>
+	<div class="blank10"></div>
+	<div class="fotBox" id="fotBox">
+		<div id="fot_scroll" style="background-color:white">
+
+
+		</div>
+	</div>
+</div>
+
+
+
+<!--#fanny 取消页面top10随滚动条滚动特效 2013-11-21 start-->
+<style>
+.fotBox{ width:300px;overflow:hidden;}
+.fotBoxr{ position:static;}
+.fot_scroll{width:300px;position:fixed;_position:absolute;z-index:1000;top:0px;_top:expression( eval((document.documentElement.scrollTop)));}
+.relative{position:static;}
+html {_background-image: url(about:blank);_background-attachment: fixed;}
+</style>
+<script>
+   window.onscroll=function(){
+   var c = $("#fotBox").offset().top;
+ var f = $("#fot_num").offset().top - c; 
+ $("#fotBox").height(f);
+ var e = $("#fot_scroll").parent().offset().top - parseFloat($("#fot_scroll").css("marginTop").replace(/auto/, 0));
+ var h = $(this).scrollTop();
+ var b = document.getElementById("fotBox").offsetHeight; 
+ var x = document.getElementById("fot_scroll").offsetHeight; 
+ var a = c + f - h ; 
+ 
+ var g = document.getElementById("fot_scroll").offsetHeight; 
+ if (a > g) {
+  $("#fot_scroll").css('margin-top',0);
+  $("#fot_scroll").removeClass("relative");
+  $("#fotBox").removeClass('fotBoxr');
+  if (h >= e) {
+   $("#fot_scroll").addClass("fot_scroll")
+  } else {
+   $("#fot_scroll").removeClass("fot_scroll")
+  }
+  
+ } else {
+  $("#fot_scroll").removeClass("fot_scroll");
+  $("#fot_scroll").addClass("relative");
+  $("#fotBox").addClass('fotBoxr');
+  $("#fot_scroll").css('margin-top',b-x);
+ }
+  }
+</script>
+<!--#fanny 取消页面top10随滚动条滚动特效 2013-11-21 end-->

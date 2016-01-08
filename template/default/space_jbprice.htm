@@ -1,0 +1,183 @@
+<!--{template header}-->
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/h_slide.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+<div id="ih_window_bg" class="ih_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>		
+<div id="h_window_bg" class="h_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>	
+
+<!--{if $img_list}-->
+<div class="map_tit map_tits" id="map_tits" style="display:none">
+	<!--{eval $j = 1;}-->
+	<!--{loop $img_list $art}-->	
+		<a href='javascript:;' ><img {if $j==1}id="first_img"{/if} class="focus_limg" src="{$art.img_url}" rel="map_tits" /></a>
+	<!--{eval $j++;}-->
+	<!--{/loop}-->
+</div>
+<script type="text/javascript" src="js/ishop.js"></script>	
+<!--{/if}-->
+	
+<div class="mainbox clearfix">
+	<div class="AreaL">
+            <div class="blank15"></div>
+            <div class="gll_header">
+                <!--#fanny 修改香港好去處頁面顯示探險攻略字樣 2013-11-21 start-->
+              <a href="javascript:;" class="adbtn">現金兌換</a>
+                 <!--#fanny 修改香港好去處頁面顯示探險攻略字樣 2013-11-21 end-->
+            </div>
+            <div class="blank15"></div>
+            <form id="Form" action="space.php?do=jbprice&act=jbprice_sub" method="post">				
+                <p>你目前的好幣數值：<font class="font1" id="jbprice" style="color: #FFA517;font-weight: bold;font-size:22px;">{if $space.user_money > 0}{$space.user_money}{else}0{/if}</font>
+			需要兌換的好幣數值：<input type="text" name="jbnum" id="jbnum" value=""/>	
+            <table width="100%">
+                <tr>
+                    <td width="50%"><label for="seewide01" onclick="$('#seewide01_c').show();$('#seewide02_c').hide();" ><input id="seewide01" type="radio" name="jb[type]" class="jbtype" value="1" checked><img src="image/seewide01.gif"></label></td>
+                    <td width="50%"><label for="seewide02" onclick="$('#seewide01_c').hide();$('#seewide02_c').show();" ><input id="seewide02" type="radio" name="jb[type]" class="jbtype" value="2"><img src="image/seewide02.gif"></label></td>
+                </tr>
+                <tr>
+                    <td valign="top" height="115">
+                        <table width="100%" id="seewide01_c">
+                            <tr>
+                                <td align="right">銀行名稱*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_name]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">賬戶名稱*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_uname]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">帳戶編號*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_num]" value="" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table width="100%" id="seewide02_c" style="display:none;">
+                            <tr>
+                                <td align="right">機構名稱*：</td>
+                                <td><input type="text" class="jbtype2" name="jb[institution_name]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">機構網址*：</td>
+                                <td><input type="text" class="jbtype2" name="jb[institution_addr]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">*只接受捐款到香港政府注冊認可的慈善機構<br />
+如有疑問，可在http://www.ird.gov.hk/chi/tax/ach_search.htm<br />
+尋找有關慈善機構的注冊資格<br /></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="check" value="確認兌換"/></p>
+                    </td>
+                </tr>
+            </table>	  
+			
+	    </form>	
+                
+                
+            </br>
+	    <img src="image/dhxj.jpg">
+
+	    <script type="text/javascript">
+			$("#check").click(function(){
+        var is_submit=1;
+			var jbnum=$("#jbnum").val();
+			var jbprice=$("#jbprice").html();
+            var suser_id='{$space.uid}';
+            if(suser_id <= 0){
+                alert('您還沒有登錄.');
+                return false;
+            }
+            
+			if(jbnum=='' || jbnum<= 0){
+					alert('請輸入你需要兌換的好幣數。');
+					return false;
+				}
+			if(isNaN(jbnum)){
+					alert('請輸入數字類型數據。');
+					return false;
+				}		
+			if(parseInt(jbprice)<parseInt(jbnum)){
+					alert('你輸入的數值超過了你的上限，未能兌換。');
+					return false;
+				}
+                         jQuery(".jbtype"+jQuery(".jbtype:checked").val()).each(function(i){
+                             if(this.value == ''){
+                                    if(jQuery(".jbtype:checked").val() == 1){
+                                        alert('請填寫完整銀行信息');
+                                        is_submit=0
+                                        return false;
+                                    }else{
+                                        alert('請填寫完整機構信息');
+                                        is_submit=0
+                                        return false;
+                                    }
+                             }
+                         })
+            if(is_submit == 1){
+                $("#Form").submit();
+             }
+			//
+			});
+		</script>	 
+		{if $account}
+		<div class="font_size_24">好幣兌換記錄</div>
+		<!--#金币兑换记录 start-->	
+		<div class="exchange_tit">
+			<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr align="center">
+					<td width="15%">日期</td>
+					<td width="15%">兌換現金數值</td>
+					<td width="25%">情況</td>
+					<td>兌換選擇</td>
+				</tr>
+			</table>
+		</div>
+		<div class="exchange_con">
+			<table border="0" width="100%" cellpadding="5" cellspacing="6">
+			  {loop $account $log}
+				<tr align="center">
+					<td width="15%">{$log.change_time}</td>
+					<td width="15%">{$log.jbnum}</td>
+					<td width="25%">{$price_state[$log.change_status]}</td>
+					<td>{$log.desc}</td>
+				</tr>
+			  {/loop}	
+				
+			</table>
+		</div>
+		<div class="blank5"></div>
+		{/if}
+		<!--#金币兑换记录 end-->
+		
+	</div>
+	<!--/left-->
+	<!--{template lbi_placeinfo_right}-->
+
+</div>
+
+
+
+
+<style>
+    
+    .exchange_tit {
+background-color: #EFEFEF;
+height: 35px;
+line-height:35px;
+text-align:center;
+border-bottom: 1px solid #838383;
+overflow: hidden;
+}
+</style>
+
+
+
+
+
+<!--{template jbprice_ooter}-->

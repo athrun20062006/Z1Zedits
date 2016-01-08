@@ -1,0 +1,135 @@
+			<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select name="startaddress" >
+					<option value="">選擇地區</option>
+					{loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+						{/loop}
+				</select>
+				<select name="site_cat">
+					<option value="">探險分類</option>
+						{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="share"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+			<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+				<!--#排序 start-->
+				<!--{eval $st = 'desc'; $scss = '';}-->	
+				{if $_GET['ordersc'] == 'desc'}
+				<!--{eval $st = 'asc'}-->
+				<!--{eval $scss = 'sortdesc' }-->
+				{else}
+				<!--{eval $st = 'desc'}-->
+				<!--{eval $scss = 'sortasc'}-->
+				{/if}
+			<div class="sortBox clearfix">
+				<div class="sort"><a href="space-home-ucat.html">個人分類</a>&nbsp;&nbsp;&nbsp;排序：
+					<a href="{$mpurl1}&orderby=addtime&ordersc={if $_GET['orderby'] == 'addtime'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'addtime'} class="{$scss}" {/if}>發表日期</span></a>
+					<a href="{$mpurl1}&orderby=diannum&ordersc={if $_GET['orderby'] == 'diannum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'diannum'} class="{$scss}"{/if}>"掂"數</span></a>
+					<a href="{$mpurl1}&orderby=clicknum&ordersc={if $_GET['orderby'] == 'clicknum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'clicknum'}class="{$scss}"{/if}>人氣</span></a>
+						<!--{if $_GET[type] != 'comment'}--><a href="{$mpurl1}&orderby=commentnum&ordersc={if $_GET['orderby'] == 'commentnum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'commentnum'}class="{$scss}"{/if}>留言</span></a><!--{/if}-->
+				</div>
+				<div class="share_tab"><a href="space-home-share.html" style="color:#e31a3e">攻略</a></div>
+			</div>
+				<!--#排序 end-->
+			<div class="comment">
+				<div class="mcon">
+						{loop $article $key $item}
+					<ul style="padding:0px; position:relative; height:160px;">
+						<li class="thumb">
+			{if $item.is_draft != 1}
+							<a href="space-article-id-{$item.articleid}.html" class="laiyuan">
+			{/if}
+								<img src="{$item.thumb}" alt="{$item.thumb_alt}" width="160" height="120" onload="resizeThumb(this,160,120);"/>
+			{if $item.is_draft != 1}
+							</a>
+			{/if}
+						</li>
+						<li class="txt" style="padding-right:0px;">
+							<p style="position:absolute; top:110px; left:186px;">
+						{if $item.placeid}
+							{if $item.article_rank>=5}
+								<img src="template/default/images/01_3.png"/>
+							{elseif $item.article_rank>0}
+								<img src="template/default/images/01_4.png"/>
+							{else}
+								<a style="color:#7C9E28; font-size:12px; text-decoration:underline;" href="cp-article-{$item.articleid}.html">我要評分！</a>
+							{/if}
+								<strong style="color:#FF8000; font-size:12px;">
+									攻略涉及好去處&nbsp;:&nbsp;
+									<a style="color:#708090; font-size:12px;" href="space-place-id-{$item.placeid}.html">{if empty($item.placename)}不知名好去處{else}{$item.placename}{/if}</a>
+								</strong>
+						{else}
+								<a style="color:#708090; font-size:12px; text-decoration:underline;" href="cp-article-{$item.articleid}.html">
+									我要添加好去處到攻略！
+								</a>
+						{/if}
+							</p>
+								<a href="space-article-id-{$item.articleid}.html" class="laiyuan">{$item.title}</a>
+				{if $item.is_draft == 1}
+								<span id="act_{$item.articleid}">[草稿 <a href="javascript:;" onclick="if(!confirm('確認要發佈嗎？')){return false;}{ putoutcom({$item.articleid}) }" style="font-size:12px">確認發佈</a>]</span>
+				{/if}
+							<p>
+								發表日期：<font color="#B32D46">{$item.addtime}</font>
+								{$levelUp}<a class="action_css" href="cp-article-{$item.articleid}.html">編輯</a>{$levelUp}
+								<a class="action_css" onclick="if(confirm('你確定要刪除該條數據嗎？')){return true;}return false;" href="space-home-share-del-{$item.articleid}.html">刪除</a>
+							</p>
+							<div>{$item.content}</div>
+						</li>
+						<li class="views" style="position:absolute; overflow:visible; float:none; top:0px; right:0px;">
+							{if $item.admin_hot==1}<div class="tj_ico"><img src="image/tuijie.png"/></div>{/if}
+							<div class="click_num">{$item.clicknum}/{$item.commentnum}留言</div>
+							<div class="clear"></div>
+							<div id="dian_{$item.articleid}" class="art_dian" name="{$item.diannum}">{$item.diannum}</div>
+							<p><img src="template/default/images/{$item.dian_img}.gif" id="img_{$item.articleid}" class="dian"/></p>
+							{if !is_null($item.price)}<div class="clear"></div><div class="f_r">是次消費：每人平均約HK$ {$item.price}</div>{/if}
+						</li>
+					</ul>
+						{/loop}
+						<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div class="blank5"></div>
+					<div id="ad_lpagebotad">
+							<!--{ad($is_mobile,'lpagebotad')}-->
+					</div>
+						<!--{/if}-->
+					<div class="blank5"></div>
+					   {if $multi}
+					<div class="pagebar" id="pager">
+						<div class="page">
+								{$multi}
+						</div>
+					</div>
+						{/if}
+				</div>
+			</div>
+				<script>
+					//确认发布攻略信息
+					function putoutcom(comid)
+					{
+						jQuery.ajax({
+						   type: "get",
+						   url: "ajax_info.php",
+						   data: "do=putoutart&comid="+comid,
+						   dataType:'json',
+						   success:putout_com
+						});
+					}
+					function putout_com (msg)
+					{
+						jQuery("#act_"+(msg.cid)).html('');
+						window.location.reload();
+					}
+					jQuery(".laiyuan").live('click',function(){
+						loacl_cuanji();
+					})
+				</script>
+		</div>

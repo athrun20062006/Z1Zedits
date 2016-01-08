@@ -1,0 +1,31 @@
+<!--{template header}-->
+<div id="wrap">
+<!--{template cp_header}-->
+
+<form method="post" action="admincp.php" class="c_form">
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+<table cellspacing="0" cellpadding="0" class="formtable">
+	<caption>
+		<h2>高級管理</h2>
+		<p>通過高級管理，您可以對自己的日誌、圖片、留言等進行批量刪除管理。<br>為了保護您的數據安全，請再次輸入您的賬戶密碼以登錄高級管理平台。</p>
+	</caption>
+	<tr>
+		<th width="120">用戶名</th>
+		<td>$_SGLOBAL[username] (<a href="cp.php?ac=common&op=logout">退出</a>)</td>
+	</tr>
+	<tr>
+		<th>密碼</th>
+		<td><input type="password" name="password" class="t_input" /></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="hidden" name="loginsubmit" value="true" />
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="submit" name="btnsubmit" value="進入平台" class="submit" />
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+<!--{template footer}-->

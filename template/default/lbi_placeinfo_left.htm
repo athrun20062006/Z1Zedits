@@ -1,0 +1,400 @@
+<style>
+.level1HeaderBar
+{
+	padding-top:6px;
+	padding-bottom:6px;
+	border-top:1px;
+	border-top-color:#C0C0C0;
+	border-top-style:solid;
+	color:#195072;
+	font-size:16px;
+}
+.level2HeaderBar
+{
+	padding-top:6px;
+	padding-bottom:6px;
+	color:#C0C0C0;
+	font-size:16px;
+	text-align:center;
+	border-bottom:1px;
+	border-bottom-color:#C0C0C0;
+	border-bottom-style:solid;
+}
+.level3HeaderBar
+{
+	padding-top:6px;
+	padding-bottom:6px;
+	color:#C0C0C0;
+	font-size:16px;
+	text-align:center;
+	border-bottom:1px;
+	border-bottom-color:#C0C0C0;
+	border-bottom-style:solid;
+}
+.searchBox
+{
+	color:#195C84;
+	background:#FFFFFF;
+	font-size:13px;
+}
+.level0
+{
+	text-align:left;
+}
+.level0 a
+{
+	color:#195C84;
+}
+.level1
+{
+	text-align:left;
+}
+.criteria
+{
+	padding:6px;
+}
+.criteria a
+{
+	text-align:left;
+	color:#195C84;
+	vertical-align:top;
+}
+.level2floating
+{
+	display:none;
+	float:right;
+	position:absolute;
+	left:140px;
+	top:-1px;
+	z-index:1000;
+	height:200%;
+	width:100%;
+	word-break:break-word;
+	background-color:#FFFFFF;
+	border:1px;
+	border-style:solid;
+	border-color:#C0C0C0;
+}
+.level2floating span
+{
+	color:#195C84;
+}
+.level3floating
+{
+	display:none;
+	float:right;
+	position:absolute;
+	left:140px;
+	top:-1px;
+	z-index:1000;
+	height:100%;
+	width:100%;
+	word-break:break-word;
+	background-color:#FFFFFF;
+	border:1px;
+	border-style:solid;
+	border-color:#C0C0C0;
+}
+.sneaky
+{
+	display:none;
+}
+#leftSearchUnplug div
+{
+	display:inline-block;
+	font-size:12px;
+	padding:1px;
+	margin:5px;
+	border:1px;
+	border-color:#C0C0C0;
+	border-style:solid;
+}
+</style>
+<div style="float:left; width:140px; padding:0px; margin-right:15px; text-align:center; border:1px; border-color:#C0C0C0; border-style:solid; position:relative;">
+	<div id="leftSearchUnplug" style="{if $_GET['favorable']!=1&&empty($filter['objective'])&&empty($areaLv1)&&empty($filter['price'])&&empty($catLv1)&&empty($_GET['keyword'])&&empty($_GET['address'])}display:none;{/if}">
+		{if !empty($areaLv1)}
+		<div>
+			<a href="space.php?do=place&category2=$catLv2[0]&category3=$catLv3[0]">
+				$placearea<img src="template/default/images/del.gif">
+			</a>
+		</div>
+		{/if}
+		{if !empty($catLv1)}
+		<div>
+			<a href="space.php?do=place&city[0][0]=$areaLv1[0]&city[0][1]=$areaLv2[0]">
+				$catBadge<img src="template/default/images/del.gif">
+			</a>
+		</div>
+		{/if}
+		{if !empty($objective)}
+		<div>
+			<a href="space.php?do=place&category2=$catLv2[0]&category3=$catLv3[0]&city[0][0]=$areaLv1[0]&city[0][1]=$areaLv2[0]">
+				$placeobjective<img src="template/default/images/del.gif">
+			</a>
+		</div>
+		{/if}
+		{if $couponnum>0}
+		<div>
+			<a href="space.php?do=place&category2=$catLv2[0]&category3=$catLv3[0]&city[0][0]=$areaLv1[0]&city[0][1]=$areaLv2[0]">
+				$couponNatures<img src="template/default/images/del.gif">
+			</a>
+		</div>
+		{/if}
+		{if $priceRange}
+		<div>
+			<a href="space.php?do=place&category2=$catLv2[0]&category3=$catLv3[0]&city[0][0]=$areaLv1[0]&city[0][1]=$areaLv2[0]">
+				$placeinfo.placeprice<img src="template/default/images/del.gif">
+			</a>
+		</div>
+		{/if}
+		{if $couponnum>0||!empty($objective)||!empty($areaLv1)||!empty($priceRange)||!empty($catLv1)}
+		<div><a href="space.php?do=place" style="color:#FF0000; font-size:13px;">清除所有</a></div>
+		{/if}
+	</div>
+	<div id="leftSearchJetso">
+		<h4 class="level1HeaderBar">特搜著數</h4>
+		<div class="searchBox">
+			<div class="level0">
+				<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&price[0]=$priceRange" style="{if $couponnum<1}display:none;{/if}">{$pullDown}不分優惠</a>
+			</div>
+			<div>
+			{loop $coupon_type $key $meit}
+				<div class="level1" onmouseenter="showLevelTwo(this);" onmouseleave="hideLevelTwo1(this);"><!-- style="{if $favorTag1==-1||$key==$favorTag1}display:block;{elseif $favorTag1!=-1}display:none;{/if}"-->
+					<div class="criteria">
+						<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&price[0]=$priceRange&favorable[0]=$meit.rule&favorable[1]=$meit.criteria">
+							<span style="{if $couponnum>0}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if $couponnum<1}this.style.color='#FF8000';{/if}" onmouseleave="{if $couponnum<1}this.style.color='#195C84';{/if}">{$meit.name}</span>
+						</a>
+						<img class="Lv2paneLcontroL" style="padding-left:5px; margin:0px; border:0px;" src="image/closed.png"/>
+					</div>
+					<div class="level2floating" onmouseleave="hideLevelTwo(this);">
+						<h5 class="level2HeaderBar">{$meit.name}</h5>
+					{loop $meit.child $childkey $childitem}
+						<div style="display:block; padding:6px;">
+							<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&price[0]=$priceRange&favorable[0]=<!--{eval echo $meit[rule]|$childitem[rule];}-->&favorable[1]=<!--{eval echo $meit[criteria]|$childitem[criteria];}-->">
+								<span onmouseenter="this.style.color='#FF8000';" onmouseleave="this.style.color='#195C84';">{$childitem.name}</span>
+							</a>
+						</div>
+					{/loop}
+					</div>
+					<div class="level2">
+						{loop $meit.child $childkey $childitem}
+						<div class="{if !in_array($childkey,$favorTag2)}sneaky{/if} criteria">
+							<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&price[0]=$priceRange&favorable[0]=<!--{eval echo $meit[rule]|$childitem[rule];}-->&favorable[1]=<!--{eval echo $meit[criteria]|$childitem[criteria];}-->">
+								{$levelUp}<span style="{if in_array($childkey,$favorTag2)}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if !in_array($childkey,$favorTag2)}this.style.color='#FF8000';{/if}" onmouseleave="{if !in_array($childkey,$favorTag2)}this.style.color='#195C84';{/if}">{$childitem.name}</span>
+							</a>
+						</div>
+					{/loop}
+					</div>
+				</div>
+			{/loop}
+			</div>
+		</div>
+	</div>
+	<div id="leftSearchCats">
+		<h4 class="level1HeaderBar">選擇分類</h4>
+		<div class="searchBox">
+			<div class="level0">
+				<a href="space.php?do=place&city[0][1]=$areaLv2[0]">{$pullDown}全部分類</a>
+			</div>
+			<div>
+			{loop $category $key $etim}
+				<div class="level1" onmouseenter="showLevelTwo(this);" onmouseleave="hideLevelTwo1(this);">
+					<div class="criteria">
+						<a href="space.php?do=place&city[0][1]=$areaLv2[0]&category1=$etim.catid">
+							<span style="{if in_array($etim.catid,$catLv1)}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if !in_array($etim.catid,$catLv1)}this.style.color='#FF8000';{/if}" onmouseleave="{if !in_array($etim.catid,$catLv1)}this.style.color='#195C84';{/if}">{$etim.catname}</span>
+						</a>
+						<img class="Lv2paneLcontroL" style="padding-left:5px; margin:0px; border:0px;" src="image/closed.png"/>
+					</div>
+					<div class="level2floating" onmouseleave="hideLevelTwo(this);">
+						<h5 class="level2HeaderBar">{$etim.catname}</h5>
+					{loop $etim.child $childkey $childitem}
+						<div style="display:block; padding:6px;" onmouseenter="showLevelThree(this);" onmouseleave="hideLevelThree(this);">
+							<a href="space.php?do=place&city[0][1]=$areaLv2[0]&category2=$childitem.catid">
+								<span onmouseenter="this.style.color='#FF8000';" onmouseleave="this.style.color='#195C84';">{$childitem.catname}</span>
+							</a>
+							{if $childitem.child}
+							<img class="Lv3paneLcontroL" style="padding-left:5px; margin:0px; border:0px;" src="image/closed.png"/>
+							<div class="level3floating" onmouseleave="this.style.display='none';">
+								<h6 class="level3HeaderBar">{$childitem.catname}</h6>
+								{loop $childitem.child $lvthreekey $lvthreeitem}
+									<div style="display:block; padding:6px;">
+										<a href="space.php?do=place&city[0][1]=$areaLv2[0]&category3=$lvthreeitem.catid">
+											<span onmouseenter="this.style.color='#FF8000';" onmouseleave="this.style.color='#195C84';">{$lvthreeitem.catname}</span>
+										</a>
+									</div>
+								{/loop}
+							</div>
+							{/if}
+						</div>
+					{/loop}
+					</div>
+					<div class="level2">
+					{loop $etim.child $childkey $childitem}
+						<div class="{if empty($catLv2)||(!empty($catLv2)&&!in_array($childitem.catid,$catLv2))}sneaky{/if} criteria">
+							<a href="space.php?do=place&city[0][1]=$areaLv2[0]&category2=$childitem.catid">
+								{$levelUp}<span style="{if in_array($childitem.catid,$catLv2)}background-color:#FF8000; color:#FFFFFF;{/if}">{$childitem.catname}</span>
+							</a>
+							{if $childitem.child}
+							<img class="Lv3paneLcontroL" style="padding-left:5px; margin:0px; border:0px;" src="image/closed.png"/>
+							{/if}
+							<div class="level3">
+							{loop $childitem.child $legacy $seergaze}
+								<div class="{if (!empty($catLv3)&&!in_array($seergaze.catid,$catLv3))}sneaky{/if} criteria">
+									<a href="space.php?do=place&city[0][1]=$areaLv2[0]&category3=$seergaze.catid">
+										{$levelUp}{$levelUp}<span style="{if in_array($seergaze.catid,$catLv3)}background-color:#FF8000; color:#FFFFFF;{/if}">{$seergaze.catname}</span>
+									</a>
+								</div>
+							{/loop}
+							</div>
+						</div>
+					{/loop}
+					</div>
+				</div>
+			{/loop}
+			</div>
+		</div>
+	</div>
+	<div id="leftSearchAreas">
+		<h4 class="level1HeaderBar">選擇地區</h4>
+		<div class="searchBox">
+			<div class="level0">
+				<a href="space.php?do=place&category2=$catLv2[0]">{$pullDown}全部地區</a>
+			</div>
+			<div>
+				{loop $place_city $key $item}
+				<div class="level1" onmouseenter="showLevelTwo(this);" onmouseleave="hideLevelTwo1(this);">
+					<div class="criteria">
+						<a href="space.php?do=place&city[0][0]=$key&category2=$catLv2[0]">
+							<span style="{if in_array($key,$areaLv1)}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if !in_array($key,$areaLv1)}this.style.color='#FF8000';{/if}" onmouseleave="{if !in_array($key,$areaLv1)}this.style.color='#195C84';{/if}">{$item.name}</span>
+						</a>
+						<img class="Lv2paneLcontroL" style="padding-left:5px; margin:0px; border:0px;" src="image/closed.png"/>
+					</div>
+					<div class="level2floating" onmouseleave="hideLevelTwo(this);">
+						<h5 class="level2HeaderBar">{$item.name}</h5>
+						{loop $item.child $childkey $childitem}
+						<div style="display:block; margin:12px;">
+							<a href="space.php?do=place&city[0][1]=$childkey&category2=$catLv2[0]">
+								<span onmouseenter="this.style.color='#FF8000';" onmouseleave="this.style.color='#195C84';">{$childitem.name}</span>
+							</a>
+						</div>
+					{/loop}
+					</div>
+					<div class="level2">
+						<!--{eval $dictator=0;}-->
+						{loop $item.child $childkey $childitem}
+						{if empty($subcities)||in_array($childkey,$subcities)}
+						<!--{eval $dictator++;}-->
+						{/if}
+						<div class="{if !empty($areaLv2)&&!in_array($childkey,$areaLv2)}sneaky{elseif empty($areaLv2)&&$dictator>2}sneaky{/if} criteria">
+							<a href="space.php?do=place&city[0][1]=$childkey&category2=$catLv2[0]">
+								{$levelUp}<span style="{if in_array($childkey,$areaLv2)}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if !in_array($childkey,$areaLv2)}this.style.color='#FF8000';{/if}" onmouseleave="{if !in_array($childkey,$areaLv2)}this.style.color='#195C84';{/if}">{$childitem.name}</span>
+							</a>
+						</div>
+						{/loop}
+					</div>
+				</div>
+				{/loop}
+			</div>
+		</div>
+	</div>
+	<div id="leftSearchCost">
+		<h4 class="level1HeaderBar">人均消費</h4>
+		<div class="searchBox">
+			<div class="level0">
+				<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]" style="{if empty($priceRange)}display:none;{/if}">{$pullDown}全部消費</a>
+			</div>
+			{loop $place_price $key $mite}
+			<div>
+				<div class="level1">
+					<div class="criteria" style="{if (!empty($priceRange)&&$priceRange!=$key)}display:none;{/if}">
+						<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&price[0]=$key">
+							<span style="{if !empty($priceRange)&&$priceRange==$key}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if empty($priceRange)||$priceRange!=$key}this.style.color='#FF8000';{/if}" onmouseleave="{if empty($priceRange)||$priceRange!=$key}this.style.color='#195C84';{/if}">{$mite.name}</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			{/loop}
+		</div>
+	</div>
+	<div id="leftSearchObjective">
+		<h4 class="level1HeaderBar">活動目的</h4>
+		<div class="searchBox">
+			<div class="level0">
+				<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]" style="{if empty($objective)}display:none;{/if}">{$pullDown}全部目的</a>
+			</div>
+			{loop $placeObjective $key $time}{if $key>0}
+			<div>
+				<div class="level1">
+					<div class="criteria" style="{if !empty($objective)&&!in_array($key,$objective)}display:none;{/if}">
+						<a href="space.php?do=place&category2=$catLv2[0]&city[0][1]=$areaLv2[0]&objective[0]=$key">
+							<span style="{if !empty($objective)&&in_array($key,$objective)}background-color:#FF8000; color:#FFFFFF;{/if}" onmouseenter="{if empty($objective)||!in_array($key,$objective)}this.style.color='#FF8000';{/if}" onmouseleave="{if empty($objective)||!in_array($key,$objective)}this.style.color='#195C84';{/if}">{$time}</span>
+						</a>
+					</div>
+				</div>
+			</div>{/if}
+			{/loop}
+		</div>
+	</div>
+</div>
+<script>
+function hideLevelTwo(cramp)
+{
+	cramp.style.display="none";
+}
+function hideLevelThree(cramp)
+{
+	var subPanels=cramp.getElementsByClassName("level3floating");
+	for(var i=0;i<subPanels.length;i++)
+	{
+		subPanels[i].style.display="none";
+	}
+	cramp.style.borderTop="0px solid #C0C0C0";
+	cramp.style.borderBottom="0px solid #C0C0C0";
+	cramp.style.borderLeft="0px solid #C0C0C0";
+}
+function showLevelThree(cloud)
+{
+	var siblingsLv3=cloud.getElementsByClassName("level3floating");
+	var searchList=cloud.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+	var outsideLv3=searchList.getElementsByClassName("level3floating");
+	for(var i=0;i<outsideLv3.length;i++)
+	{
+		outsideLv3[i].style.display="none";
+	}
+	for(var i=0;i<siblingsLv3.length;i++)
+	{
+		siblingsLv3[i].style.display="block";
+	}
+	cloud.style.borderTop="1px solid #C0C0C0";
+	cloud.style.borderBottom="1px solid #C0C0C0";
+	cloud.style.borderLeft="3px solid #0080FF";
+}
+function showLevelTwo(arrow)
+{
+	var siblingsLv2=arrow.getElementsByClassName("level2floating");
+	var searchList=arrow.parentNode.parentNode.parentNode.parentNode;
+	var outsideLv2=searchList.getElementsByClassName("level2floating");
+	for(var i=0;i<outsideLv2.length;i++)
+	{
+		outsideLv2[i].style.display="none";
+	}
+	for(var i=0;i<siblingsLv2.length;i++)
+	{
+		siblingsLv2[i].style.display="block";
+	}
+	arrow.style.borderTop="1px solid #C0C0C0";
+	arrow.style.borderBottom="1px solid #C0C0C0";
+	arrow.style.borderLeft="3px solid #0080FF";
+}
+function hideLevelTwo1(cramp)
+{
+	var subPanels=cramp.getElementsByClassName("level2floating");
+	for(var i=0;i<subPanels.length;i++)
+	{
+		subPanels[i].style.display="none";
+	}
+	cramp.style.borderTop="0px solid #C0C0C0";
+	cramp.style.borderBottom="0px solid #C0C0C0";
+	cramp.style.borderLeft="0px solid #C0C0C0";
+}
+</script>

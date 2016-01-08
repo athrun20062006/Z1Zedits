@@ -1,0 +1,418 @@
+<!--{template header}-->
+<!--{template cp_header}-->
+
+<div class="l_status c_form">
+	<a href="cp.php?ac=privacy"$cat_actives[base]>隱私設置</a><span class="pipe">|</span>
+	<a href="cp.php?ac=privacy&op=view"$cat_actives[view]>動態篩選</a>
+</div>
+
+
+<form method="post" action="cp.php?ac=privacy" class="c_form">
+
+<!--{if empty($_GET['op'])}-->
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>個人隱私設置</h2>
+			<p>你可以完全控制哪些人可以看到你的主頁上面的內容</p>
+		</caption>
+		<tr>
+			<th width="150">個人主頁</th>
+			<td><select name="privacy[view][index]">
+				<option value="0"$sels[view][index][0]>全站用戶可見</option>
+				<option value="1"$sels[view][index][1]>僅好友可見</option>
+				<option value="2"$sels[view][index][2]>僅自己可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>好友列表</th>
+			<td><select name="privacy[view][friend]">
+				<option value="0"$sels[view][friend][0]>全站用戶可見</option>
+				<option value="1"$sels[view][friend][1]>僅好友可見</option>
+				<option value="2"$sels[view][friend][2]>僅自己可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>留言板</th>
+			<td><select name="privacy[view][wall]">
+				<option value="0"$sels[view][wall][0]>全站用戶可見</option>
+				<option value="1"$sels[view][wall][1]>僅好友可見</option>
+				<option value="2"$sels[view][wall][2]>僅自己可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>個人動態</th>
+			<td><select name="privacy[view][feed]">
+				<option value="0"$sels[view][feed][0]>全站用戶可見</option>
+				<option value="1"$sels[view][feed][1]>僅好友可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>記錄</th>
+			<td><select name="privacy[view][doing]">
+				<option value="0"$sels[view][doing][0]>全站用戶可見</option>
+				<option value="1"$sels[view][doing][1]>僅好友可見</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">
+				本隱私設置僅在其他用戶查看您主頁時有效；
+				<br>在全站的記錄列表中可能會出現您的記錄。
+			</td>
+		</tr>
+		<tr>
+			<th>日誌</th>
+			<td><select name="privacy[view][blog]">
+				<option value="0"$sels[view][blog][0]>全站用戶可見</option>
+				<option value="1"$sels[view][blog][1]>僅好友可見</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">本隱私設置僅在其他用戶查看您主頁時有效；
+				<br>相關瀏覽權限需要在每篇日誌中單獨設置方可完全生效。
+				</td>
+		</tr>
+		<tr>
+			<th>相冊</th>
+			<td><select name="privacy[view][album]">
+				<option value="0"$sels[view][album][0]>全站用戶可見</option>
+				<option value="1"$sels[view][album][1]>僅好友可見</option>
+				</select>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">本隱私設置僅在其他用戶查看您主頁時有效；
+				<br>相關瀏覽權限需要在每個相冊中單獨設置方可完全生效。</td>
+		</tr>
+		<tr>
+			<th>分享</th>
+			<td><select name="privacy[view][share]">
+				<option value="0"$sels[view][share][0]>全站用戶可見</option>
+				<option value="1"$sels[view][share][1]>僅好友可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">
+				本隱私設置僅在其他用戶查看您主頁時有效；
+				<br>在全站的分享列表中可能會出現您的分享。
+			</td>
+		</tr>
+		<tr>
+			<th>活動</th>
+			<td><select name="privacy[view][event]">
+				<option value="0"$sels[view][event][0]>全站用戶可見</option>
+				<option value="1"$sels[view][event][1]>僅好友可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">
+				本隱私設置僅在其他用戶查看您主頁時有效；
+			</td>
+		</tr>
+		<tr>
+			<th>投票</th>
+			<td><select name="privacy[view][poll]">
+				<option value="0"$sels[view][poll][0]>全站用戶可見</option>
+				<option value="1"$sels[view][poll][1]>僅好友可見</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td class="gray">
+				本隱私設置僅在其他用戶查看您主頁時有效；
+			</td>
+		</tr>
+		<tr>
+			<th>群組</th>
+			<td><select name="privacy[view][mtag]">
+				<option value="0"$sels[view][mtag][0]>全站用戶可見</option>
+				<option value="1"$sels[view][mtag][1]>僅好友可見</option>
+				<option value="2"$sels[view][mtag][2]>僅自己可見</option>
+				</select></td>
+		</tr>
+		<!--{if $_SCONFIG[videophoto] && $space[videostatus]}-->
+		<tr>
+			<th></th>
+			<td><img src="image/videophoto.gif" align="absmiddle"> 你已經通過視頻認證，對於沒有通過視頻認證的用戶，你可以設置以下權限：</td>
+		</tr>
+		<tr>
+			<th>查看我的認證照片</th>
+			<td><select name="privacy[view][videoviewphoto]">
+				<option value="0"$sels[view][videoviewphoto][0]>站點默認設置</option>
+				<option value="1"$sels[view][videoviewphoto][1]>允許</option>
+				<option value="2"$sels[view][videoviewphoto][2]>禁止</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>向我申請好友</th>
+			<td><select name="privacy[view][videofriend]">
+				<option value="0"$sels[view][videofriend][0]>站點默認設置</option>
+				<option value="1"$sels[view][videofriend][1]>允許</option>
+				<option value="2"$sels[view][videofriend][2]>禁止</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>向我打招呼</th>
+			<td><select name="privacy[view][videopoke]">
+				<option value="0"$sels[view][videopoke][0]>站點默認設置</option>
+				<option value="1"$sels[view][videopoke][1]>允許</option>
+				<option value="2"$sels[view][videopoke][2]>禁止</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>給我留言</th>
+			<td><select name="privacy[view][videowall]">
+				<option value="0"$sels[view][videowall][0]>站點默認設置</option>
+				<option value="1"$sels[view][videowall][1]>允許</option>
+				<option value="2"$sels[view][videowall][2]>禁止</option>
+				</select></td>
+		</tr>
+		<tr>
+			<th>評論我的信息</th>
+			<td><select name="privacy[view][videocomment]">
+				<option value="0"$sels[view][videocomment][0]>站點默認設置</option>
+				<option value="1"$sels[view][videocomment][1]>允許</option>
+				<option value="2"$sels[view][videocomment][2]>禁止</option>
+				</select></td>
+		</tr>
+		<!--{/if}-->
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="submit" name="privacysubmit" value="保存設置" class="submit"></td>
+		</tr>
+	</table>
+	
+	<table cellspacing="0" cellpadding="0" class="formtable" id="feed">
+		<caption>
+			<h2>個人動態發佈設置</h2>
+			<p>系統會將您的各項動作反映到個人動態裡，方便朋友瞭解你的動態。<br>你可以控制是否在下列動作發生時，在個人動態裡發佈相關信息</p>
+		</caption>
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][doing]" value="1"$sels[feed][doing]>記錄</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][blog]" value="1"$sels[feed][blog]>撰寫日誌</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][upload]" value="1"$sels[feed][upload]>上傳圖片</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][share]" value="1"$sels[feed][share]>添加分享</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][poll]" value="1"$sels[feed][poll]>發起投票</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][joinpoll]" value="1"$sels[feed][joinpoll]>參與投票</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][thread]" value="1"$sels[feed][thread]>發起話題</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][post]" value="1"$sels[feed][post]>對話題回復</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][mtag]" value="1"$sels[feed][mtag]>加入群組</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][event]" value="1"$sels[feed][event]>發起活動</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][join]" value="1"$sels[feed][join]>參加活動</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][friend]" value="1"$sels[feed][friend]>添加好友</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][comment]" value="1"$sels[feed][comment]>發表評論/留言</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][show]" value="1"$sels[feed][show]>競價排名</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][credit]" value="1"$sels[feed][credit]>積分消費</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][invite]" value="1"$sels[feed][invite]>邀請好友</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][task]" value="1"$sels[feed][task]>完成任務</td>
+		</tr>				
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][profile]" value="1"$sels[feed][profile]>更新個人資料</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="checkbox" name="privacy[feed][click]" value="1"$sels[feed][click]>對日誌/圖片/話題表態</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="submit" name="privacysubmit" value="保存設置" class="submit"></td>
+		</tr>
+	</table>
+	
+<!--{else}-->
+	<!--{eval
+			$iconnames['activity'] = '日誌';
+			$iconnames['album'] = '相冊';
+			$iconnames['blog'] = '日誌';
+			$iconnames['comment'] = '評論';
+			$iconnames['blogcomment'] = '日誌評論';
+			$iconnames['clickblog'] = '日誌表態';
+			$iconnames['clickpic'] = '圖片表態';
+			$iconnames['clickthread'] = '話題表態';
+			$iconnames['piccomment'] = '圖片評論';
+			$iconnames['sharecomment'] = '分享評論';
+			$iconnames['debate'] = '論壇辯論';
+			$iconnames['discuz'] = '論壇';
+			$iconnames['doing'] = '記錄';
+			$iconnames['friend'] = '好友';
+			$iconnames['goods'] = '商品';
+			$iconnames['mood'] = '心情';
+			$iconnames['mtag'] = '群組';
+			$iconnames['event'] = '活動';
+			$iconnames['eventcomment'] = '活動留言';
+			$iconnames['eventmember'] = '活動成員管理';
+			$iconnames['eventmemberstatus'] = '活動成員身份';
+			$iconnames['network'] = '隨便看看';
+			$iconnames['poll'] = '論壇投票';
+			$iconnames['post'] = '論壇回貼';
+			$iconnames['profile'] = '更新個人資料';
+			$iconnames['reward'] = '論壇懸賞';
+			$iconnames['share'] = '分享';
+			$iconnames['sharenotice'] = '分享通知';
+			$iconnames['show'] = '排行榜';
+			$iconnames['task'] = '有獎任務';
+			$iconnames['thread'] = '話題';
+			$iconnames['post'] = '話題回復';
+			$iconnames['video'] = '視頻';
+			$iconnames['wall'] = '留言';
+			$iconnames['credit'] = '贈送競價積分';
+			$iconnames['poll'] = '投票';
+			$iconnames['pollcomment'] = '投票評論';
+			$iconnames['pollinvite'] = '投票邀請';
+		}-->
+
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>篩選規則一：屏蔽指定用戶組的動態</h2>
+			<p>你可以決定屏蔽哪些用戶組的動態，屏蔽用戶組內的組員所發佈的動態都將被屏蔽掉。</p>
+		</caption>
+		<!--{loop $groups $key $value}-->
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td><input type="checkbox" name="privacy[filter_gid][$key]" value="$key"<!--{if isset($space['privacy']['filter_gid'][$key])}--> checked<!--{/if}-->>
+				$value</td>
+		</tr>
+		<!--{/loop}-->
+		<tr>
+			<th>&nbsp;</th>
+			<td>
+			<input type="submit" name="privacy2submit" value="保存設置" class="submit">
+			<br>您可以在自己的<a href="space.php?do=friend">好友列表</a>中，對好友進行分組，並可以對用戶組進行改名。
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>篩選規則二：屏蔽指定好友指定類型的動態</h2>
+			<p>點擊一下首頁好友動態列表後面的屏蔽標誌，就可以屏蔽指定好友指定類型的動態了。<br>下面列出的是您已經屏蔽的動態類型識別名和好友名，你可以選擇是否取消屏蔽。</p>
+		</caption>
+		<!--{if $icons}-->
+		
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td>
+			<ul>
+			<!--{loop $icons $key $icon}-->
+			<!--{eval $uid = $uids[$key];$icon_uid="$icon|$uid";}-->
+			<li>
+			<!--{if is_numeric($icon)}-->
+				<img src="http://appicon.manyou.com/icons/{$icon}" align="absmiddle">
+			<!--{else}-->
+				<img src="image/icon/{$icon}.gif" align="absmiddle">
+			<!--{/if}-->
+				<input type="checkbox" name="privacy[filter_icon][$icon_uid]" value="1" checked> 
+				<span class="type_$icon"> <!--{if isset($iconnames[$icon])}-->$iconnames[$icon]<!--{else}-->$icon<!--{/if}--> (<!--{if $users[$uid]}--><a href="space.php?uid=$uid" target="_blank">$users[$uid]</a><!--{else}-->所有好友<!--{/if}-->)</span>
+			</li>
+			<!--{/loop}-->
+			</ul>
+			</td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td>
+			<input type="submit" name="privacy2submit" value="保存設置" class="submit">
+			</td>
+		</tr>
+		<!--{else}-->
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td>現在還沒有屏蔽的動態類型</td>
+		</tr>
+		<!--{/if}-->
+	</table>
+	<br>
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>篩選規則三：屏蔽指定好友指定類型的通知</h2>
+			<p>點擊一下通知列表後面的屏蔽標誌，就可以屏蔽指定好友指定類型的通知了。<br>下面列出的是您已經屏蔽的通知類型和好友名，你可以選擇是否取消屏蔽。</p>
+		</caption>
+		<!--{if $types}-->
+		
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td>
+				<ul>
+				<!--{loop $types $key $type}-->
+				<!--{eval $uid = $uids[$key];$type_uid="$type|$uid";}-->
+					<li>
+						<input type="checkbox" name="privacy[filter_note][$type_uid]" value="1" checked>
+						<span class="type_$type"> <!--{if isset($iconnames[$type])}-->$iconnames[$type]<!--{else}-->$type<!--{/if}--> (<!--{if $users[$uid]}--><a href="space.php?uid=$uid" target="_blank">$users[$uid]</a><!--{else}-->所有好友<!--{/if}-->)</span>
+					</li>
+				<!--{/loop}-->
+				</ul>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td>
+			<input type="submit" name="privacy2submit" value="保存設置" class="submit">
+			</td>
+		</tr>
+		<!--{else}-->
+		<tr>
+			<th width="150">&nbsp;</th>
+			<td>現在還沒有屏蔽的通知類型</td>
+		</tr>
+		<!--{/if}-->
+	</table>
+<!--{/if}-->
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+
+
+<!--{template footer}-->

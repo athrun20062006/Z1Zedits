@@ -1,0 +1,19 @@
+<div class="comment">
+	<div class="mcon" id="con_1">
+	 {loop $placecomment $place}
+		<ul>					
+			<li class="thumb"><a href="{$place.pcom_url}"><img src="{$place.pcomment_img}" width="165" ></a></li><li class="txt"><a href="{$place.pcom_url}">{$place.pcomment_title}</a><p>作者：{if $place.uinfo['is_star'] == 2}<img src="image/sstar.gif" class="star"/> {/if}<a href="{$place.user_url}">{$place.uinfo['username']}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;發表日期：<font color="#B32D46">{$place.addtime}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店家/好去處：<font>{$place.placename}</font></p>{$place.content}</li>
+			<li class="views">
+				{if $place.admin_hot}<div class="tj_ico"><img src="image/tuijie.png"></div>{/if}
+				<div class="click_num">{$place.click_count}/{$place.diannum}</div>							
+				<p><img src="template/default/images/view_zheng{$place.pcomment_type}.gif"></p>
+				<div class="clear"></div>
+				{if !is_null($place.pcomment_consume)}
+				<div class="f_r">是次消費：每人平均約HK$ {$place.pcomment_consume}</div>
+				{/if}
+			</li>			
+		</ul>
+		<div class="clear"></div>
+	  {/loop}	
+	</div>						
+</div>

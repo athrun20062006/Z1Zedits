@@ -1,0 +1,36 @@
+<!--{template header}-->
+<!--{template cp_header}-->
+
+<script type="text/javascript">
+	function updateavatar() {
+		window.location.reload();
+	}
+</script>
+<form method="post" action="cp.php?ac=avatar&ref" class="c_form">
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>當前我的頭像</h2>
+			<p>如果您還沒有設置自己的頭像，系統會顯示為默認頭像，您需要自己上傳一張新照片來作為自己的個人頭像。</p>
+		</caption>
+		<tr>
+			<td>
+				<!--{avatar($space[uid],big)}-->
+			</td>
+		</tr>
+	</table>
+
+	<table cellspacing="0" cellpadding="0" class="formtable">
+		<caption>
+			<h2>設置我的新頭像</h2>
+			<p>請選擇一個新照片進行上傳編輯。</p>
+		</caption>
+		<tr>
+			<td>$uc_avatarflash</td>
+		</tr>
+		<tr>
+			<td>提示：頭像保存後，您可能需要刷新一下本頁面(按F5鍵)，才能查看最新的頭像效果。</td>
+		</tr>
+	</table>
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+<!--{template footer}-->

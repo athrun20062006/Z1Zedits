@@ -1,0 +1,24 @@
+<div class="replay_mask" id="replay_mask" style="display: none;">
+	<a class="f_r qx red" onclick="reply_exit();" href="javascript:void(0)">取消</a>
+	<p>對 <span class="red" id="user_id"></span> 回覆：</p>
+</div>
+<script>
+	function reply_mark(param1,param2,param3)
+	{
+		document.getElementById("replay_mask").style.display = "block";
+		var user_id = document.getElementById("user_"+param1).innerHTML;
+		document.getElementById("user_id").innerHTML = user_id;
+		document.getElementById("lp_parent").value = param2;
+		document.getElementById("lp_replyid").value = param1;
+		if(Number(param3) > 0){
+			jQuery("#lp_is_private").attr('checked','checked');
+		}else{
+			jQuery("#lp_is_private").removeAttr('checked');
+		}
+	}
+	function reply_exit(){
+		document.getElementById("replay_mask").style.display = "none";
+		document.getElementById("lp_parent").value = "";
+		document.getElementById("lp_replyid").value = "";
+	}
+</script>

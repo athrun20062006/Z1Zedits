@@ -1,0 +1,103 @@
+<div class="AreaR"><!--appears in index page only-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage01']}-->
+	<div id="ad_rpage01"><!--{ads($is_mobile,'rpage01',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage02']}-->
+	<div id="ad_rpage02"><!--{ads($is_mobile,'rpage02',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage03']}-->
+	<div id="ad_rpage03"><!--{ads($is_mobile,'rpage03',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage04']}-->
+	<div id="ad_rpage04"><!--{ads($is_mobile,'rpage04',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage05']}-->
+	<div id="ad_rpage05"><!--{ads($is_mobile,'rpage05',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage06']}-->
+	<div id="ad_rpage06"><!--{ads($is_mobile,'rpage06',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage07']}-->
+	<div id="ad_rpage07"><!--{ads($is_mobile,'rpage07',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage08']}-->
+	<div id="ad_rpage08"><!--{ads($is_mobile,'rpage08',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage09']}-->
+	<div id="ad_rpage09"><!--{ads($is_mobile,'rpage09',$adkeywords)}--></div>
+	<div class="blank5"></div>
+	<!--{/if}-->
+	<div class="fotBox" id="fotBox">
+		<div id="fot_scroll" >
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage10']}-->
+			<div id="ad_rpage10"><!--{ads($is_mobile,'rpage10',$adkeywords)}--></div>
+			<div class="blank5"></div>
+			<!--{/if}-->
+			
+		</div>
+	</div>
+</div>
+
+<style>
+.fotBox{ width:300px;overflow:hidden;}
+.fotBoxr{ position:static;}
+.fot_scroll{width:300px;position:fixed;_position:absolute;z-index:1000;top:0px;_top:expression( eval((document.documentElement.scrollTop)));}
+.relative{position:static;}
+html {_background-image: url(about:blank);_background-attachment: fixed;}
+</style>
+
+<script>
+
+	$(".tt").each(function(i){
+		$(this).mouseover(function(){
+			$("#topcon_1").html('<div style="text-align:center;"><img src="template/default/images/loading.gif" /></div>');
+			get_ajax_topusers('topuser',this.id);
+		});
+	})
+	/*$(".tt").live('mouseover',function(){
+		$("#topcon_1").html('<div style="text-align:center;"><img src="template/default/images/loading.gif" /></div>');
+		get_ajax_topusers('topuser',this.id);
+	});*/
+	
+	function get_ajax_topusers(action,type_id){
+		jQuery.ajax({
+			type: "POST",
+			cache:false,
+			url: "ajax_info.php",
+			data: "do="+action+"&type="+type_id,
+			dataType:'json',
+			success: function(res){				
+					res_right_users(res);
+			}
+		});
+	}
+	
+	function res_right_users(res)
+	{
+		var right_text='';
+		if(res){
+			var h = 1;
+			for(j=0;j<res.length;j++)
+			{
+				if(Number(res[j]['is_star']) == 2){
+					right_text += '<ul class="clearfix"><li class="topsort">'+h+'</li><li class="topimg">'+res[j]['user_logo']+'</li><li><img src="image/sstar.gif" class="star"/> '+res[j]['username']+'<br>看 <a href="'+res[j]['space_url']+'" target="_blank">Blog ></a></li></ul>';				
+				}else{
+					right_text += '<ul class="clearfix"><li class="topsort">'+h+'</li><li class="topimg">'+res[j]['user_logo']+'</li><li>'+res[j]['username']+'<br>看 <a href="'+res[j]['space_url']+'" target="_blank">Blog ></a></li></ul>';				
+				}
+				h++;
+			}
+		}
+		jQuery("#topcon_1").html(right_text);
+	}
+	get_ajax_topusers('topuser','uw');
+</script>
+
+

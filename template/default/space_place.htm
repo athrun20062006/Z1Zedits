@@ -1,0 +1,206 @@
+<!--{template header}-->
+<script src='https://s.yimg.com/uv/dm/scripts/syndication.js'></script>
+<link href="template/default/css/gongl.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="template/default/js/h_function.js"></script>
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/pre_next.js"></script>
+<div class="mainbox clearfix" style="width:1220px; padding-left:0px;">
+	<!--{template lbi_place_left}-->
+		<div class="AreaL">
+			<div class="gll_header">
+			  <!--#fanny 修改探險熱點頁面顯示探險攻略字樣 2013-11-21 start-->
+				<a href="cp-check.html" class="adbtn1">發現新去處</a>
+				<h1 class="adbtn">香港好去處</h1>
+			   <!--#fanny 修改探險熱點頁面顯示探險攻略字樣 2013-11-21 end-->
+			</div>	
+			<div class="blank15"></div>
+			<!--#快捷键-->
+			<!--{template lbi_shortcuts}-->
+			<div class="com_b">
+				<div class="sort">排序：	
+				  <!--{loop $place_sort $key $asort}-->
+					<a href="space.php?{$order_url}&order={$key}&sort={if $order == $key && $sort == 'desc'}asc{else}desc{/if}"><span class="{if $order == $key && $sort == 'desc'}sortdesc{elseif $order == $key && $sort == 'asc' }sortasc{/if}">{$asort}</span></a>
+				  <!--{/loop}--> 
+				</div>
+				{if $page_filter}<h6 id="1" {if empty($tag)}class="h2bg"{/if} onclick="location.href='space.php?{$tag_url}'">搜尋結果</h6>{/if}
+			  {loop $tag_place_list $key $item}
+				<h6 {if $tag==$key}class="h2bg"{/if} onclick="location.href='space.php?{$tag_url}&tag={$key}'"  onclick="location.href='space.php?{$tag_url}&tag={$key}'">{$item}</h6>
+			  {/loop}					
+			</div>
+			<div class="blank5"></div>				
+			<div class="search_num">精選 {$count} 個好去處，正顯示第 {$num_start}-{$num_end} 個</div>
+			<div class="blank15"></div>
+			<!--#信息展示 start-->
+			<div class="comment">
+				<div class="mcon" id="con_1">
+				  {if $place}
+				   {loop $place $key $item}
+					<div class="pointItem">
+						<div class="pointCon">
+							<div class="pointimg">
+								{if $item.placesale}
+									<div class="psale">「{$item.placesale}%回赠」</div>
+								{/if}
+								<div style="height:104px;overflow:hidden">
+									<a class="laiyuan" title="{$item.oplacename}" href="{if {$item.urlkeywords}}{$item.urlkeywords}{else}space-place-id-{$item.placeid}.html{/if}"><img onload="resizeThumb(this,155,102);" src="{$item.placeimg1}" alt="{$item.altimg1}"/></a>	
+								</div>	
+							</div>
+							<div class="pinttit"><a style="color: #2989B6;" class="laiyuan" href="{if {$item.urlkeywords}}{$item.urlkeywords}{else}space-place-id-{$item.placeid}.html{/if}"><h2>{$item.placename}</h2></a></div>
+							<div class="clear"></div>
+							<div class="pointinfo">
+								<dl><dt>地區：</dt><dd>{$item.placeares}</dd></dl>
+								<dl><dt>消費：</dt><dd>{$item.placeprice}</dd></dl>
+								<dl><dt>分類：</dt><dd>{$item.placecatname}</dd></dl>
+							</div>
+							<div class="clear"></div>
+							<div class="poingnum">
+							{if $item.placeavg>=5}	
+								{$item.placeavg}
+								<img src="template/default/images/01_1.png"></img>
+							{elseif $item.placeavg>0}
+								{$item.placeavg}
+								<img src="template/default/images/01_2.png"></img>
+							{/if}
+							</div>
+							<div class="clear"></div>
+							<div class="gl_num_1">{if $item.article_count>0}共有<a href="space-place-id-{$item.placeid}-varticle.html">{$item.article_count}篇攻略</a>{/if}</div>
+							<div class="pointView">{$item.clicknum}</div>
+							<div class="clear"></div>
+							{if $item.coupon}
+							<div class="coupon">
+							<marquee scrollAmount=2 width=160 onmouseover=stop() onmouseout=start()>
+							{loop $item['coupon'] $coupon}
+							<a href="space-place-id-{$item.placeid}-vcoupon-v{$coupon.couponid}.html" target="_blank">{$coupon.title}</a> 
+							{/loop}
+							</marquee>
+							</div>
+							{/if}
+						</div>
+					</div>
+					{/loop}
+
+					<div class="pointItem" id='ypaAdWrapper-list1'></div>
+
+					<div class="pointItem" id='ypaAdWrapper-list2'></div>
+
+					<div class="pointItem" id='ypaAdWrapper-list3'></div>
+
+					<div class="pointItem" id='ypaAdWrapper-list4'></div>					
+					
+					{else}
+					<a href="space.php?do=place&category1={$_GET['category1']}&category2={$_GET['category2']}&category3={$_GET['category3']}">
+						<img src="image/whatareyoulookingfor.JPG" style="width:100%;">
+					</a>
+					{/if}					
+					<div class="blank5"></div>
+					<!--{if $_SGLOBAL['ad'][$is_mobile]['lindextotad']}-->	
+					<div id="ad_lindextotad">
+						<!--{ad($is_mobile,'lindextotad')}-->
+					</div>
+					<div class="blank5"></div>	
+					<!--{/if}-->									
+					<div id="pager" class="pagebar">
+						<div class="page">$multi</div>
+					</div>
+				</div>
+			</div>
+			<!--#信息展示 end-->
+			<div class="blank25"></div>
+		</div>
+		<!--{template lbi_place_right}-->
+	</div>
+	
+<script>
+var loadnative=0,sectionCode=sectionCode||[];
+function getkeywords(key)
+{var match = window.location.href.match('[?&]' + key + '=([^&]+)');
+if (match == undefined) {return '';} else {return match ? match[1]:null;}}
+if(document.querySelector('.sinfo span')!==null){unikeyword=$('.sinfo span')[0].innerText;}else if(getkeywords('keyword')!==''){var unikeyword=decodeURIComponent(getkeywords('keyword'));}else if(document.querySelector('#leftSearchUnplug h1')!==null){var unikeyword=document.querySelector('#leftSearchUnplug h1').innerText.split(', ')[0];}else{unikeyword='香港好去處';}
+function checkypa(errObj,slotInfo){document.getElementById(slotInfo.ypaAdDivId).outerHTML='<div class="gemini-ad-'+slotInfo.secCode+'"></div>';if(loadnative==0){sectionCode.push(slotInfo.secCode);(function(){var script=document.createElement("script");script.async=true;script.src="https://s.yimg.com/av/gemini/ga/gemini.js";document.body.appendChild(script);})();loadnative++;}}
+</script>
+
+<script type='text/javascript'>
+window.ypaAds.insertMultiAd({
+    ypaAdConfig   : '0000002ff',
+    ypaAdTypeTag  : '',
+    ypaPubParams:{query:unikeyword},
+    ypaAdSlotInfo : [ 
+        {
+            ypaAdSlotId : 'list1',
+            ypaAdDivId  : 'ypaAdWrapper-list1',
+            ypaAdWidth  : '184',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : '1a0206b2-64a6-4a33-819f-5469d7783734'
+        },
+        {
+            ypaAdSlotId : 'list2',
+            ypaAdDivId  : 'ypaAdWrapper-list2',
+            ypaAdWidth  : '184',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : '1a0206b2-64a6-4a33-819f-5469d7783734'
+        },
+        {
+            ypaAdSlotId : 'list3',
+            ypaAdDivId  : 'ypaAdWrapper-list3',
+            ypaAdWidth  : '184',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : '1a0206b2-64a6-4a33-819f-5469d7783734'
+        },
+        {
+            ypaAdSlotId : 'list4',
+            ypaAdDivId  : 'ypaAdWrapper-list4',
+            ypaAdWidth  : '184',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : '1a0206b2-64a6-4a33-819f-5469d7783734'
+        }
+    ]   
+}); 
+</script>	
+	
+    <script>
+		jQuery(".com_b > h2").each(function(i){
+			jQuery(this).click(function(){
+				jQuery(".h2bg").each(function(index, domEle){
+					$(domEle).removeClass('h2bg');  
+				});
+				jQuery(".mcon").each(function(dx,mc){
+					$(mc).css('display','none');
+				})
+				jQuery(this).addClass('h2bg');
+				var cid = (this.id);				
+				jQuery('#con_'+cid).css('display','block');
+			})			
+		});
+        jQuery(".delSea").live('click',function(){
+            var id=jQuery(this).attr('id');
+			
+            var type=jQuery(this).attr('type');
+            if(type=='keyword'){
+                jQuery("#"+type).val('');
+            }else{
+				
+                jQuery("#"+type+"_"+id).removeAttr('checked');
+            }
+            jQuery("#article_form").submit();
+        })
+		$(".laiyuan").live('click',function(){			
+			loacl_cuanji();		
+		})
+	</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--{template footer}-->

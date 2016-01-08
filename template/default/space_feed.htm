@@ -1,0 +1,106 @@
+<!--{if empty($_TPL['getmore'])}-->	
+<!--{eval $_TPL['titles']=array('首頁');}-->
+<!--{template header}-->
+<link href="template/default/css/user.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/pre_next.js"></script>
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="userBox">
+			<div class="userr">
+				<div class="gain">
+					<h2>探險家成就</h2>
+					<div class="clear"></div>
+					<ul>
+						<li class="gl"><img src="image/ico_23.gif"/>攻略數目{$h_userinfo.totalarticle}</li><li class="gl"><img src="image/ico_21.gif"/>編輯推介攻略{$h_userinfo.adminhot}</li><li class="gl"><img src="image/ico_20.gif"/>會員推介攻略{$h_userinfo.art_dian}</li><li class="gl"><img src="image/ico_20.gif"/>我推介的攻略{$h_userinfo.ishot}</li>
+					</ul>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="userl">
+				<div class="user_txt">
+					<ul>
+						<li><a href="space.php?uid={$h_userinfo.userid}">{$h_userinfo.username}</a>{if $usercenter[is_special]}<img src="image/SuperExplorer.png"/>{/if}</li>
+						<li>{$_SGLOBAL[grouptitle][$space[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$space[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$space[groupid]][icon]}"/> {/if}</li>
+						<li>經驗值：{$h_userinfo.experience} <a href="space.php?do=help&essay_id=19#001" style="color:#adadad;text-decoration:none">(指南)</a></li>
+						{if $space[groupid] > 1}
+						<li><div class="jy_num"><span style="width:{if $rise>100}100{else}{$rise}{/if}%">&nbsp;</span><div class="rise">{$rise}%</div></div></li>
+						{/if}
+						<li><div class="rq_click">人氣指數 {$space[viewnum]}</div></li>
+						<li>探險里數：{$space[contribution]}</li>
+						<li><div class="money">好幣</div>探險旅費：<font class="font1">{$space.user_money}</font></li>
+					</ul>
+				</div>
+				<div class="user_img">
+					<div class="pm">第{$h_userinfo.ranksort}名</div>
+					<div class="user_logo"><img src="{$h_userinfo.avatarbig}" onerror='this.src="/ucenter/images/noavatar_big.gif";'></div>
+					<div class="user_info">
+						<div class="user_zl"><a href="space-home.html">探險家個人資料</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="blank15"></div>
+		<div id="com_b" class="tab">
+			<h2 {if $act == 'share'}class="first-h2"{/if} name="first" ><a href="space-home-share.html">攻略</a></h2>
+			<h2 {if $act == 'followers'}class="first-h2"{/if}><a href="space-home-followers.html">追隨的探險家</a></h2>
+			<h2 {if $act == 'follusers'}class="first-h2"{/if}><a href="space-home-follusers.html">追隨者</a></h2>
+			<h2 {if $act == 'collect'}class="first-h2"{/if}><a href="space-home-collect.html">藏寶箱</a></h2>
+			<h2 {if $act == 'price'}class="first-h2"{/if}><a href="space-home-price.html">好幣兌換</a></h2>
+			<h2 {if $act == 'jbprice'}class="first-h2"{/if}><a href="space-home-jbprice.html">旅費兌換</a></h2>
+			<h2 {if $act == 'invoice'}class="first-h2"{/if}><a href="space-home-invoice.html">回贈金</a></h2>
+		</div>
+		<div class="blank5"></div>
+		<!--{if $act == 'share'}-->
+			<!--{template space_feed_share}-->
+		<!--{elseif $act == 'comment'}-->
+			<!--{template space_feed_comment}-->
+		<!--{elseif $act == 'ucat'}-->
+			<!--{template space_feed_usercat}-->
+		<!--{elseif $act == 'price'}-->
+			<!--{template space_feed_mileage}-->
+		<!--{elseif $act == 'jbprice'}-->
+			<!--{template space_feed_haobi}-->
+		<!--{elseif $act == 'invoice'}-->
+			<!--{template space_feed_invoice}-->
+		<!--{elseif $act == 'collect'}-->
+			<!--{template space_feed_collect}-->
+		<!--{elseif $act=='followers'}-->
+			<!--{template space_feed_following}-->
+		<!--{elseif $act == 'follusers'}-->
+			<!--{template space_feed_fellowship}-->
+		<!--{else}-->
+			<!--{template space_feed_infofix}-->
+		<!--{/if}-->
+	</div>
+		<!--{template lbi_user_right}-->
+</div>
+<div class="clear"></div>
+	<script>
+		$(document).ready(function(){
+			<!--{if $article_click >= 0 && $article_count >= 1 }-->
+			if($("#clause").attr('checked')){
+			 $('#applys').html('<input type="button" onclick="location.href=\'space.php?do=home&s=1\'" value="" style="cursor:pointer" class="apply_cbtn">');
+			}else{
+			 $('#applys').html('<input type="button" value="" style="cursor:pointer" class="apply_btn">');
+			}
+			<!--{else}-->
+			 $('#applys').html('<input type="button" value="" style="cursor:pointer" class="apply_btn">');
+			<!--{/if}-->
+		});
+		$("#clause").click(function(){
+			if($(this).attr('checked')){
+				<!--{if $article_click >= 0 && $article_count >= 1 }-->
+				 $('#applys').html('<input type="button" onclick="location.href=\'space.php?do=home&s=1\'" value="" style="cursor:pointer" class="apply_cbtn">');
+				<!--{else}-->
+				$('#applys').html('<input type="button" value="" style="cursor:pointer" class="apply_btn">');
+				<!--{/if}-->
+			}else{
+				$('#applys').html('<input type="button" value="" style="cursor:pointer" class="apply_btn">');
+			}
+		})
+	</script>
+<!--{template footer}-->
+<!--{/if}-->

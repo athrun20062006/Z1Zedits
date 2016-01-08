@@ -1,0 +1,451 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template header}-->
+<style type="text/css">
+@import url(template/default/css/register.css);
+</style>
+<link rel="stylesheet" href="template/default/css/dialog/default.css" />
+<script src="template/default/js/kindeditor.js"></script>
+<script>
+	function register(id, result) {
+		if(result) {
+			$('registersubmit').disabled = true;
+			window.location.href = "$jumpurl";
+		} else {
+			updateseccode();
+		}
+	}
+</script>
+
+
+<!--/main-->
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="rg_tit">探險家登記！</div>
+		<div class="rg_yh">
+			<label>登記成為SeeWide探險家，尊享撰稿回贈以賺取探險旅費！</label>
+			
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lregister']}-->	
+			<div class="yh_info"><!--{ad($is_mobile,'lregister')}--></div>
+			<!--{/if}-->
+			
+		</div>
+		<form id="registerform" name="registerform" action="do.php?ac=$_SCONFIG[register_action]&$url_plus&ref" method="post" class="rg_item">
+			<div class="explain">(<img src="image/ico_06.gif"/>必須輸入)</div>
+			<dl>
+				<dt><img src="image/ico_06.gif"/> Email：<font>(請確保正確無誤，帳戶認證會傳送至此郵箱)</font></dt>
+				<dd><input type="text" id="email" name="email" value=""  class="input_css" onBlur="checkEmail()" />&nbsp;<label id="checkemail">&nbsp;</label></dd>
+			</dl>
+			<dl>
+				<dt><img src="image/ico_06.gif"/> 我的暱稱：<font>(請輸入5個中文字或10個英文字母)</font></dt>
+				<dd>
+					<input type="text" id="username" name="username" value="" class="input_css" onBlur="checkUserName()" />&nbsp;<label id="checkusername">&nbsp;</label>
+				</dd>
+			</dl>		
+			<dl>
+				<dt><img src="image/ico_06.gif"/> 設定密碼：<font>(請輸入6個以上的英文與數字混合字元)</font></dt>
+				<dd>
+					<input type="password" name="password" id="password" value="" class="input_css"  onBlur="checkPassword()"/>&nbsp;<label id="checkpassword">&nbsp;</label>
+				</dd>
+			</dl>
+			<dl>
+				<dt><img src="image/ico_06.gif"/> 再次輸入密碼：</dt>
+				<dd>					
+					<input type="password" id="password2" name="password2" value="" class="input_css"  onBlur="checkPassword2()" />&nbsp;<label id="checkpassword2">&nbsp;</label>
+				</dd>
+			</dl>
+			<dl>
+				<dt class="option">探險家簡介：</dt><dd><textarea name="user_desc" class="txtare_css"></textarea></dd>
+			</dl>
+			<dl>
+				<dt class="option">聯絡姓名：</dt><dd><input type="text" class="input_css" name="real_name"/></dd>
+			</dl>
+			<dl>
+				<dt class="option">聯絡電話：</dt><dd><input type="text" class="input_css" name="mobile"/></dd>
+			</dl>
+			<dl>
+				<dt class="option">聯絡地址：<font>(請確保正確無誤，購物及換領均郵寄至此地址)</font></dt>
+				<dd><input type="text" class="input_css" name="address"/></dd>
+			</dl>
+			<dl>
+				<dt class="option">出生年份：</dt>
+				<dd>
+					<select name="birthyear" id="birthyear">
+						<option value="0">--請選擇</option>
+						$birthyeayhtml
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt class="option">稱謂：</dt>
+				<dd><input type="radio" name="appell" value="1"/>先生 <input type="radio" name="appell" value="2"/>女士 <input type="radio" name="appell" value="3"/>小姐 <input type="radio" name="appell" value="4"/>太太</dd>
+			</dl>
+			<dl>
+				<dt class="option">職業及收入：</dt>
+				<dd>
+					<select class="sel_css" name="job" style="width:150px">
+						{loop $jobs $key=>$job}
+						<option value="{$key}">{$job}</option>
+						{/loop}
+					</select>  
+					<select class="sel_css" name="income" style="width:150px;margin-left:30px;">
+					{loop $wage $key=>$wag}
+						<option value="{$key}">{$wag}</option>
+					{/loop}	
+					
+					</select>
+				</dd>
+			</dl>
+			<dl>
+				<dt class="option">如何得知本網站：</dt>
+				<dd>
+					<select name="vote" class="sel_css" style="width:150px">
+					 {loop $survey $key=>$sur}
+						<option value="{$key}">{$sur}</option>
+					 {/loop}
+					</select>
+				</dd>
+			</dl>
+		  <!--{if $invitearr}-->
+			<dl>
+				<dt >好友邀請</dt>
+				<dd>
+					<a href="space.php?$url_plus" target="_blank"><!--{avatar($invitearr[uid],small)}--></a>
+					<a href="space.php?$url_plus" target="_blank">{$_SN[$invitearr[uid]]}</a>
+				</dd>
+			</dl>
+	      <!--{/if}-->
+			<dl>
+				<dt class="option">介紹人(暱稱/Email)：<font style="color:#b91e22">若沒有介紹人，可不必填寫</font></dt><dd><input type="text" class="input_css" name="finvite" value="<!--{if $invitearr}-->{$_SN[$invitearr[uid]]}<!--{/if}-->"/></dd>
+			</dl>
+			<div style="height:30px;clear:both;visibility: hidden;"></div>
+			<dl style="display:none">
+				<dt class="option">個人攻略頁面鏈接：<font>(輸入後不能更改)</font></dt><dd><font>http://www.seewide.com/m/</font><input type="text" class="input_css" style="width:252px" name="raiders_url"/></dd>
+			</dl>
+			<dl>
+				<dt class="option">個人Facebook專頁鏈接：</dt>
+				<dt class="option">http://www.facebbook.com/  <input type="text" class="input_css" style="width:296px" name="facebook_url"/></dt>
+				<dd style="padding-top:0px"><font>#專頁會顯示在個人攻略頁面上,如http://www.facebook.com/seewide.hk</font></dd>
+			</dl>
+			<div class="blank35"></div>
+			<dl>
+				<dt class="option">  可載入本人以下博客的文章：(請輸入博客網址)</dt>
+				<dd><span>Blog</span> <input type="text" name="blooger_blog" class="input_css" style="width:414px"/></dd>
+				<dd style="text-align:right;width:487px;padding-top:0px">*SeeWide將為你上載部份合適的攻略</dd>
+			</dl>
+			<div class="blank20"></div>
+			<dl style="display:none">
+				<dt class="option">允許SeeWide把本人發表的攻略發佈至香港好去處，分享給更多探險家：<input checked type="radio" name="is_agree" value="1"/>允許 <input type="radio" name="is_agree" value="0"/>不允許</dt>
+				<dd style="padding-top:0px"><a href="javascript:;" onclick="getdirections(2)"><font>(什麽是全港好去處攻略？)</font></a></dd>
+			</dl>
+			<div style="height:57px;clear:both;visibility: hidden;"></div>			
+	     <!--{if $_SCONFIG['seccode_register']}-->
+	      <!--{if $_SCONFIG['questionmode']}-->
+			<dl>
+				<dt>請先回答問題</dt>
+				<dd>
+					<p><!--{eval question();}--></p>
+					<input type="text" id="seccode" name="seccode" value="" class="input_css" style="width:234px" onBlur="checkSeccode()"  autocomplete="off" />&nbsp;<label id="checkseccode">&nbsp;</label>
+				</dd>
+			</dl>
+	      <!--{else}-->
+			<dl>
+				<dt><img src="template/default/images/ico_06.gif"/> 驗證碼&nbsp;&nbsp;&nbsp;<font>(請輸入圖片中的數字 / 字母)</font>&nbsp;&nbsp;&nbsp;<script>seccode();</script><a href="javascript:updateseccode()" style="color:#006ACE">看不清楚？換一張</a></dt>
+				<dd>						
+					
+					<input type="text" id="seccode" name="seccode" value=""  class="input_css" style="width:234px" onBlur="checkSeccode()"  autocomplete="off" />&nbsp;<label id="checkseccode">&nbsp;</label>
+				</dd>
+			</dl>
+	      <!--{/if}-->
+	     <!--{/if}-->
+		
+			<div class="blank35"></div>
+			<dl>	
+			  <!--{if $register_rule}-->				
+				<dd class="clause">
+					<input type="checkbox" name="accede" id="accede" value="1" checked>$register_rule
+					<script type="text/javascript">
+						function checkClause() {
+							if( $('constraint').checked) {
+								return true;
+							} else {
+								alert("您必須同意服務條款後才能註冊");
+								return false;
+							}
+						}						
+					</script>					
+				</dd>
+			  <!--{/if}-->
+				<dd class="clause">
+					<input type="checkbox" value="1" name="umessages" id="umessages" checked> 會員訊息提示請發送到我的個人電郵
+				</dd>
+				<dd class="clause">
+					<input type="checkbox" value="1" name="constraint" id="constraint"> 我已同意及理解並接受了 <a href="javascript:;" onclick="getdirections(3)">隱私權聲明</a> 及 <a href="javascript:;" onclick="getdirections(7)">使用條款細則所約束</a>
+				</dd>
+				<dd class="clause">#如未經你的允許及同意，SeeWide不會向任何第三方公開、出售或洩露你的個人資訊</dd>
+				<dd class="clause" style="padding-left:203px">
+					<input type="hidden" name="refer" value="space.php?do=home" />
+					<input type="submit" style="text-indent: -135px;" id="registersubmit" name="registersubmit" value="注册新用户" class="register_btn1" disabled="disabled" onclick="if(!checkRequired()){return false;} <!--{if $register_rule}-->if(!checkClause()){return false;}<!--{/if}-->"  />
+				</dd>
+			</dl>
+			<div id="__registerform" style="color:red; font-weight:bold;"></div>
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div><!--/left-->
+	<!--{template lbi_login_right}--><!--/right-->
+</div>
+<script>
+	$('#constraint').click(function(){ 
+		if(this.checked){
+			$("#registersubmit").removeClass('register_btn1');
+			$("#registersubmit").addClass('register_btn');
+			$("#registersubmit").removeAttr('disabled');
+		}else{
+			$("#registersubmit").removeClass('register_btn');
+			$("#registersubmit").addClass('register_btn1');
+			$("#registersubmit").attr('disabled',true);
+		}
+	});
+	function getdirections(essayid){
+		jQuery.ajax({
+		   type: "get",
+		   url: "do.php",
+		   data: "ac=$_SCONFIG[register_action]&op=showdire&essayid="+essayid,
+		   dataType:'json',
+		   success:update_page
+		  
+		});
+	}
+	function update_page (msg) {  
+		var dialog = KindEditor.dialog({
+			width : 500,
+			title : msg.title,
+			body : msg.content,
+			closeBtn : {
+				name : '關閉',
+				click : function(e) {
+					dialog.remove();
+				}
+			},
+			yesBtn : {
+				name : '確定',
+				click : function(e) {
+					dialog.remove();
+				}
+			}
+		});
+	} 
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+<!--
+	jQuery('#email').focus();
+	var lastUserName = lastPassword = lastEmail = lastSecCode = '';
+	function checkEmail() {			
+		var email = jQuery('#email').val();
+		var cu = 'checkemail';
+		var unLen = email.length;
+		if(unLen <= 0) {
+			fwarning(cu, 'Email不能为空');
+			return;
+		}else{
+			var reg1 = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/;
+
+			if(!reg1.test(email)){
+				fwarning(cu, 'Email格式不正確');
+				return;
+			}			
+		}
+		fajaxresponse('checkemail', 'op=checkemail&email=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(email) : email));
+	}
+	function checkUserName() {
+		var userName = jQuery('#username').val();
+		
+		var cu = 'checkusername';
+		var unLen = userName.replace(/[^\x00-\xff]/g, "**").length;
+
+		if(unLen < 3 || unLen > 10) {
+			fwarning(cu, unLen < 3 ? '用戶名少於3個字符' : '用戶名超過 10 個字符');
+			return;
+		}
+		var arr = new Array();
+		arr = userName.split(" ");
+		
+		if(arr.length != 1){
+		
+			fwarning(cu, '用戶名稱不可含有空白鍵');
+			return;
+		　
+		}
+		fajaxresponse('checkusername', 'op=checkusername&username=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(userName) : userName));
+	}
+	function checkPassword(confirm) {
+		var password = jQuery('#password').val();
+
+		var cp = 'checkpassword';
+		if(password == '' || /[\'\"\\]/.test(password)) {
+			fwarning(cp, '必須填寫此項');
+			return false;
+		}else if(password.length < 6){
+			fwarning(cp, '必須為6個以上的英文與數字');
+			return false;
+		}else {
+			jQuery("#"+cp).css('display','');
+			jQuery("#"+cp).html('<img src="image/check_right.gif" width="13" height="13">');
+			/*cp.style.display = '';
+			cp.innerHTML = '';*/
+			if(!confirm) {
+				checkPassword2(true);
+			}
+			return true;
+		}
+	}
+	function checkPassword2(confirm) {
+		var password = jQuery('#password').val();
+		var password2 = jQuery('#password2').val();
+		var cp2 = $('checkpassword2');
+		if(password2 != '') {
+			checkPassword(true);
+		}
+		if(password == '' || (confirm && password2 == '')) {
+			cp2.style.display = 'none';
+			return;
+		}
+		if(password != password2) {
+			warning(cp2, '兩次輸入的密碼不一致');
+		} else {
+			cp2.style.display = '';
+			cp2.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+		}
+	}
+	function checkSeccode() {
+		var seccodeVerify = $('seccode').value;
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
+	}
+	/**
+	 * 检测页面输入数据是否正确 fanny 2013-11-29
+	 */
+	function fajaxresponse(objname, data) {
+		jQuery.ajax({
+		   type: "get",
+		   url: 'do.php',
+		   data: 'ac=$_SCONFIG[register_action]&'+data,
+		   dataType:'json',
+		   success:function(msg){				
+				var obj = jQuery("#"+(msg.notice));				
+				if(msg.error){ 				
+					fwarning(msg.notice, msg.content);
+				}else{		
+					obj.css('display','');					
+					obj.html('<img src="image/check_right.gif" width="13" height="13">');
+					obj.addClass("warning");
+				}
+			}		  
+		});
+
+	}
+	function fwarning(ob, msg) {		
+		if(ob != 'checkpassword2') {
+			var ton = ob.substr(5, ob.length);
+				
+			//jQuery("#"+ton).select();
+		}
+		var objs = jQuery("#"+ob);
+		objs.css('display','');	
+		objs.html('<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg);
+		objs.addClass("warning");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function ajaxresponse(objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('do.php?ac=$_SCONFIG[register_action]&' + data, function(s){
+			var obj = $(objname);
+			s = trim(s);
+			if(s.indexOf('succeed') > -1) {
+				obj.style.display = '';
+				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+				obj.className = "warning";
+			} else {
+				warning(obj, s);
+			}
+		});
+	}
+	function warning(obj, msg) {
+		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
+			$(ton).select();
+		}
+		obj.style.display = '';
+		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
+		obj.className = "warning";
+	}
+	/**
+	 * 必填项
+	 */
+	function checkRequired() {
+		var email = $('email').value;
+		var username = $('username').value;		
+		var pwd = $('password').value;
+		var pwd2 = $('password2').value;
+		var seccode = $('seccode').value;
+		
+		var msg = "";		
+		
+		if(email.length == 0){
+			msg += '必須輸入Email\n';
+		}
+		if(username.length == 0){
+			msg += '必須輸入我的暱稱\n';
+		}
+		if (pwd.length == 0)
+		{
+			msg += '必須輸入密碼\n';
+		}
+		else if (pwd.length < 6)
+		{
+			msg += '輸入的密碼不能少於六位\n';
+		}
+		if (/ /.test(pwd) == true)
+		{
+			msg += '密碼中不能包含空格\n';
+		}
+		if (pwd2 != pwd )
+		{
+			msg += '兩次密碼輸入不同\n';
+		}
+		if (seccode.length == 0)
+		{
+			msg += '必須輸入驗證碼';
+		}
+		if (msg.length > 0)
+		{
+			alert(msg);
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+//-->
+</script>
+
+<!--{template footer}-->

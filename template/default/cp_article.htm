@@ -1,0 +1,593 @@
+<!--{template header}-->
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css"/>
+<link href="template/default/css/imgareaselect-default.css" rel="stylesheet" type="text/css"/>
+<link href="template/default/css/gongl.css" rel="stylesheet" type="text/css"/>
+<link href="template/default/css/h_style.css" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+#catadder
+{
+	display:none;
+}
+#cataddbutton
+{
+	position:relative;
+	left:100px;
+}
+#notyet
+{
+	position:relative;
+	left:160px;
+}
+	.pingfen ul li{
+		float: left;
+	}
+	.p_div{text-align: center;
+		overflow: hidden;
+		border: 1px solid #5C98B2;
+		border-radius: 5px;
+		height: 80px;
+		line-height: 38px;
+		width: 690px;
+		}
+	.p_div ul li{
+		position: relative;
+		width: 38px;
+		color:#5C98B2;
+		padding-top: 10px;
+		padding-left: 12px;
+	}
+	.p_div .infocs{
+		position: absolute;
+		left: 23px;
+		top: 35px;
+		}
+</style>
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/jquery.json-2.4.js"></script>
+<script charset="utf-8" src="My97/WdatePicker.js"></script>
+<script charset="utf-8" src="template/default/js/checkform.js"></script>
+<script charset="utf-8" src="template/default/js/jquery.imgareaselect.pack.js"></script>
+<script>var kid = 'content'; var kids='artdesc';</script>
+<!--{template kindEditor}-->
+<script charset="utf-8" src="js/ajaxfileupload.js"></script>
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		{if $placeinfo}
+		<div class="comment_top">
+			<!--#fanny 修改图片显示问题 2013-11-21 start-->
+            <div class="comment_img f_l"><img src="{$placeinfo.placeimg1}" alt="{$placeinfo.altimg1}" width="170" height="112" onload="resizeThumb(this,170,112);"/></div>
+			<!--#fanny 修改图片显示问题 2013-11-21 end-->
+            <div class="comment_info f_l">
+                <p class="category"><a href='javascript:;' >{$placeinfo.placecatname}</a></p>
+                <p class="title">{$placeinfo.placename}</p>
+                <p class="address">{$placeinfo.placearesname}</p>
+            </div>
+        </div>
+        {/if}
+		<div class="yjt">發表攻略<font color="#ff0000">(*必須輸入)</font></div>
+		<form action="cp.php?ac=article" method="post" id="articleform" enctype="multipart/form-data">
+		<input type="hidden" name="MAX_FILE_SIZE" value="512000" />
+		<div class="yjm" id="yjm">
+			<table border="0" cellpadding="5" cellspacing="0">
+				<tr>
+					<td colspan="2">
+						<font color="#ff0000">*</font><font class="font1">攻略標題：</font><input type="text" name="article[title]" value="{$articleinfo[title]}" class="input_css infocs" dataType="LimitB" min="1" msg="標題必須填寫！"/>
+					</td>
+				</tr>
+				<tr>
+					<td><font color="#ff0000">*</font><label class="font1">攻略內文：</label></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea name="article[content]" id="content" style="width:699px;height:630px;visibility:hidden;" class="infocs">{$articleinfo[content]}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top" width="23%">攻略封面：</td>
+					<td>
+						<div class="f_l" style="width:355px">
+							<div><img id="loading" src="image/loading1.gif" style="display:none;"></div>
+							<input id="fileToUpload" type="file" name="fileToUpload" size="30" onchange="return ajaxFileUpload();"/>
+							<!--<button id="buttonUpload" onclick="return ajaxFileUpload();">上傳</button>-->
+							<input type="hidden" class="infocs" name="article[thumb]" value="{$articleinfo[thumb]}" id="thumb"/>
+							{if $articleinfo[thumb]}
+							<div class="edit_img"><img id="artimg" src="{$articleinfo[thumb]}" width="165" height="108" onload="resizeThumb(this,165,108);"/></div>
+							{else}
+							<p><img id="artimg" src="image/nopic.jpg" width="178" height="119"/></p>
+							{/if}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>分類(探險家個人攻略)：</td>
+					<td id="user_cat_td">
+						{$page_select}{$usercat_manage}
+					</td>
+				</tr>
+				<tr id="catadder">
+					<td colspan="2" style="border:1px solid #2A6182; font-size:24px;">
+						<div style="background-color:#2A6182; color:#FFFFFF; padding:5px 0 5px 5px;">新增分類</div>
+						<div id="living" style="padding:5px 0 5px 5px;">上層分類：{$awindow_select}</div>
+						<div style="padding:5px 0 5px 5px;">新分類名稱：<input type="text" id="ucat_name"></div>
+						<div style="padding:5px 0 5px 5px;">排序：<input type="number" style="width:30px" id="sort">(輸入0-10，數字愈大，排列愈前)</div>
+						<div><input id="cataddbutton" type="button" value="確定"><input id="notyet" type="button" value="取消"></div>
+					</td>
+				</tr>
+<script>//添加用户分类
+var usercat_manage='{$usercat_manage}';
+var select_text='{$awindow_select}';
+jQuery('#user_cat').live('change',function() {
+	if(this.value=='new'){
+		jQuery("#catadder").show();
+	}
+});
+jQuery("#cataddbutton").click(function(){
+	var ucat_parentid=jQuery("#ucat_parentid").val();
+	var ucat_name=jQuery("#ucat_name").val();
+	var sort = jQuery("#sort").val();
+	jQuery(this).attr("value","正在新增分類");
+	jQuery.ajax({
+		type: "POST",
+		cache:false,
+		dataType:'json',
+		url: "cp.php?ac=article",
+		data: "op=add_ucat&ucat_parentid="+ucat_parentid+"&ucat_name="+encodeURIComponent(ucat_name)+"&sort="+sort,
+		success: function(msg){
+			select_text=msg.window_select;
+			jQuery("#user_cat_td").html(msg.page_select+usercat_manage);
+			jQuery("#user_cat").val(msg.selectedid);
+			jQuery("#catadder").hide();
+			jQuery("#ucat_name").val("");
+			jQuery("#sort").val("");
+			jQuery("#living").html("上層分類："+select_text);
+			jQuery("#cataddbutton").attr("value","確定");
+		}
+	});
+});
+jQuery("#notyet").click(function(){
+	jQuery("#catadder").hide();
+});
+</script>
+				{if $dosubmit != 'edit' || ($dosubmit == 'edit' && $articleinfo['is_draft'] == 1)}
+				<tr>
+					<td>發表日期及時間：</td>
+					<td><input type="text" class="select_css infocs" value="{$articleinfo[addtime]}" name="article[addtime]" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd H:m:s'})" /></td>
+				</tr>
+				{/if}
+			</table>
+			<table id="table1" border="0" cellpadding="5" cellspacing="0" width="100%">
+				<tr>
+					<td>攻略進行日期：</td>
+					<td><input type="text" class="select_css infocs" name="article[starttime]" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd H:m:s'})" value="{$articleinfo[starttime]}"/></td>
+				</tr>
+				{if $dosubmit != 'edit' || ($dosubmit == 'edit' && $articleinfo['is_draft'] == 1)}
+				{if !$placeinfo}
+				<tr>
+					<td>攻略進行地點：</td>
+					<td>
+						<!--{eval $ci = 1;}-->
+						<div class="ccontent">
+							{loop $fcity_array $key $item}
+							{if $ci == 6}<div id="city_content" class="acmore">{/if}
+							<div class="citem">
+								<div class="citemtitle">{$item.name}</div>
+								{if $item.child}
+								<div class="citemcont">
+								  {loop $item.child $skey $sitem}
+									<span><input type="checkbox" class="adresclick" name="article[startaddress][]" value="{$skey}"  {if in_array($skey,(array)$articleinfo[startaddress])} checked {/if}/>{$sitem.name}</span>
+								  {/loop}
+								</div>
+								{/if}
+							</div>
+							<!--{eval $ci++;}-->
+							{/loop}
+							{if $ci > 6}</div><div class="domore" id="city">顯示更多</div>{/if}
+							<div class="clear"></div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>攻略活動時間：</td>
+					<td><select class="select_css infocs" name="article[endtime]">
+						{loop $endtime_section $key $item}
+							<option value="{$key}" {if $key==$articleinfo[endtime]} selected {/if}>{$item}</option>
+						{/loop}
+					<select></td>
+				</tr>
+				{/if}
+				{/if}
+				<tr>
+					<td>是次消費：</td>
+					<td>每人平均約HKD<input type="text" name="article[price]" value="{$articleinfo[price]}" class="input_css infocs" style="width:86px;height:20px;line-height:20px"/>
+					</td>
+				</tr>
+				{if !$placeinfo}
+				<tr>
+					<td>前往方法：</td>
+					<td>
+						<textarea name="article[description]" id="artdesc" style="width:550px;height:250px;visibility:hidden;" class="infocs">{$articleinfo[description]}</textarea>
+					</td>
+				</tr>
+				{/if}
+				<script type="text/javascript">
+					jQuery(function(){
+						jQuery(".cateclick").click(function(){
+							if(jQuery(this).attr('checked') == "checked"){
+								jQuery(this).after("<input type='hidden' value='"+jQuery(this).attr('catname')+"' name='article[site_name][]' />");
+							} else {
+								jQuery(this).next().remove();
+							}
+						})
+					})
+				</script>
+			  {if $dosubmit != 'edit' || ($dosubmit == 'edit' && $articleinfo['is_draft'] == 1)}
+			  {if !$placeinfo}
+				<tr>
+					<td>分類(特搜網)</td>
+					<td>
+						<!--{eval $ai = 1;}-->
+						<div class="ccontent">
+						  {loop $category_view $key $item}
+							{if $ai == 6}<div id="category_content" class="acmore">{/if}
+							<div class="citem">
+								<div class="citemtitle">{$item.catname}
+								</div>
+							  {if $item.child}
+								<div class="citemcont" id="cat_{$item.catid}">
+								  {loop $item.child $skey $sitem}
+									<span><input type="checkbox" catname="{$sitem.catname}" class="cateclick " name="article[site_cat][]" value="{$sitem.catid}"  {if in_array($sitem.catid,(array)$articleinfo[site_cat])} checked {/if} />{$sitem.catname}</span>
+								  {/loop}
+								</div>
+							  {/if}
+							</div>
+							<!--{eval $ai++;}-->
+						  {/loop}
+							{if $ai > 6}</div><div class="domore" id="category">顯示更多</div>{/if}
+							<div class="clear"></div>
+						</div>
+					</td>
+				</tr>
+				{/if}
+			  {/if}
+			  {if ($dosubmit != 'edit' ||($articleinfo['is_use'] > 0 && 0>=$articleinfo['placeid'] && 0>=$articleinfo[article_rank] ) )&& !$placeinfo}
+				<script type="text/javascript">
+				jQuery(function() {
+					var placearr = {$msg};
+					var strs=placearr["placearr"].toString().split(",");
+					if(strs){
+						jQuery( ".selector" ).autocomplete({ autoFocus: true });
+						jQuery( "#placeName" ).autocomplete({
+					        source: strs,
+					        select: function( event, ui ) {
+					        	var placeName = ui.item.value;
+					        	page(1,placeName);
+					        }
+				        });
+					}
+				    jQuery("#findPlaceName").click(function(){
+								var placeName = jQuery("#placeName").val();
+								page(1,placeName);
+					})
+					jQuery("#info input").click(function(){
+							if(jQuery(this).val() == "1"){
+								jQuery("#info").next().show();
+								jQuery("#pager").css("margin-top","20px");
+							}
+							else
+							{
+								jQuery("#info").next().hide();
+								jQuery(".pingfen").hide();
+						        jQuery(".pingfen ul li input").attr("checked",false);
+								jQuery("#pager").css("margin-top","0px");
+								jQuery(".page").children().remove();
+								jQuery("#con_1").children().remove();
+								jQuery("#placeName").val("");
+							}
+					}) 
+				})
+				function enter(){
+					if(event.keyCode==13)
+				    {
+				         var placeName = jQuery("#placeName").val();
+				         if(placeName != ""){
+				         	jQuery( ".ui-corner-all" ).hide();
+				         	page(1,placeName);
+				         }
+				    }
+				}
+				function openurl(url){
+					window.open(url);
+				}
+				function page(page,text){
+					jQuery.post("space.php?do=findplace",{page:page,text:text},function(data){
+							if(data){
+								var msg;
+								if(window.JSON){
+									msg = JSON.parse(data);
+								} else {
+									msg= eval("("+data+")");
+								}
+								jQuery("#con_1").html(msg["div"]);
+								jQuery(".page").html(msg["multi"]);
+								var count = document.getElementById("con_1").childNodes.length;
+				            	if(count > 0){
+				            		jQuery(".pingfen").show();
+				            		var ches = document.getElementsByName("article[article_rank]");
+				            		ches[4].checked = "checked";
+				            	} else {
+				            			jQuery(".pingfen").hide();
+				            			jQuery(".pingfen ul li input").attr("checked",false);
+				            	}
+							}
+						 })
+				}
+				</script>
+				<tr>
+					<td colspan="2">
+					<div style="border: solid #CCDDDA;">
+						<div style="background:#F0F8FF;" id="info">
+							<strong style="font-size:18px; color:#5F9EA0;">將本攻略加到好去處嗎？</strong>
+							{if $articleid}
+								<input type="radio" class="infocs" name="article[is_use]" value="1" name="article[is_use]" id="radio1" {if $articleinfo[is_use] != 0 }checked{/if}/>
+								<font color="#9E9E9E">允許</font>
+								<input type="radio" id="radio2" class="infocs" name="article[is_use]" value="0" name="article[is_use]" {if $articleinfo[is_use] == 0}checked{/if}/>
+								<font color="#9E9E9E">不允許</font>
+							{else}
+								<input type="radio" id="radio1" class="infocs" name="article[is_use]" value="1" name="article[is_use]" checked />
+								<font color="#9E9E9E">允許</font>
+								<input type="radio" id="radio2" class="infocs" name="article[is_use]" value="0" name="article[is_use]"/>
+								<font color="#9E9E9E">不允許</font>
+							{/if}
+						</div>
+						<div style="text-align: center;padding-top: 15px;{if $articleid}{if $articleinfo['is_use'] <= 0 }display:none;{/if}{/if}" >
+							<strong style="color: cadetblue;">好去處名稱:</strong>
+							<input type="input" style="width: 300px;height: 20px;line-height: 20px;" class="input_css infocs" placeholder="輸入好去處名稱" onkeydown="enter()" id="placeName"/>
+							<input type="button" id="findPlaceName" style="margin-top: 15px;margin-bottom: 15px;background: url(template/default/images/cgchedhb.jpg);width: 97px;height: 27px;text-align: center;border: 0px;margin-right: 10px;font-size: 20px;cursor: pointer;"/>
+						</div>
+					</div>
+					<div>
+						<div class="mcon" id="con_1" style="margin-top: 15px;"></div>
+						<div id="pager" class="pagebar" style="margin-top: 20px;margin-bottom: 20px;">
+							<div class="page" style="margin-top: 20px;"></div>
+						</div>
+					</div>
+					<div style="clear:both;padding-top: 20px;">
+						<span style="width:257px; height:30px; display: block;"><a href="javascript:open('cp-place-insert.html');alert('在新彈出頁面新增好去處，再回到這頁搜尋剛新增好去處，就會找到哦～');"><img src="/template/default/images/08.png" border='0'/></a></span>
+					</div>
+					</td>
+				</tr>
+				{/if}
+				{if $placeinfo}
+				<input type="hidden" name="site_cat" value="{$placeinfo.placecat}" /><input type="hidden" name="site_name" value="{$placeinfo.placecatname}"/>
+				<input type="hidden" name="startaddress" value="{$placeinfo.placeares}" />
+				{/if}
+				{if $placeinfo && $articleinfo[article_rank] > 0}
+				<script type="text/javascript">
+					jQuery(function(){
+						var fen = '{$articleinfo[article_rank]}';
+						var ches = document.getElementsByName("article[article_rank]");
+						if(fen-1 < 0){
+							fen = 0;
+						}
+						if(fen-1 >10){
+							fen = 10;
+						}
+				        ches[(fen-1)].checked = "checked";
+					})
+				</script>
+				{/if}
+				{if ($dosubmit != 'edit' && !$articleinfo['is_use']) || $articleinfo['is_use'] > 0}
+				<tr>
+					<td colspan="2" >
+					</br>
+					<div class="pingfen p_div" id="pingfen111" style="{if !$placeinfo }display:none;{/if}">
+							<ul>
+								{if $placeinfo}<input type="hidden" value="1" name="article[is_use]" />{/if}
+								<li style="width: 57px;line-height: 53px;font-size: 20px;"><h2 style="color: #366370;">評分:</h2></li>
+								<li style="width: 50px;padding-left: 7px;"><img style="padding-top: 8px;" src="template/default/images/01_2.png"/></li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="1"/>1</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="2"/>2</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="3"/>3</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="4"/>4</li>
+								<li><input type="radio" class="infocs" {if $placeinfo && $articleinfo[article_rank]<= 0}checked="checked"{/if}  name="article[article_rank]" value="5"/>5</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="6"/>6</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="7"/>7</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="8"/>8</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="9"/>9</li>
+								<li><input type="radio" class="infocs" name="article[article_rank]" value="10"/>10</li>
+								<li style="width: 50px;padding-left: 7px;padding-top: 10px;"><img style="padding-top: 8px;" src="template/default/images/01_1.png"/></li>
+							<ul/>
+					</div>
+					</td>
+				</tr>
+				{/if}
+				<tr><td colspan="2">&nbsp;</td></tr>
+			</table>
+			<div class="gl_qr">
+				<input type="checkbox" name="ly" id="agree" dataType="Group"  msg="請同意協議" class="bq infocs" /><font color="#949494">我確定所提交的內容及相片並不含任何侵犯版權內容</font>
+			</div>
+			<div class="blank20"></div>
+		</div>
+		<div class="yjb">
+			<div class="gl_qr">
+				{if $dosubmit == 'edit'}
+				   {if $articleinfo['is_draft'] == 1}
+					<input type="button" id="cedit" value="發表" class="btn_bg4 subbtn"/>
+				   {/if}
+					<input type="button" id="edit" value="修改" class="btn_bg4 subbtn"/>
+					<input type="hidden" id="dosubmit" name="dosubmit" value="edit" />
+					<input type="hidden" name="article[articleid]" value="{$articleid}" />
+				  	{if ($articleinfo['placeid'] > 0 && $articleinfo['is_use'] > 0)|| $placeinfo}<input type="hidden" name="radioPlaceId" value="{$placeinfo.placeid}"/>{/if}
+				{else}
+					<input type="button" id="add" value="發表" class="btn_bg4 subbtn" disabled="disabled"/>
+					<input type="button" id="addc" value="儲存為草稿" class="btn_bg5 subbtn"/>
+					{if $placeinfo}<input type="hidden"  name="radioPlaceId" value="{$placeinfo.placeid}"/>{/if}
+					<input type="hidden" id="dosubmit" name="dosubmit" value="add" />
+				{/if}
+				<input type="button" id="view" value="預覽" class="btn_bg4 subbtn"/>
+				<input type="button" onclick="history.go(-1)" value="取消" class="btn_bg4 subbtn" style="margin-right:0px"/>
+			</div>
+		</div>
+		</form>
+		<script>
+			jQuery(".bq").click(function(){
+				if(jQuery(this).attr("checked")=="checked"){
+					jQuery("#add").removeAttr('disabled');
+				}else{
+					jQuery("#add").attr('disabled','disabled');
+				}
+			})
+			function ajaxFileUpload()
+			{
+				jQuery("#loading")
+				.ajaxStart(function(){
+					jQuery(this).show();
+				})
+				.ajaxComplete(function(){
+					jQuery(this).hide();
+				});
+				jQuery.ajaxFileUpload
+				(
+					{
+						url:'doajaxfileupload.php',
+						secureuri:false,
+						fileElementId:'fileToUpload',
+						data:{utype:'cover'},
+						dataType: 'json',
+						success: function (data, status)
+						{
+							if(typeof(data.error) != 'undefined')
+							{
+								if(data.error != '')
+								{
+									alert(data.msg);
+								}else
+								{
+									jQuery("#thumb").val(data.content);
+									jQuery("#artimg").attr('src',data.content);
+									//alert(data.msg);
+								}
+							}
+						},
+						error: function (data, status, e)
+						{
+							alert(e);
+						}
+					}
+				)
+				return false;
+			}
+		</script>
+		<div class="blank10"></div>
+		<!--{template data/adtpl/12}-->
+	</div>
+	<!--{template lbi_article_right1}-->
+</div>
+<script charset="utf-8" src="js/savemsg.js"></script>
+<script>
+	//表单提交
+	jQuery(".subbtn").click(function(){
+		var bid = this.id;
+		if(bid == 'addc' || bid == 'view'){
+			$('#agree').removeAttr('dataType');
+			$('#agree').removeAttr('msg');
+		}
+		else
+		{
+			$('#agree').attr('dataType','Group');
+			$('#agree').attr('msg','請同意協議');
+		}
+		if(Validator.Validate(document.getElementById('articleform'),3)){
+			jQuery('#dosubmit').val(this.id);
+			if(bid == 'view'){
+				jQuery("#articleform").attr('target','_blank');
+			}
+			else
+			{
+				jQuery("#articleform").removeAttr('target');
+			}
+			deleteCookie('article_list');
+			jQuery("#articleform").submit();
+		}
+	});
+	function getdirections(essayid){
+		jQuery.ajax({
+		   type: "get",
+		   url: "do.php",
+		   data: "ac=$_SCONFIG[register_action]&op=showdire&essayid="+essayid,
+		   dataType:'json',
+		   success:update_page
+		});
+	}
+	function update_page (msg) {
+		var dialog = KindEditor.dialog({
+			width : 500,
+			title : msg.title,
+			body : msg.content,
+			closeBtn : {
+				name : '關閉',
+				click : function(e) {
+					dialog.remove();
+				}
+			},
+			yesBtn : {
+				name : '確定',
+				click : function(e) {
+					dialog.remove();
+				}
+			}
+		});
+	} 
+	jQuery(".domore").click(function(){
+		var ty = jQuery(this).attr("id");
+		var vl = jQuery("#"+ty).html();
+		if(vl == '顯示更多'){
+			jQuery("#"+ty+"_content").show();
+			jQuery("#"+ty).html('收起');
+			jQuery("#"+ty).addClass('upmore');
+		}else{
+			jQuery("#"+ty+"_content").hide();
+			jQuery("#"+ty).html('顯示更多');
+			jQuery("#"+ty).removeClass('upmore');
+		}
+	})
+	function getFormval()
+	{//获取页面填写的信息
+		jQuery(".infocs").each(function(i){
+			if(jQuery(this).attr('type') == 'radio'){
+				if( jQuery(this).attr('checked')){
+					local_info(jQuery(this).attr('name'),jQuery(this).val(),'article_list');
+				}
+			}
+			else
+			{
+				local_info(jQuery(this).attr('name'),jQuery(this).val(),'article_list');
+		    }
+		})
+		var startaddress = new Array();
+		var sstr="";
+		jQuery("input:checkbox[name='article[startaddress][]']").each(function(){
+			if(jQuery(this).attr("checked")){
+				sstr += jQuery(this).val()+","
+			}
+		})
+		sstr = sstr.substr(0,(sstr.length)-1);
+		startaddress = sstr.split(",");
+		local_info('article[startaddress][]',startaddress,'article_list');
+		var site_cat = new Array();
+		var str="";
+		jQuery("input:checkbox[name='article[site_cat][]']").each(function(){ 
+			if(jQuery(this).attr("checked")){
+				str += jQuery(this).val()+","
+			}
+		})
+		str = str.substr(0,(str.length)-1);	
+		site_cat =str.split(",");
+		local_info('article[site_cat][]',site_cat,'article_list');
+	}
+	jQuery(document).ready(function(){
+		load_info('article_list');
+		setInterval("getFormval();",300000);
+	});	
+</script>
+<!--{template footer}-->

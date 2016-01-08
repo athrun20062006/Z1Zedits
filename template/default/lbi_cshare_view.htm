@@ -1,0 +1,60 @@
+<meta name="description" content="SeeWide 香港特搜 - 玩樂搜尋平台" />
+
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="js/buttons.js"></script>
+<script type="text/javascript" src="js/loader.js"></script>
+<script>stWidget.ogurl ='http://www.seewide.com/space.php?do=pcominfo&id={$print.id}&cid={$cprint.id}'</script>
+<script type="text/javascript">stLight.options({publisher: "632ea38d-46c0-466f-a98d-09a8b0010d25"});</script>
+<script>
+var options={ "publisher": "632ea38d-46c0-466f-a98d-09a8b0010d25", "position": "left", "ad": { "visible": false, "openDelay": 0, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "linkedin", "sina"]}};
+var st_hover_widget = new sharethis.widgets.hoverbuttons(options);
+</script>
+
+
+<div style="float:left;">
+<span class="st_facebook_vcount" displayText="Facebook"></span>
+<span class="st_twitter_vcount" displayText="Tweet"></span>
+<span class="st_sina_vcount" displayText="Sina"></span>
+<span class='st_linkedin_vcount' displayText='LinkedIn'></span>
+</div>
+
+<dl class="prt">
+	<dt id="cprint">{$cshare.print}</dt>
+	<dd><a href="javascript: openPrintWnd('{$cprint.id}','{$cprint.type}')"><img src="image/share_b05.png" ></a></dd>
+</dl>
+
+<script type="text/javascript">	
+function openPrintWnd(id,vt)
+{
+	jQuery.ajax({//ajax 调用数据
+		type: "POST",
+		cache:false,
+		url: "ajax_info.php",
+		data: "do=print&id="+id+"&vtype="+vt,
+		success: function(msg){
+			jQuery("#cprint").html(msg);
+			
+			window.open('space.php?do=print&id={$cprint.id}&type={$cprint.type}','Print','height=660,width=700,scrollbars=yes,toolbar=no,status=no');
+		}
+	});
+}
+</script>
+<style>
+.share_msg{float:left;}
+.share_msg dl {
+    float: left;
+    padding-right: 5px;
+    width: 45px;
+}
+.share_msg dl dt {
+    background: url("image/bubble.png") no-repeat scroll 0 0 transparent;
+   
+	width:60px;
+	height:46px;
+	line-height:40px;
+	text-align:center;
+}
+
+.share_msg dl.prt{ padding:6px 8px; width:60px;}
+#print{font-size: 18px;}
+</style>

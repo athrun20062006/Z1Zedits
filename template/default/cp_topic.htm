@@ -1,0 +1,152 @@
+<!--{template header}-->
+
+<!--{if $_GET['op'] == 'delete'}-->
+
+	<h1>刪除熱鬧</h1>
+	<a href="javascript:hideMenu();" class="float_del" title="關閉">關閉</a>
+	<div class="popupmenu_inner" id="__topicform_{$topicid}">
+	<form id="topicform_{$topicid}" name="topicform_{$topicid}" method="post" action="cp.php?ac=topic&op=delete&topicid=$topicid">
+		<p>確定刪除指定的熱鬧嗎？</p>
+		<p class="btn_line">
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="submit" name="deletesubmit" value="確定" class="submit" />
+		</p>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+	
+<!--{elseif $_GET['op'] == 'ignore'}-->
+
+	<h1>剔除信息</h1>
+	<a href="javascript:hideMenu();" class="float_del" title="關閉">關閉</a>
+	<div class="popupmenu_inner" id="__topicform_{$topicid}">
+	<form id="topicform_{$topicid}" name="topicform_{$topicid}" method="post" action="cp.php?ac=topic&op=join&topicid=$_GET[topicid]&id=$_GET[id]&idtype=$_GET[idtype]">
+		<p>
+			確定要將其從此熱鬧中剔除嗎？<br>
+			這並不會刪除該數據。
+		</p>
+		<p class="btn_line">
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="hidden" name="newtopicid" value="0">
+			<input type="submit" name="joinsubmit" value="確定" class="submit" />
+		</p>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+	
+	
+<!--{elseif $_GET['op'] == 'join'}-->
+
+	<h1>湊個熱鬧</h1>
+	<a href="javascript:hideMenu();" class="float_del" title="關閉">關閉</a>
+	<div class="popupmenu_inner" id="__topicjoinform">
+	<form id="topicjoinform" name="topicjoinform" method="post" action="cp.php?ac=topic&op=join&id=$_GET[id]&idtype=$_GET[idtype]">
+		<p>
+			選擇個熱鬧：<br>
+			<select name="newtopicid">
+			<option value="">&nbsp;</option>
+			<!--{loop $tlist $value}-->
+			<option value="$value[topicid]">$value[subject]</option>
+			<!--{/loop}-->
+			</select>
+		</p>
+		<p class="btn_line">
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="submit" name="joinsubmit" value="確定" class="submit" />
+		</p>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+
+<!--{else}-->
+
+	<h2 class="title"><img src="image/app/topic.gif" />熱鬧</h2>
+	<div class="tabs_header">
+		<ul class="tabs">
+			<li class="active"><a href="cp.php?ac=topic"><span>添加新熱鬧</span></a></li>
+			<li><a href="space.php?do=topic"><span>返回熱鬧列表</span></a></li>
+		</ul>
+		<!--{if $_SGLOBAL[refer]}-->
+		<div class="r_option">
+			<a  href="$_SGLOBAL[refer]">&laquo; 返回上一頁</a>
+		</div>
+		<!--{/if}-->
+	</div>
+	
+	<div class="c_form">
+		<form method="post" action="cp.php?ac=topic&topicid=$topicid" enctype="multipart/form-data">
+		<table cellspacing="4" cellpadding="4" width="100%" class="infotable">
+			<tr>
+				<th width="100">熱鬧標題</th>
+				<td>
+					<input type="text" name="subject" value="$topic[subject]" size="80" />
+				</td>
+			</tr>
+			<tr>
+				<th>熱鬧圖片</th>
+				<td>
+					<table><tr>
+					<!--{if $topic['pic']}-->
+					<td><img src="$topic[pic]" width="150"></td>
+					<!--{/if}-->
+					<td><input type="file" name="pic" value="" /></td>
+					</tr></table>
+				</td>
+			</tr>
+			<tr>
+				<th>熱鬧說明</th>
+				<td>
+					<textarea name="message" rows="8" cols="80">$topic[message]</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>允許參與方式</th>
+				<td>
+					<input type="checkbox" name="jointype[]" value="blog"$jointypes[blog]>日誌
+					<input type="checkbox" name="jointype[]" value="pic"$jointypes[pic]>圖片
+					<input type="checkbox" name="jointype[]" value="thread"$jointypes[thread]>話題
+					<input type="checkbox" name="jointype[]" value="poll"$jointypes[poll]>投票
+					<input type="checkbox" name="jointype[]" value="event"$jointypes[event]>活動
+					<input type="checkbox" name="jointype[]" value="share"$jointypes[share]>分享
+				</td>
+			</tr>
+			
+			<tr>
+				<th>允許參與的用戶組</th>
+				<td>
+				<!--{eval $i=0;}-->
+				<table><tr>
+				<!--{loop $usergroups $groups}-->
+					<!--{loop $groups $gid $value}-->
+					<td><input type="checkbox" name="joingid[]" value="$gid"$joingids[$gid]>$value[grouptitle]</td>
+					<!--{if $i%4==3}--></tr><tr><!--{/if}-->
+					<!--{eval $i++;}-->
+					<!--{/loop}-->
+				<!--{/loop}-->
+				</tr></table>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>允許參與結束日期</th>
+				<td>
+					<script type="text/javascript" src="source/script_calendar.js" charset="$_SC[charset]"></script>
+					<input type="text" name="endtime" value="$topic[endtime]" id="endtime" onclick="showcalendar(event,this,1,'$topic[endtime]', '$topic[endtime]')">
+					<br>為空則不限制。到期後，該熱鬧將只能瀏覽，不再允許參與。
+				</td>
+			</tr>
+
+
+			<tr>
+				<th>&nbsp;</th>
+				<td><input type="submit" name="topicsubmit" value="提交" class="submit" /></td>
+			</tr>
+		</table>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+	
+	
+<!--{/if}-->
+
+<!--{template footer}-->

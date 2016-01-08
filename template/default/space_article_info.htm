@@ -1,0 +1,363 @@
+<!--{template header}-->
+<div id="h_window_bg" class="h_window_bg" style="display:none; position:fixed; z-index:100; background-color:#000000; top:0px; left:0px; width:100%; height:100%;"></div>
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/gongl.css" rel="stylesheet" type="text/css" />
+<LINK rel="stylesheet" type="text/css" href="template/default/css/lrtk.css">
+<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="/js/resizeThumbs.js"></script>
+<script charset="utf-8" src="template/default/js/h_function.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<style type="text/css">
+#shop-desc
+{
+	font-size:16px;
+}
+</style>
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="gli_tit">
+			<a href="space.php?do=article">探險家攻略</a>{if $category1}&nbsp;&nbsp;>&nbsp;&nbsp;$category1{/if}{if $category2}&nbsp;&nbsp;>&nbsp;&nbsp;$category2{/if}&nbsp;&nbsp;>&nbsp;&nbsp;<a style="color: black;">{$articleinfo.title}</a>
+		</div>
+		<!--#攻略详细内容 start-->
+		<div class="gli_top">
+			<div class="f_r" style="width:120px;text-align:right;">
+				<div id="dian_{$articleinfo.articleid}" class="gli_dian"  onclick="dian({$articleinfo.articleid})" style="cursor:pointer; background:url(template/default/images/{$articleinfo.dian_img}.gif) no-repeat scroll right center transparent">{$articleinfo.diannum}</div>
+				<div class="clear"></div>
+				<div id="coll_div">
+				{if $articleinfo.is_collect}
+				<a onclick="collectarticle({$articleinfo.articleid},'article',1,'coll_div')" href="javascript:;"><img src="image/nbtn_colles.gif"></a>
+				{else}
+				<a onclick="collectarticle({$articleinfo.articleid},'article',0,'coll_div')" href="javascript:;"><img src="image/btn_colles.gif"></a>
+				{/if}
+				</div>
+				<div class="blank5"></div>
+			</div>
+			<div class="f_l" style="width:480px;padding-bottom:6px;">
+				<h1>
+				<strong style="color:#51CCC7;font-size:30px;">{if $articleinfo.article_rank > 0}$articleinfo.article_rank{/if}</strong>
+				{if $articleinfo.article_rank >= 5}
+				<img src="template/default/images/01_1.png"/>
+				{elseif $articleinfo.article_rank > 0}
+				<img src="template/default/images/01_2.png"/>
+				{/if}
+				{$articleinfo.title}
+				</h1>
+				<p>由 {if $articleinfo.user_star == 2}<img src="image/sstar.gif" class="star"/> {/if}<a href="space-{$articleinfo.userid}.html" style="color:#000000">{$articleinfo.username}</a> 於 {$articleinfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$articleinfo.clicknum}</p>
+				<!--#分類及地區信息-->
+				<div class="site_cat">分類：{$articleinfo.site_category} {if $articleinfo.startaddress}；地區：{$articleinfo.startaddress}{/if}</div>
+			</div>
+			{if $articleinfo.admin_hot == 1 }
+			<img src="template/default/images/tuijie1.gif" class="f_l"/>
+			{/if}
+		</div>
+		<div class="gli_con">
+			<div class="blank5"></div>
+			<!--#是次消费以及攻略日期 start-->
+			<div class="artpricer">
+				{if !empty($articleinfo.starttime)}<p>攻略日期：{$articleinfo.starttime}</p>{/if}
+				{if !is_null($articleinfo.price)}<p>是次消費：每人平均約HK$ {$articleinfo.price}</p>{/if}
+			</div>
+			<!--#是次消费以及攻略日期 end-->
+			<div class="blank20"></div>
+			<div id="shop-desc" style="overflow:hidden;clear:both">
+			{$articleinfo.content}
+			</div>
+			<div class="blank10"></div>
+			{if !empty($articleinfo.description)}
+			<div class="clearfix" style="width:709px;">
+				<img src="image/r8.gif.jpeg"/>
+				<div class="blank5"></div>
+				<p>{$articleinfo.description}</p>
+			</div>
+			<div class="blank5"></div>
+			{/if}
+			<div class="f_l" style="width:700px;height:50px">鐘意SeeWide的分享，給我們一個Like吧！<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fseewide.hk&amp;width=50&amp;layout=button&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=35&amp;appId=1415272032046108" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:20px;" allowTransparency="true"></iframe></div>
+			<div class="gli_view">
+				<div class="f_r" style="width:200px">
+					<ul>
+						<li><a id="a_report" href="javascript:;" onclick="doreport('report','raidersid','{$articleinfo.articleid}')" class="jianju">檢舉</a><div class="clear"></div></li>
+						<li>&nbsp;</li>
+					</ul>
+				</div>
+				<div class="f_l" style="width:500px;">
+					<ul>
+						<li class="clearfix">
+							<dd>攻略日期：{if !empty($articleinfo.starttime)}{$articleinfo.starttime}{else}N/A{/if}</dd><dd class="ddR">攻略地點：{if !empty($articleinfo.startaddress)}{$articleinfo.startaddress}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							<dd>攻略時間：{if !empty($articleinfo.endtime)}{$articleinfo.endtime}{else}N/A{/if}</dd>
+							<dd class="ddR">{if !is_null($articleinfo.price)}是次消費：每人平均約HK$  {$articleinfo.price}{/if}</dd>
+						</li>
+						<li class="clearfix" style="padding-bottom:0px">
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="gli_view"><div class="share_msg"><!--{template lbi_share_view_article}--></div></div>
+			<div class="clear"></div>
+		</div>
+		<div class="gli_but"></div>
+		<div class="blank20"></div>
+		<!--#攻略详细内容 end-->
+		{if $placelist}
+		<div style="">
+			<div class="blank10"></div>
+			<img src="template/default/POIbar4article.jpg"/>
+			<div class="blank10"></div>
+		</div>
+		<!--{template lbi_place_pain}-->
+		{/if}
+		<div class="dian_list" style="clear: both;">
+			<div class="dian_userlist">
+			{loop $dianlist $item}
+				<div class="dian_item">
+					{if $item.user_star == 2}<img class="bigstar" src="image/bstar1.gif">{/if}<a href="{$item.user_url}"><!--{avatar($item[userid],small)}--></a>
+				</div>
+				{/loop}
+			</div>
+			<div class="dian_right">
+				<div class="dian_btn">
+					<img src="image/{$articleinfo.bdian_img}.gif" onclick="dian({$articleinfo.articleid})" style="cursor:pointer;"/>
+					<img src="template/default/images/icon_01.gif" />
+				</div>
+				<div class="dian_num">共<span>{$articleinfo.diannum}</span>人比"掂"</div>
+			</div>
+		</div>
+		<div class="blank20"></div>
+		<!--推薦信息-->
+		<div class="gli_tjl">
+		  {if $userlist }
+			<h2>探險家推薦</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $userlist $item}
+				<li>
+					<div class="article_thumb"><a href="space-article-id-{$item.articleid}.html"><img src="{$item.thumb}"  onload="resizeThumb(this,109,72);" /></a></div>
+					<p><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 25, 1, 0))}--></a></p>
+				</li>
+				{/loop}
+			</ul>
+			<div class="blank10"></div>
+		  {/if}
+		  {if $hot_article}
+			<h2>會員推薦</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $hot_article $item}
+				<li>
+					<div class="article_thumb">
+						<a href="space-article-id-{$item.articleid}.html"><img src="{$item.thumb}" width="109" height="72" onload="resizeThumb(this,109,72);"/></a>
+						<p><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 25, 1, 0))}--></a></p>
+					</div>
+				</li>
+				{/loop}
+			</ul>
+			<div class="blank10"></div>
+		  {/if}	
+		  {if $base_article }
+			<h2>香港特搜 精選</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $base_article $item}
+				<li>
+					<div class="article_thumb">
+						<a href="space-article-id-{$item.articleid}.html"><img src="{$item.thumb}" width="109" height="72" onload="resizeThumb(this,109,72);"/></a>
+						<p><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 25, 1, 0))}--></a></p>
+					</div>
+				</li>
+				{/loop}
+			</ul>
+		   {/if}
+			<div class="blank10"></div>
+		</div>
+		<div class="gli_tjr"> 
+		   <!--{if $_SGLOBAL['ad'][$is_mobile]['lainfo01']}-->
+			<div id="ad_lainfo01">
+				<!--{ad($is_mobile,'lainfo01')}-->
+			</div>
+			<!--{/if}-->
+		</div>
+		<!--#攻略评论信息 2014.01.08 start-->
+		<a name="header_1" id="header_1"></a>
+		<div id="artcomment">
+			<div class="blank15"></div>
+			{if $multi}<div id="pager" class="pagebar">{$multi}</div>{/if}
+			<div class="blank15"></div>
+			{loop $comment $key $item}
+			<div class="gli_msg" id="gli_{$item.commentid}">
+				<ul>
+					<li><!--{if $item.user_star == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$item[userid]}.html"><img src="{$item.avatar}" onerror='this.src="/ucenter/images/noavatar_middle.gif";' style="max-width:72px;"></a></li>
+					<li class="gli_mtxt"><a href="space-{$item[userid]}.html"><font><span id="user_{$item.userid}">{$item.username}</span></font></a> 於{$item.addtime} 留言
+					<!--私人回应-->
+					<!--{if $item.is_private==1}-->
+					<span style="font-size:12px;color:#D82E49;">(私人回應)</span>
+					<!--{/if}-->
+					 <!--{if $item.parentid>0}-->
+					<div class="msgquote">原文由 {$item.parent_user} 於 {$item.paddtime} 發表<div class="conquote">{$item.pcontent}</div></div>
+					 <!--{/if}-->
+					<div style="color:#000000;padding-top:10px;">{$item.content}</div></li>
+					<li class="gli_action">
+					{if $is_delcom}<a style="margin-right:17px" href="javascript:;" onclick="delcom({$item.commentid})">刪除</a>{/if}
+					<a id="lp_a_report" href="javascript:;" onclick="doreport('report','glplid','{$item.commentid}')" style="margin-right:17px">舉報</a>
+					<a href="#lp_hf" onclick="reply_mark({$item.userid},{$item.commentid},{$item.is_private});" style="color:#3399ff;">回覆</a></li>
+					<li class="gli_sort">No.<!--{eval echo ($key+1);}--></li>
+				</ul>
+				<div class="blank15"></div>
+			</div>
+			{/loop}
+			{if $multi}<div id="pager" class="pagebar">{$multi}</div>{/if}
+			<div class="blank15"></div>
+		</div>
+		<script>
+			/*jQuery(document).ready(function(){
+			   {if $_GET['cpage'] > 0}
+					scroller('header_1', 800);
+			   {/if}
+			   ajaxget('ajax_info.php?do=artcomment&artid='+'{$articleid}&page='+'{$cpage}', 'artcomment', 'artcomment');
+			});*/
+		</script>
+		<!--#攻略评论信息 2014.01.08 end-->
+		<!--{template lbi_report}-->
+		<!--lp 评论 begin-->
+		<div class="gli_pl">
+			<!--{template space_pinglun}-->
+			<form action="comment.php" method="post">
+				<div class="acBox">
+					<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL['supe_uid']}.html"><img src="{$yourtoon}" onerror='this.src="/ucenter/images/noavatar_middle.gif";' style="max-width:72px;"></a></div>
+					<div class="acRight">
+						<textarea name="comment[content]" id="ccontent" maxlength="300"></textarea>
+						<p style="color:#B7B7B7">最多能輸入300字</p>
+						<div class="blank5"></div>
+						<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+						<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+						<input type="hidden" name="comment[type]" value="1" />
+						<input type="hidden" name="comment[articleid]" value="{$articleinfo.articleid}" />
+						<!--<input type="checkbox" name="comment[is_private]" id="lp_is_private" value="1" /><font color="#BCBCBC">私人回應</font>-->
+						<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="留言"/>
+					</div>
+							<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div class="blank10"></div>
+					<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+							<!--{/if}-->
+					<div class="blank10"></div>
+					<div class="facebox1" id="face_list"></div>
+				</div>
+			</form>
+			<div class="clear"></div>
+			<script>
+				//fanny 添加表情图片信息 2013-11-25
+				jQuery(document).ready(function(){
+					document.getElementById("face_list").innerHTML ="";
+					var faceul = document.createElement("ul");
+					for(i=1; i<21; i++)
+					{
+						getStatusFace(i, faceul);
+					}
+					document.getElementById('face_list').appendChild(faceul);
+				});
+				//获取表情
+				function getStatusFace(i, faceul)
+				{
+					var faceli = document.createElement("li");
+					faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'ccontent\')"/>';
+					faceul.appendChild(faceli);
+				}
+			</script>
+		</div>
+		<!--lp 评论 end-->
+		<div class="fb-comments" data-href="http://www.seewide.com/space-article-id-{$articleinfo.articleid}.html" data-width="738" data-numposts="5" data-colorscheme="light"></div> 
+		<div class="clear"></div>
+	</div>
+	<!--/left-->
+	<!--{template lbi_articleinfo_right}-->
+	<!--/right -->
+</div>
+<script type="text/javascript" src="js/shop.js"></script>
+<script>
+	var articleid = '{$articleinfo.articleid}';
+	var username = '{$articleinfo.username}';
+	function dian(aid){
+		jQuery.ajax({
+		   type: "POST",
+		   url: "space.php?do=article",
+		   data: "artid="+aid+"&ctype=adclick",
+		   dataType:'json',
+		   success:click_result
+		});	
+	}
+	function click_result (msg)
+	{
+		if(msg.error <= 0){
+			alert(msg.msg);
+		}else{
+			alert(msg.msg);
+			if(msg.error ==1){
+				//fanny 修改攻略掂出错问题 2013-11-22
+				location.href="space-article-id-"+msg.artid+".html";
+			}
+		}
+	}
+	function delcom(cid){
+		if(confirm('您確定要刪除該條數據嗎？')){
+			jQuery.ajax({//ajax 调用数据
+				type: "POST",
+				cache:false,
+				url: "comment.php",
+				data: "do=del&id="+cid,
+				success: function(msg){
+					if(msg < 0){
+						alert('沒有要執行操作的數據。');
+					}else{
+						jQuery("#gli_"+msg).css('display','none');
+					}
+				}
+			});
+		}
+	}
+	function check(t1) {
+		var regC = /[^ -~]+/g;
+		var regE = /\D+/g;
+		var str = t1.value;
+		if (regC.test(str)){
+			t1.value = t1.value.substr(0,150);
+		}
+		if(regE.test(str)){
+			t1.value = t1.value.substr(0,150);
+		}
+	} 
+	
+</script>
+<script type="text/javascript" src="js/pre_val.js"></script>
+<!--{if $google.googlecode}-->
+{$google.googlecode}
+<!--{/if}-->
+<!--{template footer}-->
+<script>
+        jQuery(document).ready(function(){
+           {if $_GET['cpage'] > 0}
+				scroller('header_1', 800);
+           {/if}
+         //  ajaxget('ajax_info.php?do=artcomment&artid='+'{$articleid}&page='+'{$cpage}', 'artcomment', 'artcomment');
+        });
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-5']);
+  _gaq.push(['_setDomainName', '.seewide.com']); 
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script>
+var uni=document,txt='',partner_pm='uni_hk_seewide_pm',partner_ctxt='uni_hk_seewide_ctxt',urlfilter_pm='uni_hk',unikeyword='',maxcount=3,j=6,r=0,bi=function(a){return uni.getElementById(a);};
+function ljs(e,t){if(e){backfill=1;tag="https://js-apac-ss.ysm.yahoo.com/d/search/p/standard/js/hk/flat/mpd/rlb/?Keywords="+encodeURIComponent(e)+"&Partner="+partner_pm+"&keywordCharEnc=uft8&outputCharEnc=utf8&mkt=hk&cb="+(""+Math.random()).substring(2,6)+"&maxCount="+maxcount+"&urlFilters=uni_hk&serveUrl="+encodeURIComponent(location.href)}else{backfill=0;tag="https://hk-cm.ysm.yahoo.com/js_flat_1_0/?config=20840581828&source="+partner_ctxt+"&ctxtUrl="+encodeURIComponent(location.href)+"&ctxtId=entertainment&ctxtCat=hk_t1_default_entertainment&maxCount="+maxcount+"&mkt=hk&cb="+(""+Math.random()).substring(2,6)}var n=uni.createElement("script"),r=false,i=uni.getElementsByTagName("head")[0];n.src=tag;n.onload=n.onreadystatechange=function(){if(!r&&(!this.readyState||this.readyState=="loaded"||this.readyState=="complete")){r=true;t();n.onload=n.onreadystatechange=null;i.removeChild(n)}};i.appendChild(n)}
+ljs(unikeyword,function(){var zl=zSr.length,e=6;if(e<zl){write(zSr,e);}if(zl==6 && backfill){ljs('',function(){write(zSr,e);})}})
+function write(zSr,e){var zl=zSr.length;
+if(typeof(ysmright)!=="undefined"){txt+='<div style="position:relative"><div style="text-align:center;"><a href="http://hk.searchmarketing.yahoo.com/?o=HK0025" target="_blank" style="color:#ccc;">雅虎贊助</a></div>';while(e<zl){var d=zSr[e++],u1=zSr[e++],c=zSr[e++],t=zSr[e++],s=zSr[e++],u2=zSr[e++];txt+='<div style="cursor:pointer;margin-top:10px" onclick="window.open(\''+c+'\')"><div>'+t+'</div><div style="margin:5px 0;color:#7A7A7A">'+d+'</div><div style="color:#00A0E1">'+s+'</div></div>';}txt+='</div>';bi("ysm_right").innerHTML=txt;}
+}
+</script>

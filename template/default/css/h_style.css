@@ -1,0 +1,28 @@
+.textarea{width:560px;border:1px solid #dedede;padding:0 5px;}
+.blank36{height:36px;clear:both;padding:0px;margin:0px;overflow:hidden;}
+.cfb191d{color:#c33132;}
+.c6d6d6d{color:#6d6d6d;}
+.fs34{font-size:26px;}
+.add_jingdan{width:654px;margin:0 auto;border:2px solid #c49871;padding:15px 40px;}
+.add_jingdan select{border: 1px solid #dcdcdc;width: 156px;color: #9e9e9e;height: auto;}
+.add_jingdan p{line-height:25px;color:#9e9e9e}
+.add_table tr {height:48px;}
+.add_table tr th{color:#5e5e5e;font-size:13px;color:#767676;text-align:right;width:80px;font-weight:100;}
+.add_table tr th span{}
+.add_input{width:400px;border:1px solid #dedede;height:22px;line-height:22px;padding:0 5px;}
+.get_tj{margin:-17px 28px 0 0;font-size:18px;}
+.fen{background:url(../images/bg_01.gif) no-repeat;width:558px;height:196px;margin:0;padding:16px 0 0 156px;}
+.fen img{margin-right:36px}
+.mr55{margin-right:55px;}
+.comment_top{background:url(../images/comment_top.gif) no-repeat; width:715px;height:164px;margin:0 auto;}
+/* fanny 修改景点评论图片显示问题 2013-11-21 start */
+.comment_img{padding:24px 0px 0px 107px; position: relative; height: 112px;overflow: hidden;  width: 170px;}
+/* fanny 修改景点评论图片显示问题 2013-11-21 end */
+.comment_info{padding:25px 0 0 65px;width:360px;}
+.comment_info p.category a{font-size: 19px;color: #583C26;line-height: 24px;font-weight:bold;}
+.comment_info p.title{font-size: 24px;line-height: 45px;color: #484848;font-weight:bold;}
+.comment_info p.address{line-height: 22px;font-size: 18px;color: #484848;font-weight:bold;}
+.place_btn{background:url(../images/btn_bg9.gif) no-repeat scroll;width:76px;height:34px; border:0px;cursor:pointer}
+.position{height: 149px;margin-left: -68px; margin-top: -129px; position: absolute; width: 143px;}
+.pcomment_img{cursor:pointer;border:1px solid #ffffff;width:100px;}
+.pcomment_cur{border:3px solid #FC0A0A;cursor:pointer;}

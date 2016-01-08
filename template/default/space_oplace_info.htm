@@ -1,0 +1,627 @@
+<!--{template header}-->
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/h_slide.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+<div id="ih_window_bg" class="ih_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>		
+<div id="h_window_bg" class="h_window_bg" style="display: none;position: absolute;z-index:100; background-color:#000000;top:0px;left:0px;width: 100%;height:100%;"></div>
+<div class="mainbox clearfix">
+	<div class="AreaL">		
+		<div class="clear"></div>
+		<div class="tit">
+			<div class="action">
+				<a style="float:right;" href="#"><img src="template/default/images/btn_aff.gif"/></a>
+				<div style="float:right;padding:0px 5px;" id="coll_div">
+				{if $placeinfo.is_collect}
+					<a href="javascript:;" ><img src="image/nbtn_colles.gif"/></a>
+				{else}
+					<a href="javascript:;" ><img src="image/btn_colles.gif"/></a>
+				{/if}
+				</div>
+				<a style="float:right;" href="#"><img src="template/default/images/btn_com.gif"/></a>
+			</div>
+			<h1>{$placeinfo.placename}</h1>
+		</div>
+		<div class="blank5"></div>
+		<div class="tab_tit">
+			<ul>					
+				<li <!--{if $vtype == ''}-->class="cur"<!--{/if}-->><a href="#">詳細介紹</a><!--{if $vtype == ''}--><span></span><!--{/if}--></li>
+				<li <!--{if $vtype == 'article'}-->class="cur"<!--{/if}-->><a href="#">攻略({$placeinfo.article_count})</a><!--{if $vtype == 'article'}--><span></span><!--{/if}--></li>
+				<li <!--{if $vtype == 'comment'}-->class="cur"<!--{/if}-->><a href="#">評論({$comment_count})</a><!--{if $vtype == 'comment'}--><span></span><!--{/if}--></li>
+				{if $img_count}<li><a href="javascript:firstimg()">價目表({$img_count})</a></li>{/if}
+				{if $couponnum}<li><a href="#">優惠券({$couponnum})</a></li>{/if}
+			</ul>
+		</div>
+		<div class="blank10"></div>
+		<!--#景点详情--> 	
+	  <!--{if $vtype == ''}-->
+		<!--#景点图片信息展示 start-->
+		<div class="viewBox clearfix">
+			<div class="view_txt">
+				<h2>{$placeinfo.placename}</h2>
+				<p><!--{eval echo nl2br(getstr($placeinfo[placedesc], 70, 1, 0))}-->{$slh}</p>
+				<div class="blank20"></div>
+				<div class="view_zheng">{$zscore}</div>
+				<div class="view_de">{$dscore}</div>
+				<div class="view_del">{$cscore}</div>
+			</div>
+		  <!--#图片切换 start-->	
+			<div class="view_img">
+				<div class="play">
+					<ul id="pnl_scroll" class="map_tits">
+					  {loop $place_img $imgs}
+						<li><a rel="pnl_scroll"  imcha="imcha"  class="focus_limg" href="javascript:;" name="{$imgs.place_original}"><img src="{$imgs.place_original}" height="247px"></a>{if $imgs.author_id}<div class="img_source">圖片來自於 <a href="{$imgs.author_url}" target="_blank">{$imgs.author_name}</a> 的 <a href="{$imgs.article_url}" target="_blank">{$imgs.article_title}</a></div>{/if}</li>
+					  {/loop}							
+					</ul>					
+				</div>
+				<div class="img_tab">
+					<ul id="pnl_btn">
+					  {loop $place_img $key $timgs}
+						<li {if $key < 1}class="on"{/if}><a class="on" onclick="" href="javascript:void(0);"><img src="{$timgs.place_original}" width="84"></a></li>
+						</li>
+					  {/loop}	
+					</ul>
+				</div>
+			</div>				
+			<script>					
+				var cfg={
+						"scroll":500,//滚动时间
+						"stop":3000,//停留时间
+						"num":{$place_cimg}//图片数
+					};
+				/*fanny 算大图的总长度 */
+				var pn1 = {$place_cimg} * 375;
+				jQuery("#pnl_scroll").css("width",pn1);
+			</script>
+			<script language="javascript" src="template/default/js/m.js" type="text/javascript"></script>
+			<!--#图片切换 end-->
+			
+			<!--#景点详细信息 start-->
+			<div class="mapBox">
+				<div class="mapl">
+					<ul class="map_item">
+					  <!--#地址-->
+					  {if $placeinfo.placeaddress}
+					  <li><div class="ico_place"><img src="image/ico_08.gif"/>：</div><div class="txt_place">{$placeinfo.placeaddress}</div></li>{/if}
+					  <!--#電話-->
+					  {if $placeinfo.placemobile}
+					  <li><div class="ico_place"><img src="image/ico_13.gif"/>：</div><div class="txt_place">{$placeinfo.placemobile}</div></li>{/if}
+					  <!--#營業時間-->
+					  {if $placeinfo.placetime}	
+					  <li><div class="ico_place"><img src="image/ico_10.gif"/>：</div><div class="txt_place">{$placeinfo.placetime}</div></li>{/if}
+					  <!--#價格-->
+					  {if $placeinfo.placeprice}
+					  <li><div class="ico_place"><img src="image/ico_11.gif"/>：</div><div class="txt_place">{$placeinfo.placeprice}</div></li>{/if}
+					  <!--#付款方式-->
+					  {if $placeinfo.placepay}<li><div class="ico_place"><img src="image/ico_12.gif"/>：</div><div class="txt_place">{$placeinfo.placepay}</div></li>{/if}
+					  <!--#分类-->
+					  {if $placeinfo.placecat}<li><div class="ico_place"><img src="image/ico_09.gif"/>：</div><div class="txt_place">{$placeinfo.placecat}</div></li>{/if}
+					  <!--#网址-->
+					  {if $placeinfo.placeurl}<li><div class="ico_place"><img src="image/ico_15.gif"/>：</div><div class="txt_place"><a href="{$placeinfo.placeurl}" target="_blank">{$placeinfo.placeurl}</a></div></li> {/if}
+					  <!--#備註-->					  
+					  {if $placeinfo.placeremark}<li><div class="ico_place"><img src="image/ico_14.gif"/>：</div><div class="txt_place">{$placeinfo.placeremark}</div></li>{/if}
+					  <!--#贡献者-->
+						<li><div class="ico_place"><img src="image/ico_26.gif"/>：</div><div class="txt_place"><a href="{$placeinfo.add_author_url}" target="_blank">{$placeinfo.add_author}</a> 發現這好去處</div></li>
+					  {if $placeinfo.common_author}	
+						<li><div class="ico_place"><img src="image/ico_27.gif"/>：</div><div class="txt_place"><a href="{$placeinfo.common_author_url}" target="_blank">{$placeinfo.common_author}</a>發布首篇評論者</div></li>
+					  {/if}	
+					  {if $placeinfo.contuser}
+						<li><div class="ico_place"><img src="image/ico_28.gif"/>：</div><div class="txt_place">{loop $placeinfo.contuser $key $contuser}<a href="space-{$key}.html" target="_blank">{$contuser}</a> {/loop}對這好去處有傑出貢獻</div></li>
+					  {/if}					
+					</ul>					
+				</div>
+				<!--#地图功能-->
+				<div class="mapr">	
+					<!--#地图信息 start-->
+					<!--{if $placeinfo.mapaddress}-->
+					<div class="blank15"></div>	
+					<script>
+						function initialize() {
+							var mapOptions = {
+								zoom: 15,
+								center: new google.maps.LatLng({$placeinfo.mapaddress}),	
+								panControl: true,
+								zoomControl: true,
+								mapTypeControl: true,//地图或是卫星
+								scaleControl: true,
+								streetViewControl: true,
+								overviewMapControl: true, 
+								mapTypeId: google.maps.MapTypeId.ROADMAP
+							}
+							var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+							
+							var marker = new google.maps.Marker({
+								map: map,
+								position: map.getCenter()
+							});
+							
+							var map = new google.maps.Map(document.getElementById("map_canvass"), mapOptions);
+							
+							var marker = new google.maps.Marker({
+								map: map,
+								position: map.getCenter()
+							});
+							
+						}				
+						function loadScript() {
+						  var script = document.createElement("script");
+						  script.type = "text/javascript";
+						  script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDTChFQiFr_ywqJIAhUXsGATvKYM8A_qXY&sensor=true&callback=initialize";
+						  document.body.appendChild(script);
+						}
+
+						window.onload = loadScript;
+					</script>	
+					<div class="mapInfo" id="allmap">						
+						<div id="map_canvas" style="width:100%;height:100%"></div>
+					</div>
+					<!--{else}-->
+					<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfomap']}-->	
+					<div id="ad_lpinfomap">
+						<!--{ad($is_mobile,'lpinfomap')}-->
+					</div>
+					<!--{/if}-->					
+					<!--{/if}-->					
+					<!--#地图信息 end-->
+			
+					<div class="blank30"></div>
+					<div class="btn_action">
+						{if $placeinfo.mapaddress}<a href="javascript:;" onclick="display_block('h_window_bg');display_block('h_window');loadScript()"><img src="image/map_big.gif"/></a>{else}<div style="float:left;width:130px;height:33px;">&nbsp;</div>{/if}
+						<a href="#" class="btn_up">更新好去處資料</a>	
+						
+						<!--{template lbi_map}-->
+					</div>
+				</div>
+				<div class="s_clear"></div>
+				<div class="place_share">
+					<!--#分享 start-->
+					<div class="view_share">
+						<div class="share_msg">
+							<!--{template lbi_share_view}-->
+						</div>				
+					</div>
+					<!--#分享 end-->
+					{if $placeinfo.edittime}<div class="place_utime">最近更新日期：{$placeinfo.edittime}</div>{/if}
+				</div>
+			</div>	
+			<div class="blank10"></div>
+			<!--#景点详细信息 end-->
+			
+			<!--#優惠券圖片切換-->
+			<a name="coupon"></a>
+			{if $couponlist}
+			<link href="template/default/css/h_slide.css"  type="text/css" rel="stylesheet"/>
+			<script src="template/default/js/h_slide.js" type="text/javascript"></script>
+			<div class="jd_top"></div>
+			<div class="jd_mid">
+				<div id="ifocus">
+					<div class="ifocus_tit">
+						<div id="ifocus_tx">
+							<ul>
+								{loop $couponlist $item}<li class="current">{$item.placename}</li>{/loop}
+							</ul>
+						</div>
+						<div id="ifocus_btn">
+							<ul>
+								{loop $couponlist $item}<li class="current"><img src="image/ico_18.gif" alt="" /></li>{/loop}
+							</ul>
+						</div>
+					</div>
+					<div id="ifocus_pic">
+						<div id="ifocus_piclist" style="left:0; top:0;">
+							<ul>
+								{loop $couponlist $item}
+								<li>								
+									<div class="roll_left" >
+										<a href="" target="_blank"><img src="{$couponimg}" height="112"/></a>
+									</div>
+									<div class="roll_right">
+										<p class="roll_right_o"><a href="" target="_blank">{$item.title}</a></p>
+										<p class="roll_right_t">有效日期:<!--{date('Y-m-d H:i',$item[validdate])}--></p>
+									</div>									
+								</li>
+								{/loop}
+							</ul>
+						</div>
+					</div>					
+				</div>			
+			</div>
+			<div class="jd_but"></div>
+			<div class="blank10"></div>
+			{/if}
+			<!--#優惠券圖片切換-->
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+			<div id="ad_lpinfobotad">
+				<!--{ad($is_mobile,'lpinfobotad')}-->
+			</div>
+			<div class="blank10"></div>		
+			<!--{/if}-->			
+			{$placeinfo.placedescs}
+			<!--#景点下的攻略信息 start-->
+			{if $article}
+			<div class="blank10"></div>
+			<div class="place_article">
+				<div class="pa_right" style="width:490px;">
+					<div class="pagebar" id="pager">
+						{if $amulti}{$amulti}{else}&nbsp;{/if}
+					</div>
+					<div class="blank15"></div>
+					<div class="sort">排序：
+					<!--{loop $article_sort $key $asort}-->
+						<a href=""><span class="<!--{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}-->sortdesc<!--{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }-->sortasc<!--{/if}-->">{$asort}</span></a>
+					<!--{/loop}-->   
+					</div>
+				</div>
+				<div class="pa_left">
+					<h4>探險家攻略</h4>
+					<p>共{$acount}篇攻略，正顯示第{$anum_start}-{$anum_end}篇攻略</p>
+				</div>
+			</div>			
+			<div class="blank10"></div>
+			<!--{template lbi_article_main}-->
+			 {if $amulti}							
+			  <div class="blank10"></div>			
+			  <div class="place_article"><div class="gl_page"><div class="pagebar" id="pager">{$amulti}</div></div></div>
+			 {/if}	
+			{/if}
+			<!--#景点下的攻略信息 end-->
+			
+			<!--#景点下的评论信息 start-->
+			{if $placecomment}
+			<div class="blank10"></div>	
+			<div class="place_article">				
+				<div class="pa_right" style="width:490px;">
+					<div class="pagebar" id="pager">
+						{if $cmulti}{$cmulti}{else}&nbsp;{/if}
+					</div>
+					<div class="blank15"></div>
+					<div class="sort">排序：
+					<!--{loop $carticle_sort $key $asort}-->
+						<a href=""><span class="<!--{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}-->sortdesc<!--{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }-->sortasc<!--{/if}-->">{$asort}</span></a>
+					<!--{/loop}-->   
+					</div>
+				</div>
+				<div class="pa_left">
+					<h4>探險家評論</h4>
+					<p>共{$ccount}篇評論，正顯示第{$cnum_start}至{$cnum_end}篇評論</p>
+				</div>
+			</div>			
+			<div class="blank10"></div>
+			<!--{template lbi_comment_main}-->
+			<div class="blank10"></div>
+			 {if $cmulti}
+		    <div class="place_article"><div class="gl_page"><div class="pagebar" id="pager">{$cmulti}</div></div></div>
+			 {/if}
+			{/if}
+			<!--#景点下的评论信息 end-->
+		</div>
+		<div class="blank5"></div>
+	  <!--#攻略信息-->
+	  <!--{elseif $vtype == 'article'}-->		
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+		<div id="ad_lpinfobotad">
+			<!--{ad($is_mobile,'lpinfobotad')}-->
+		</div>
+		<div class="blank10"></div>	
+		<!--{/if}-->
+		
+	   <!--{if $vid > 0}-->
+		<script charset="utf-8" src="template/default/js/h_function.js"></script>
+		<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+		<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+		<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+		<div class="gli_tit">			
+			<a {if $prev_place}href="{$prev_place.url}"{else}href="javascript:;" style="color:#DBDBDB"{/if} class="f_l">上一則攻略</a><a href="space-place-id-{$placeid}-varticle.html" class="f_l" style="width:465px;text-align:center">返回搜索結果</a><a {if $next_place}href="{$next_place.url}"{else}href="javascript:;" style="color:#DBDBDB"{/if} class="f_r">下一則攻略</a>		
+		</div>
+		<div class="clear"></div>
+		<!--#攻略详细内容 start-->
+		<div class="gli_top">
+			<div class="f_r" style="width:120px;">
+				<div id="dian_{$articleinfo.articleid}" class="gli_dian"  onclick="" style="cursor:pointer; background:url(template/default/images/{$articleinfo.dian_img}.gif) no-repeat scroll right center transparent">{$articleinfo.diannum}</div>
+				<span class='st_facebook_large' displayText='Facebook'></span>
+				<span class='st_twitter_large' displayText='Tweet'></span>
+				<span class='st_googleplus_large' displayText='Google +'></span>				
+			</div>
+			<div class="f_l" style="width:480px;padding-bottom:6px;">
+				<h1>{$articleinfo.title}</h1>
+				<p>由 {if $articleinfo.user_star == 2}<img src="image/sstar.gif" class="star"/> {/if}<a href="space-{$articleinfo.userid}.html" style="color:#C3C2C7">{$articleinfo.username}</a> 於 {$articleinfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$articleinfo.clicknum}</p>
+				<!--#分類及地區信息-->
+				<div class="site_cat"><h2>分類：{$articleinfo.site_category} {if $articleinfo.startaddress}；地區：{$articleinfo.startaddress}{/if}</h2></div>
+			</div>
+			{if $articleinfo.admin_hot == 1 }
+			<img src="template/default/images/tuijie1.gif" class="f_l"/>
+			{/if}
+			
+		</div>
+		<div class="gli_con">
+			<div class="blank20"></div>
+			
+			<div id="shop-desc" style="overflow:hidden;clear:both">
+			{$articleinfo.content}
+			</div>
+			<div class="clear"></div>
+			<div class="gli_view">
+				<div class="f_r" style="width:200px">
+					<ul>
+						<li><a id="a_report" href="javascript:;" onclick="" class="jianju">檢舉</a><div class="clear"></div></li>
+						<li>&nbsp;</li>						
+					</ul>
+				</div>
+				<div class="f_l" style="width:500px;">
+					<ul>
+						<li class="clearfix">
+							<dd>攻略日期：{if !empty($articleinfo.starttime)}{$articleinfo.starttime}{else}N/A{/if}</dd><dd class="ddR">攻略地點：{if !empty($articleinfo.startaddress)}{$articleinfo.startaddress}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							<dd>攻略時間：{if !empty($articleinfo.endtime)}{$articleinfo.endtime}{else}N/A{/if}</dd><dd class="ddR">是次消費：每人平均約HK$ {if !empty($articleinfo.price) && $articleinfo.price != 9999}{$articleinfo.price}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							前往方法：{if !empty($articleinfo.description)}{$articleinfo.description}{else}N/A{/if}
+						</li>
+						<li class="clearfix" style="padding-bottom:0px">
+							<iframe src="http://www.facebook.com/plugins/like.php?href=<?php echo urlencode(WWWURL.'space.php?do=article&id='); ?>&amp;layout=box_count&amp;show_faces=false&amp;width=50&amp;action=recommend&amp;font=arial&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="gli_view"><div class="share_msg"><!--{template lbi_share_view_article}--></div></div>
+			<div class="clear"></div>
+		</div>
+		<div class="gli_but"></div>
+		<div class="blank20"></div>
+		<!--#攻略详细内容 end-->
+		<div class="dian_list">
+			<div class="dian_userlist">
+				{loop $dianlist $item}
+					<a href="space-{$item[userid]}.html"><!--{avatar($item[userid],small)}--></a>
+				{/loop}
+			</div>
+			<div class="dian_right">
+				<div class="dian_btn">
+					<img src="image/{$articleinfo.bdian_img}.gif" onclick="" style="cursor:pointer;"/>
+					<div id="part_div" style="float:right;padding:5px 15px 0px 0px">
+					{if $articleinfo.is_collect}
+					<a href="javascript:;" onclick=""><img src="template/default/images/icon_02.gif" /></a>
+					{else}
+					<a href="javascript:;" onclick=""><img src="template/default/images/icon_02.gif" /></a>
+					{/if}
+					</div>
+				</div>
+				<div class="dian_num">共<span>{$articleinfo.diannum}</span>人比"掂"</div>
+			</div>
+		</div>
+		<div class="blank20"></div>
+		<!--#评论-->
+		<div id="artcomment"></div>
+		<script>
+			jQuery(document).ready(function(){
+			  ajaxget('ajax_info.php?do=artcomment&artid='+'{$articleinfo.articleid}&page=0', 'artcomment', 'artcomment');
+			});			
+		</script>				
+		
+		<!--{template lbi_report}-->
+		<!--lp 评论 begin-->
+		<div class="gli_pl">
+			<!--{template space_pinglun}-->
+			<form action="comment.php" method="post">	
+			<div class="acBox">
+				<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL['supe_uid']}.html"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></div>
+				<div class="acRight">
+					<textarea name="comment[content]" id="ccontent" maxlength="150" ></textarea>
+					<p style="color:#B7B7B7">最多能輸入150字</p>
+					<div class="blank5"></div>
+					{if $back_url}<input type="hidden" name="back_url" value="{$back_url}"/>{/if}
+					<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+					<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+					<input type="hidden" name="comment[type]" value="1" />
+					<input type="hidden" name="comment[articleid]" value="{$articleinfo.articleid}" />
+					<input type="hidden" name="back_url" value="space-place-id-{$placeid}-varticle-v{$articleinfo.articleid}.html" />
+					<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="回應" />
+					<div class="blank10"></div>
+					<div class="facebox1" id="face_list"></div>
+				</div>
+			</div>
+			</form>
+			<div class="clear"></div>					
+		</div>
+		<!--lp 评论 end-->	
+		<script type="text/javascript" src="js/shop.js"></script>	
+		<script>
+			var articleid = '{$articleinfo.articleid}';
+			var username = '{$articleinfo.username}';
+			/** fanny  修改点击景点攻略掂出错问题 2013-11-22 */
+			function check(t1) {
+				var regC = /[^ -~]+/g;
+				var regE = /\D+/g;
+				var str = t1.value;
+
+				if (regC.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+
+				if(regE.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+			} 
+			/** 这里的掂是用在详细表页 */
+			function dian(aid){
+				jQuery.ajax({
+				   type: "POST",
+				   url: "space.php?do=article",
+				   data: "artid="+aid+"&pid="+'{$placeid}'+"&ctype=adclick",
+				   dataType:'json',
+				   success:click_result
+				});	
+			}
+			function click_result (msg) {  
+				if(msg.error <= 0){
+					alert(msg.msg);
+				}else{
+					alert(msg.msg);
+					if(msg.error ==1){
+						location.href="space-place-id-"+msg.pid+"-varticle-v"+msg.artid+".html";
+					}
+				
+				}		
+			}
+			/** fanny 添加表情图片信息 2013-11-25 */
+			jQuery(document).ready(function(){					
+				document.getElementById("face_list").innerHTML ="";					
+				var faceul = document.createElement("ul");					
+				for(i=1; i<21; i++) {
+					getStatusFace(i, faceul); 
+				}					
+				document.getElementById('face_list').appendChild(faceul);
+
+			});
+			//获取表情
+			function getStatusFace(i, faceul) {
+				var faceli = document.createElement("li");
+				faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'ccontent\')"/>';				
+				faceul.appendChild(faceli);
+			}
+	
+		</script>
+		<!--#攻略詳情 end-->	
+	   <!--{else}-->	
+		<div class="place_article">		
+			<div class="pa_right" style="width:490px;">
+				<div class="pagebar" id="pager">
+					{if $multi}{$multi}{else}&nbsp;{/if}
+				</div>
+				<div class="blank15"></div>
+				<div class="sort">排序：
+				<!--{loop $article_sort $key $asort}-->
+					<a href="#"><span class="<!--{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}-->sortdesc<!--{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }-->sortasc<!--{/if}-->">{$asort}</span></a>
+				<!--{/loop}-->   
+				</div>
+			</div>
+			<div class="pa_left">
+				<h4>探險家攻略</h4>
+				<p>共{$acount}篇攻略，正顯示第{$num_start}-{$num_end}篇攻略</p>
+			</div>
+		</div>		
+		<!--#攻略詳情 start-->
+		<div class="blank10"></div>
+		<!--{template lbi_article_main}-->
+		<div class="comment">
+			<div class="mcon">							
+				<div class="blank10"></div>
+				{if $multi}
+				<div class="place_article">
+					<div class="gl_page">
+						<div class="pagebar" id="pager">
+							{$multi}
+						</div>					
+					</div>
+				</div>
+				{/if}
+			</div>					
+		</div>
+	   <!--{/if}-->
+	  <!--#评论信息--> 
+	  <!--{elseif $vtype == 'comment'}-->		
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+		<div id="ad_lpinfobotad">
+			<!--{ad($is_mobile,'lpinfobotad')}-->
+		</div>
+		<div class="blank10"></div>	
+		<!--{/if}-->	
+		<div class="place_article">				
+			<div class="pa_right" style="width:490px;">
+				<div class="pagebar" id="pager">
+					{if $multi}{$multi}{else}&nbsp;{/if}
+				</div>
+				<div class="blank15"></div>
+				<div class="sort">排序：
+				   <!--{loop $article_sort $key $asort}-->
+						<a href="#"><span class="<!--{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}-->sortdesc<!--{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }-->sortasc<!--{/if}-->">{$asort}</span></a>
+					<!--{/loop}--> 
+				</div>
+			</div>
+			<div class="pa_left">
+				<h4>探險家評論</h4>
+				<p>共{$acount}篇評論，正顯示第{$num_start}至{$num_end}篇評論</p>
+			</div>
+		</div>			
+		<div class="blank10"></div>
+		<!--{template lbi_comment_main}-->
+		<div class="blank10"></div>
+		{if $multi}
+		<div class="place_article">
+			<div class="gl_page">
+				<div class="pagebar" id="pager">
+					{$multi}
+				</div>					
+			</div>
+		</div>
+		{/if}
+	  <!--#优惠券-->	
+      <!--{elseif $vtype == 'coupon'}-->	
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+		<div id="ad_lpinfobotad">
+			<!--{ad($is_mobile,'lpinfobotad')}-->
+		</div>
+		<div class="blank10"></div>	
+		<!--{/if}-->
+		<div class="yh_top"></div>
+		<div class="yh_mid">
+			{$couponinfo.content}
+			<div class="yh_time">
+				<a href="#" class="print" target="_blank">列印</a>
+				<font>有效日期：<!--{date('Y-m-d',$value[validdate])}--></font>
+			</div>				
+		</div>
+		<div class="yh_top"></div>
+      <!--{/if}-->	  
+		<div class="blank30"></div>
+		<!--#前往方法 start-->
+		<div class="way_go" style="display:none">
+			<h3>前往方法</h3>
+			<div class="clear"></div>
+			<ul>
+				<li><img src="template/default/images/img/img01.gif"/><P>xxxxx</p></li>
+				<li><img src="template/default/images/img/img01.gif"/><P>xxxxx</p></li>
+				<li><img src="template/default/images/img/img01.gif"/><P>xxxxx</p></li>
+				<li><img src="template/default/images/img/img01.gif"/><P>xxxxx</p></li>
+			</ul>
+		</div>
+		<!--#前往方法 end-->
+		
+		<!--{if $img_list}-->
+		<div class="map_tit map_tits" id="map_tit" style="display:none">
+			<!--{eval $j = 1;}-->						
+			<!--{loop $img_list $art}-->			  	
+				<a rel="map_tit" imcha="imcha" {if $j==1}id="first_img"{/if} name="{$art.img_url}" title="{$art.img_desc}">{$j}</a>	
+			<!--{eval $j++;}-->
+			<!--{/loop}-->			
+		</div>
+		<!--{/if}-->		
+		<script>
+			function firstimg(){
+				if(jQuery("#first_img")){
+					jQuery("#first_img").click();
+				}				
+			}
+		</script>
+		<script type="text/javascript" src="js/ishop.js"></script>	
+	</div>
+	<!--/left-->
+	<!--{template lbi_place_right}-->
+</div>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-4']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<!--{template footer}-->

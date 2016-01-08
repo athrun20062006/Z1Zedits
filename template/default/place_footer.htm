@@ -1,0 +1,145 @@
+<div id="fot_num"></div>
+<div class="blank15"></div>
+<div class="block_main">
+	<div class="bybg">
+		<div class="footer">
+			<a href="/">首頁</a> &nbsp;&nbsp;<a href="space-article.html">探險家攻略</a> &nbsp;&nbsp;<a href="space-place.html">香港好去處</a> &nbsp;&nbsp;<a href="space-top.html">探險家排行榜</a> &nbsp;&nbsp;<a href="space-help.html">探險家指南</a> &nbsp;&nbsp;<a href="do-contact.html">聯絡我們</a>
+			<p style="padding:25px 0px 10px 0px">「Copyright@2013 seewide.com All Right Reserved 版權所有，不得轉載」</p>
+			<p style="padding-bottom:10px">網站上的資訊及圖片，若閣下為部份資訊的版權擁有者，如有觸犯你的知識版權，請來信info@seewide.com，我們接到投訴後即時處理</p>
+			<p style="padding-bottom:10px">重要聲明：本網站是以即時上載留言等的方式運作，對所有留言的真實性、完整性及立場等，不負任何法律責任。而一切留言之言論只代表留言者個人意見，並非本網站之立場，讀者及用戶不應信賴內容，並應自行判斷內容之真實性。由於本網站受到「即時上載留言」運作方式所規限，故不能完全監察所有留言，若讀者及用戶發現有留言出現問題，請聯絡我們。</p>
+			</div>
+	</div>
+</div>	
+<div class="blank15"></div>
+<script>		
+	function showview(con,nu,nm){
+		for(var i=1;i<=con;i++)
+		{
+			jQuery("#"+nm+'_'+i).css('display','none');
+		}
+		
+		jQuery("#"+nm+'_'+nu).css('display','block');
+	}
+</script>
+  
+<!--{if $_SCOOKIE[reward_log]}-->
+<script type="text/javascript">
+showreward();
+</script>
+<!--{/if}-->
+	<script>
+	var geocoder;
+	var map;
+	function initialize() {
+		geocoder = new google.maps.Geocoder();
+		var mapOptions = {
+			zoom: 15,
+			center: new google.maps.LatLng(22.30061, 114.17532/*22.3071, 114.1765*/),	
+			panControl: true,
+			zoomControl: true,
+			mapTypeControl: false,//地图或是卫星
+			scaleControl: true,
+			streetViewControl: true,
+			overviewMapControl: false, 
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+	  
+		google.maps.event.addListener(map, 'click', function(e) {
+			placeMarker(e.latLng, map);
+			document.getElementById('mapaddress').value=e.latLng;
+			document.getElementById('coordEchoer').innerHTML=e.latLng;
+			display_none('h_window_bg');
+			display_none('h_window');
+		});
+	}
+	function placeMarker(position, map) {
+		var marker = new google.maps.Marker({
+			position: position,
+			map: map
+		});
+		map.panTo(position);
+	}
+	function codeAddress() {
+	  var address = document.getElementById('footerAddress').value;
+	  geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+		  map.setCenter(results[0].geometry.location);
+		  var marker = new google.maps.Marker({
+			  map: map,
+			  position: results[0].geometry.location
+		  });
+		} else {
+		  alert('Geocode was not successful for the following reason: ' + status);
+		}
+	  });
+	}
+	function loadScript() {
+	  var script = document.createElement("script");
+	  script.type = "text/javascript";
+	  script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDTChFQiFr_ywqJIAhUXsGATvKYM8A_qXY&sensor=true&callback=initialize";
+	  document.body.appendChild(script);
+	}
+	</script>
+	<style>
+	/* 弹出层 */
+	.h_window_bg{position: absolute;z-index:100; filter:Alpha(opacity=50);opacity:0.5;background-color:#000000;top:0px;left:0px;width: 100%;height:100%;}
+	.h_window{background-color:#FFFFFF; width:750px; margin-left:-450px; position:fixed; _position:absolute; z-index:1000; top:100px; _top:expression( eval((document.documentElement.scrollTop)+100)); border:4px solid #999;overflow:hidden;}
+	.h_window_title,.h_window_footer{padding:5px 0;line-height: 150%;background-color: #F2F2F2;color: #333;}
+	.h_window_footer{text-align:center}
+	.h_window_title span{font-size: 14px;margin-left: 10px; font-weight:bold;}
+	.h_window_title .fclose{float:right;cursor:pointer;font-size:20px;color:#000;}
+	.h_window_content {padding:10px;height:500px;}
+	html {_background-image: url(about:blank);_background-attachment: fixed;}
+	</style>
+
+
+	<div id="h_window_bg" class="h_window_bg"  style="display:none" onclick="display_none('h_window_bg');display_none('h_window');">
+	</div>
+	<div style="left:50%;display:none" class="h_window" id="h_window" >
+	  <div class="h_window_title">
+		<span class="fclose" onclick="display_none('h_window_bg');display_none('h_window');" style="margin-right:5px">×</span>
+		<span>地圖</span>
+	  </div>
+	  <div class="h_window_content">
+		<p style="color:#ff0000">點擊地圖獲取位置</p>
+		 <div id="panel">
+		  <input id="footerAddress" type="textbox" value="香港" onkeydown="search4meNAO()">
+		  <input type="button" value="搜索" onclick="codeAddress()">
+		</div>
+		<div id="map_canvas" style="width:100%;height:100%"></div>
+	  </div>
+	  <div class="h_window_footer"></div>
+	</div>
+	
+	<script>
+		function test1(f){
+			var d = document.getElementById('h_window_bg'),wh = getWH(f);
+			d.style.cssText +=";width:"+wh.w+'px;height:'+wh.h+'px'
+		}
+		var getWH = function (){
+			var d = document,doc = d[d.compatMode == "CSS1Compat"?'documentElement':'body'];
+			return function(f){
+				return {
+					w:doc[(f?'client':'scroll')+'Width'],
+					h:f?doc.clientHeight:Math.max(doc.clientHeight,doc.scrollHeight)
+				}
+			}
+		}()
+		;
+    function display_none(div_id){
+      document.getElementById(div_id).style.display='none';
+    }
+    function display_block(div_id){test1()
+      document.getElementById(div_id).style.display='';
+    }
+	function search4meNAO()
+	{
+		if(event.keyCode==13)
+		{
+			codeAddress();
+		}
+	}
+</script>
+</body>
+</html>

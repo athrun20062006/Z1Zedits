@@ -1,0 +1,61 @@
+<!--{template header}-->
+<link href="template/default/css/about.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="template/default/js/checkform.js"></script>
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="tit_01">				
+			<a href="javascript:;" class="here_l">聯絡我們</a>
+		</div>
+		</br>
+		<img align=center src='template/default/images/aboutus.gif'>
+		<div class="aboutBox">
+			<div class="about_tit"><img src="template/default/images/ico_07.gif"> 必須輸入</div>
+			<form id="theform" action="do.php?ac=contact&op=insert" method="POST" >
+			<ul class="inputBox clearfix">
+				<li>
+					<label><img src="template/default/images/ico_07.gif"/> 你的名字：</label><input type="text" name="username" class="inp_css" value="{$space[real_name]}" dataType="LimitB" min="1" msg="名字必須填寫！" />
+				</li>
+				<li>
+					<label><img src="template/default/images/ico_07.gif"/> Email：</label><input type="text" name="email" class="inp_css" value="{$space[email]}" dataType="Email" msg="請正確輸入電郵地址！"/>
+				</li>
+				<li>
+					<label>公司/商店名稱：</label><input type="text" name="company" class="inp_css"/>
+				</li>
+				<li>
+					<label>聯絡電話：</label><input type="text" name="mobile" class="inp_css" value="{$space[mobile]}"/>
+				</li>
+				<li>
+					<label><img src="template/default/images/ico_07.gif"/> 標題：</label><input type="text" name="title" class="inp_css" dataType="LimitB" min="1" msg="標題必須填寫！" />
+				</li>
+				<li>
+					<label>內容：</label><textarea class="txt_are" name="content"></textarea>
+				</li>
+				<li class="about_btn">
+					<input type="button" value="確定發送" class="ab_btn" id="sendsubmit" name="sendsubmit" />
+				</li>
+			</ul>	
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>		
+		</div>
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+		<div class="blank10"></div>   
+		<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+		<!--{/if}-->
+		
+		
+		
+		<script>
+		 //表单提交
+				jQuery(".ab_btn").click(function(){
+					if(Validator.Validate(document.getElementById('theform'),3)){           
+						jQuery("#theform").submit();
+					}
+				});
+		</script>
+		
+	</div>	
+	<!--{template lbi_place_right}-->
+	<div class="clear"></div>
+</div>
+
+<!--{template footer}-->

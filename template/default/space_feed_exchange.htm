@@ -1,0 +1,453 @@
+<!--{if empty($_TPL['getmore'])}-->	
+<!--{eval $_TPL['titles'] = array('首頁');}-->
+<!--{template header}-->
+<link href="template/default/css/user.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/pre_next.js"></script>
+<!--/main-->
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="userBox">
+			<div class="userr">
+				<a href="javascript:;" class="f_r"><img src="image/user_msg.gif"/></a>
+				<a href="javascript:;" onclick="followers({$h_userinfo.userid})"><img src="image/user_zs.gif"/></a>
+				<div class="blank15"></div>
+				<div class="gain">
+					<h2>探險家成就</h2>
+					<div class="clear"></div>
+					<ul>
+						<li class="gl"><img src="image/ico_23.gif"/>攻略數目{$h_userinfo.totalarticle}</li><li><img src="image/ico_23.gif"/>評論數目{$h_userinfo.totalcomment}</li><li class="gl"><img src="image/ico_21.gif"/>編輯推介攻略{$h_userinfo.adminhot}</li><li><img src="image/ico_21.gif"/>編輯推介評論{$h_userinfo.comahotsum}</li><li class="gl"><img src="image/ico_20.gif"/>會員推介攻略{$h_userinfo.art_dian}</li><li><img src="image/ico_20.gif"/>會員推介評論{$h_userinfo.comuhotsum}</li><li class="gl"><img src="image/ico_20.gif"/>我推介的攻略{$h_userinfo.ishot}</li><li><img src="image/ico_20.gif"/>我推介的評論{$h_userinfo.commhotsum}</li>
+					</ul>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="userl">
+				<div class="user_txt">
+					<ul>
+						<li><a href="space-{$h_userinfo.userid}.html">{$h_userinfo.username}</a></li>
+						<li>{$_SGLOBAL[usergroup][$space[groupid]][grouptitle]}{if $_SGLOBAL[usergroup][$space[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[usergroup][$space[groupid]][icon]}"/> {/if}</li>
+						<li>經驗值：{$h_userinfo.experience} <a href="space.php?do=help&essay_id=19#001" style="color:#adadad;text-decoration:none">(指南)</a></li>
+						{if $space[groupid] > 1}
+						<li><div class="jy_num"><span style="width:{$rise}%">&nbsp;</span><div class="rise">{$rise}%</div></div></li>
+						{/if}
+						<li><div class="rq_click">人氣指數 {$space[viewnum]}</div></li>
+						<li>探險里數：{$space[contribution]}</li>
+						<li><div class="money">好幣</div>探險旅費：<font class="font1">{$space.user_money}</font></li>
+						
+					</ul>
+					
+				</div>
+				<div class="user_img">
+					<div class="pm">第{$h_userinfo.ranksort}名</div>
+					<div class="user_logo"><!--{avatar($h_uid,big)}--></div>
+					<div class="user_info">
+						<div class="user_zl"><a href="space-home.html">探險家個人資料</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="blank15"></div>
+		<div id="com_b" class="tab">
+			<h2 {if $act == 'share'}class="first-h2"{/if} name="first" ><a href="space-home-share.html">攻略</a></h2>
+			<h2 {if $act == 'comment'  }class="first-h2"{/if}><a href="space-home-comment.html">評論</a></h2>
+			<h2 {if $act == 'followers'}class="first-h2"{/if}><a href="space-home-followers.html">追隨的探險家</a></h2>
+			<h2 {if $act == 'follusers'}class="first-h2"{/if}><a href="space-home-follusers.html">追隨者</a></h2>
+			<h2 {if $act == 'collect'}class="first-h2"{/if}><a href="space-home-collect.html">藏寶箱</a></h2>
+			<h2 {if $act == 'price'}class="first-h2"{/if}><a href="space-home-price.html">好幣兌換</a></h2>
+			<h2 {if $act == 'jbprice'}class="first-h2"{/if}><a href="space-home-jbprice.html">旅費兌換</a></h2>
+			<h2 {if $act == 'invoice'}class="first-h2"{/if}><a href="space-home-invoice.html">回贈金</a></h2>
+		</div>
+		<div class="blank5"></div>
+	  <!--#好幣兌換-->
+	  <!--{if $act == 'price'}-->
+		<div class="gift_tit">
+			<div class="gf_r">
+				<ul>
+					<li class="gfr_txt">特搜兌換價：</li>
+					<li>
+						<p>200探險里數 = <img src="image/ico_24.gif"/></p>
+						<p>10,000探險里數 = 50 <img src="image/ico_24.gif"/></p>
+					
+					</li>
+				</ul>
+			</div>
+			<div class="gf_l">好幣兌換</div>
+		</div>
+		<div class="clear"></div>
+		<form  action="space.php?do=home&act=price" method="post" id="accountForm" >
+			<div class="gift_view">
+				<div class="gfv_l">
+					<dl>
+						<dt>　現有里數：</dt>
+						<dd><input type="text" class="input_gf" name="countgx" value="{$space[contribution]}" readonly id="zg"/></dd>
+					</dl>
+					<dl>
+						<dt>　扣除里數：</dt>
+						<dd><div class="symbol"><a href="javascript:;" class="jia">&nbsp;</a><a href="javascript:;" class="jian">&nbsp;</a></div>
+						<input type="text" class="input_gf" value="0" style="width:135px" id="kc" name="kouchugx"/>
+						0,000
+						<div class="blank5"></div>
+						<a href="javascript:;" class="exchangejs"><img src="image/exchange_btn1.gif"/></a>
+						<a href="javascript:;" class="exchangesy"><img src="image/exchange_btn2.gif"/></a>
+						</dd>
+					</dl>
+					<dl>
+						<dt>　餘下里數：</dt>
+						<dd><input type="text" name="shengyugx" class="input_gf" value="" id="sy" readonly /></dd>
+					</dl>
+					<dl>
+						<dt><img src="image/ico_24.gif"/>兌換好幣：</dt>
+						<dd><input type="text" name="price" class="input_gf" value="" id="jb" readonly /></dd>
+					</dl>
+				</div>
+				<div class="gfv_r">
+				<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfomap']}-->				     
+				<div id="ad_lpinfomap">
+					<!--{ad($is_mobile,'lpinfomap')}-->
+				</div>
+				<!--{/if}--></div>
+			</div>
+			<div class="blank20"></div>
+			<p class="word"># 由於不同瀏覽器升級或其他原因，而導致探險里數(瀏覽器)錯誤，我們將以Google Analytics的瀏覽器數據作為最終獲得探險里數的標準。</p>
+			<p class="word"># 成功提交及審核後，預計兩至三個工作天會將好幣存到帳戶。</p>
+			<div class="blank35"></div>
+			
+			<input type="hidden" name="dopriceSubmit" value="doprice"/>
+			<div class="exchange"><a href="javascript:;" class="pricsubmit">&nbsp;</a></div>
+		</form>
+		<script>
+			$(".jia").click(function(){
+				var zg = Number($("#zg").val());//现有贡献度
+				var k = Number($("#kc").val());//扣除贡献度	
+				if(zg < 10000)
+				{
+					alert('你的探險里數不足以兌換好幣！');
+				}else{						
+					$("#kc").val((k+1));
+				}
+			});
+			/* 按钮(-) */
+			$(".jian").click(function(){
+				var zg = Number($("#zg").val());
+				var k = Number($("#kc").val());					
+				
+				if((k-1) <= 0){
+					$("#kc").val(0);
+				}else{
+					$("#kc").val((k-1));
+				}
+			});
+			/* 兑换计算 */
+			$(".exchangejs").click(function(){
+				var zg = Number($("#zg").val());//总贡献度
+				var kc = Number($("#kc").val());//扣除贡献度
+				
+				var exchange = kc*10000;//兑换的贡献度
+				
+				//数据是否输入正确
+				if( exchange > zg || exchange < 10000 ){
+					alert('請正確輸入扣除探險里數的數值');						
+				}else{
+					//剩余贡献度
+					var lastg = (zg - exchange);
+					$("#sy").val(lastg);
+					$("#jb").val(kc*50);
+				}
+	
+			});
+			/* 兌換所有 */
+			$(".exchangesy").click(function(){
+			
+				var zg = Number($("#zg").val());//總探險里數
+				//贡献度是否可以兑换金币
+				if(zg < 10000){
+					alert('你的探險里數不足以兌換好幣！');
+				}else{
+					var jb = Math.floor(zg / 10000);//能兑换多少金币
+					var sy = zg-(jb*10000);
+					$("#sy").val(sy);//剩余金币数
+					$("#jb").val(jb*50);
+					$("#kc").val(jb);//扣除金币数
+				}
+			});
+			/* 提交信息 */
+			$(".pricsubmit").click(function(){
+				var jb = $("#jb").val();
+				if(jb == '' || jb.length <= 0){
+					alert('請輸入你要兌換的好幣數值');
+					return false;
+				}
+				$("#accountForm").submit();
+			})
+		</script>
+		<!--#兑换记录 start-->
+		{if $account}
+		<h2 class="exchange_record">兌換記錄</h2>
+		<div class="exchangeBox">
+			<div class="exchange_tit">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+					<tr align="center">
+						<td width="15%">日期</td>
+						<td width="16%">摘要</td>
+						<td width="18%">收入</td>
+						<td width="18%">支出</td>
+						<td width="18%">存款結餘</td>
+						<td width="15%">情況</td>
+					</tr>
+				</table>
+			</div>
+			<div class="exchange_con">
+				<table border="0" width="100%" cellpadding="5" cellspacing="6">
+				  {loop $account $log}
+					<tr align="center">
+						<td width="15%">{$log.change_time}</td>
+						<td width="16%">{$log.change_desc}</td>
+						{if $log.change_type == 1}
+						<td width="18%">--</td>
+						<td width="18%">{$log.pay_money}</td>
+						{else}
+						<td width="18%">{$log.pay_money}</td>
+						<td width="18%">--</td>
+						{/if}
+						
+						<td width="18%">{$log.user_money}</td>
+						<td width="15%">{if $log.change_status == 1}已完成{else}處理中{/if}</td>
+					</tr>
+				  {/loop}	
+					
+				</table>
+			</div>
+			<div class="blank5"></div>
+		   {if $multi}
+			<div class="pagebar" id="pager">
+				<div class="page">
+					{$multi}
+				</div>
+			</div>					
+			{/if}
+		</div>
+		{/if}
+		<!--#兑换记录 end-->
+	  <!--#旅費兌換-->
+	  <!--{elseif $act == 'jbprice'}-->
+		<br>
+		<form id="Form" action="space.php?do=home&act=jbprice_sub" method="post">				
+			<p>你目前的好幣數值：<font class="font1" id="jbprice">{$space.user_money}</font>
+			需要兌換的好幣數值：<input type="text" name="jbnum" id="jbnum" value=""/>	
+		 <table width="100%">
+                <tr>
+                    <td width="50%"><label for="seewide01" onclick="$('#seewide01_c').show();$('#seewide02_c').hide();" ><input id="seewide01" type="radio" name="jb[type]" class="jbtype" value="1" checked><img src="image/seewide01.gif"></label></td>
+                    <td width="50%"><label for="seewide02" onclick="$('#seewide01_c').hide();$('#seewide02_c').show();" ><input id="seewide02" type="radio" name="jb[type]" class="jbtype" value="2"><img src="image/seewide02.gif"></label></td>
+                </tr>
+                <tr>
+                    <td valign="top" height="115">
+                        <table width="100%" id="seewide01_c">
+                            <tr>
+                                <td align="right">銀行名稱*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_name]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">賬戶名稱*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_uname]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">帳戶編號*：</td>
+                                <td><input type="text" class="jbtype1" name="jb[bank_num]" value="" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table width="100%" id="seewide02_c" style="display:none;">
+                            <tr>
+                                <td align="right">機構名稱*：</td>
+                                <td><input type="text" class="jbtype2" name="jb[institution_name]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td align="right">機構網址*：</td>
+                                <td><input type="text" class="jbtype2" name="jb[institution_addr]" value="" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">*只接受捐款到香港政府注冊認可的慈善機構<br />
+如有疑問，可在http://www.ird.gov.hk/chi/tax/ach_search.htm<br />
+尋找有關慈善機構的注冊資格<br /></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="button" id="check" value="確認兌換"/></p>
+                    </td>
+                </tr>
+            </table>	  
+			
+	    </form>	
+                
+                
+            </br>
+	    <img src="image/dhxj.jpg">
+
+	    <script type="text/javascript">
+			$("#check").click(function(){
+			var jbnum=$("#jbnum").val();
+			var jbprice=$("#jbprice").html();
+			if(jbnum=='' || jbnum<= 0){
+					alert('請輸入你需要兌換的好幣數。');
+					return false;
+				}
+			if(isNaN(jbnum)){
+					alert('請輸入數字類型數據。');
+					return false;
+				}		
+			if(parseInt(jbprice)<parseInt(jbnum)){
+					alert('你輸入的數值超過了你的上限，未能兌換。');
+					return false;
+				}	
+                jQuery(".jbtype"+jQuery(".jbtype:checked").val()).each(function(i){
+                             if(this.value == ''){
+                                    if(jQuery(".jbtype:checked").val() == 1){
+                                        alert('請填寫完整銀行信息');
+                                        return false;
+                                    }else{
+                                        alert('請填寫完整機構信息');
+                                        return false;
+                                    }
+                             }
+                         })
+			$("#Form").submit();
+			});
+		</script>
+		<div class="font_size_24">好幣兌換記錄123</div>
+		<!--#金币兑换记录 start-->		 
+		{if $account}
+		<div class="exchange_tit">
+			<table border="0" width="100%" cellpadding="0" cellspacing="0">
+				<tr align="center">
+					<td width="15%">日期</td>
+					<td width="15%">兌換現金數值</td>
+					<td width="25%">情況</td>
+                    <td >兌換選擇</td>
+				</tr>
+			</table>
+		</div>
+		<div class="exchange_con">
+			<table border="0" width="100%" cellpadding="5" cellspacing="6">
+			  {loop $account $log}
+				<tr align="center">
+					<td width="15%">{$log.change_time}</td>
+					<td width="15%">{$log.jbnum}</td>
+					<td width="20%">{$price_state[$log.change_status]}</td>
+                    <td>{$log.desc}</td>
+				</tr>
+			  {/loop}	
+				
+			</table>
+		</div>
+		<div class="blank5"></div>
+		{/if}
+		<!--#金币兑换记录 end-->
+	  <!--#回贈金-->
+	  <!--{elseif $act == 'invoice'}-->
+		<script charset="utf-8" src="My97/WdatePicker.js"></script>
+		<!--#回赠金-->
+		<form action="space.php?do=home&act=invoice" method="post" name="invoiceForm" id="invoiceForm" onsubmit="return checkinvoice()" enctype="multipart/form-data">
+		<div class="gift_view">
+			<table width="100%" border="0"  cellpadding="2" cellspacing="15">
+				<tr>
+					<td width="11%" class="thsalse">消費商戶：</td>
+					<td><input type="text" name="sshop" size="45" /></td>
+				</tr>
+				<tr>
+					<td class="thsalse">消費日期：</td>
+					<td><input type="text" name="stime" size="45" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly/> (YYYY-mm-dd.etc.2013-02-21)</td>
+				</tr>
+				<tr>
+					<td class="thsalse">消費金額：</td>
+					<td><input type="text" name="sprice" size="45" /> (HK$)</td>
+				</tr>
+				<tr>
+					<td class="thsalse">單據編號：</td>
+					<td><input type="text" name="sinvoice" size="45" /></td>
+				</tr>
+				<tr>
+					<td class="thsalse">單據圖像：</td>
+					<td><input type="file" size="45" name="saleimg"></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<input type="hidden" name="doinvoiceSubmit" value="doinvoice"/>
+						<input type="submit" name="" value="確認提交"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="blank20"></div>
+		</form>
+		<script>
+			function checkinvoice()
+			{
+				var frm = document.forms['invoiceForm'];
+				var sshop = frm.elements['sshop'].value;
+				var stime = frm.elements['stime'].value;
+				var sprice = frm.elements['sprice'].value;
+				var sinvoice = frm.elements['sinvoice'].value;
+				var msg = '';
+				if(sshop == '' || sshop.length <= 0)
+				{
+					msg += '- 請輸入消費商戶\n';
+				}
+				if(stime == '' || stime.length <= 0){
+					msg += '- 請輸入消費日期\n';
+				}
+				if(sprice == '' || sprice.length <= 0){
+					msg += '- 請輸入消費金額\n';
+				}else{
+					if(isNaN(sprice)){
+						msg += '- 請正確輸入消費金額\n';
+					}
+				}
+				if(sinvoice == '' || sinvoice.length <= 0){
+					msg += '- 請輸入消費單據號\n';
+				}else{
+					if(isNaN(sinvoice)){
+						msg += '- 請正確輸入消費單據號\n';
+					}
+				}
+				if(msg.length > 0){
+					alert(msg);
+					return false;
+				}else{
+					return true;
+				}
+			}
+		</script>
+		<!--#回赠金记录信息 2014.01.08 start-->
+		<div id="invoicerecord"></div>
+		<script>
+			jQuery(document).ready(function(){
+			  ajaxget('ajax_info.php?do=invoicerecord', 'invoicerecord', 'invoicerecord');
+			});			
+		</script>
+		<!--#回赠金记录信息 2014.01.08 end-->
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lindextopad']}-->	
+		<div class="blank10"></div>   
+		<div id="ad_lindextopad">
+			<!--{ad($is_mobile,'lindextopad')}-->
+		</div>
+		<!--{/if}-->
+	  <!--{/if}-->
+	  <!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+		<div class="blank10"></div>   
+		<div id="ad_lpagebotad">
+			<!--{ad($is_mobile,'lpagebotad')}-->
+		</div>
+	  <!--{/if}-->
+	</div>
+	<!--{template lbi_user_right}-->	
+</div>
+<div class="clear"></div>	
+<!--{template footer}-->
+<!--{/if}-->

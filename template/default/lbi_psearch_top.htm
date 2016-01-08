@@ -1,0 +1,121 @@
+<form action="space.php" method="GET" id="article_form">
+	<input type="hidden" value="{$do}" name="do" />
+	<!--<input type="hidden" value="1" name="tj" />
+	<input type="hidden" value="0" name="tag" />-->
+	<div class="ss_tj">
+		<div class="tj_key">
+			<input type="text" value="關鍵字輸入" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';" name="keyword" id="keyword" class="tkey"/> <input type="submit" name="" value="提交" class="se_btn" id="ss"/>
+		</div>
+		<div class="tj_con" id="tj_con" style="display:">
+			{loop $page_filter $item}
+			{if !empty($item.title) && $item.title != '關鍵字輸入' }
+			<div class="sinfo"><span>{$item.title}</span><a class="delSea" id="{if $item.type == 'price'}{$item.sort}{else}{$item.value}{/if}" type="{$item.type}" ><img src="template/default/images/del.gif"/></a></div>
+			{/if}
+			{/loop}
+			<div class="sinfom">....</div>
+		</div>
+		<font>你的選擇：</font>
+	</div>
+	<div class="blank10"></div>	
+	<div class="search_con">
+		<div class="scon_item">
+			<div class="sitop"></div>
+			<div class="simid">
+				<h2>地區</h2>
+				<div class="sicon" id="cate">
+					{loop $city_array $key $item}
+					<dl>
+						<dt>
+							<img class="cat-ico" style="padding-top:0px" name="city" id="{$key}" src="image/img/btn_unfold.gif" />{$item.name}<input type="checkbox" name="city[{$key}][]" value="{$key}" onclick="checkAll('city[{$key}][]',this)" {if in_array($key,$filter.city)} checked {/if} id="city_{$key}" />
+						</dt>	
+						<div class="clear"></div>
+						<ul class="search_item" id="city_it{$key}">
+							{loop $item.child $childkey $childitem}
+							<dd><input type="checkbox" name="city[{$key}][]" value="{$childkey}" {if in_array($childkey,$filter.city)} checked {/if} id="city_{$childkey}" /><span>{$childitem.name}</span></dd>
+							{/loop}
+						</ul>	
+						<div class="clear"></div>
+					</dl>
+					{/loop}
+				</div>
+			</div>
+			<div class="sibot"></div>			
+		</div>
+		<div class="scon_item">
+			<div class="sitop"></div>
+			<div class="simid">
+				<h2>分類</h2>
+				<div class="sicon" id="cate1">
+					{loop $article_category $key $item}
+					<dl>
+						<dt>
+							<img class="cat-ico" name="category" id="{$key}" style="padding-top:0px" src="image/img/btn_unfold.gif" />{$item.catname}<input type="checkbox" name="category[{$item.catid}][]" value="{$item.catid}" onclick="checkAll('category[{$item.catid}][]',this)" {if in_array($item.catid,$filter.category)} checked {/if} id="category_{$item.catid}" />
+						</dt>					
+						<div class="clear"></div>		
+						<ul class="search_item" id="category_it{$key}">
+						  {loop $item.child $childkey $childitem}
+							<dd><input type="checkbox" name="category[{$item.catid}][]" value="{$childitem.catid}" {if in_array($childitem.catid,$filter.category)} checked {/if} id="category_{$childitem.catid}" /><span>{$childitem.catname}</span></dd>
+						  {/loop}
+						</ul>	
+						<div class="clear"></div>
+					</dl>
+					{/loop}
+				</div>
+			</div>
+			<div class="sibot"></div>			
+		</div>
+		<div class="scon_item1">
+			<div class="sitop1"></div>
+			<div class="simid" style="height:299px">
+				<h2>人均消費</h2>
+				<div class=" xiaofei">
+					<dl>
+						{loop $price_section $key $item}
+						<dt><input type="checkbox" name="price[]" id="price_{$item.sort}" value="{$key}" {if in_array($key,$filter.price)} checked {/if}/> <img src="template/default/images/ico_0{$item.index}.gif"  style="vertical-align:middle"/> {$item.name}</dt> 
+						{/loop}
+					</dl>
+				</div>
+			   {if $do == 'place'}
+				<div class="blank5"></div>
+				<h2>特搜著數</h2>
+				<div class=" xiaofei">
+					<dl>
+						<dt><input type="checkbox" value="1" id="favorable_1" name="favorable" {if ($filter.favorable == 1)} checked {/if}> <img style="vertical-align:middle" src="template/default/images/ico_05.gif"> 優惠</dt>
+					</dl>
+				</div>
+			   {/if}
+			</div>
+			<div class="sibot1"></div>
+		</div>
+		<div class="scon_item1" style="padding-right:0px">
+			<div class="sitop1"></div>
+			<div class="simid">
+				<h2>活動時間</h2>
+				<div class="sicon">
+					<dl>
+						{loop $endtime_section $key $item}
+						 {if $key > 0}
+						<dt><input type="checkbox" name="endtime[]" id="endtime_{$key}" value="{$key}" {if in_array($key,$filter.endtime)} checked {/if} /> {$item}</dt>{/if}
+						{/loop}
+					</dl>
+				</div>
+			</div>
+			<div class="sibot1"></div>
+		</div>
+		<div class="blank10"></div>	
+	</div>
+</form>
+<script type="text/javascript">			
+	jQuery(".cat-ico").click(function(){
+		var cid = jQuery(this).attr('id');
+		var cname = jQuery(this).attr('name');
+		
+		if(jQuery('#'+cname+'_it'+cid).is(':visible')){
+			jQuery('#'+cname+'_it'+cid).hide();
+			jQuery(this).attr('src', "image/img/btn_fold.gif");
+		}else{
+			jQuery('#'+cname+'_it'+cid).show();
+			jQuery(this).attr('src', "image/img/btn_unfold.gif");
+		}		
+	})
+</script>

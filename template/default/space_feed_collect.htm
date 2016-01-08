@@ -1,0 +1,166 @@
+			<!--#fanny 藏寶箱 2013-11-25-->
+			<!--{if $ctype == 'article'}-->
+			<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select name="startaddress">
+					<option value="">選擇地區</option>
+				   {loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+					{/loop}
+				</select>
+				<select name="site_cat">
+					<option value="">探險分類</option>
+						{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="{$act}"/>
+				<input type="hidden" name="ctype" value="{$ctype}"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+			<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+				<!--#排序 start-->
+			<div class="sortBox clearfix">
+				<div class="sort">排序：
+					<!--{loop $article_sort $key $asort}-->
+					<a href="{$mpurl1}&orderby={$key}&ordersc={if $order == $key && $sort == 'desc'}asc{else}desc{/if}">
+						<span class="{if $order == $key && $sort == 'desc'}sortdesc{elseif $order == $key && $sort == 'asc'}sortasc{/if}">{$asort}</span>
+					</a>
+					<!--{/loop}-->
+				</div>
+				<div class="share_tab">
+					<a href="space-home-collect.html" style="color:#e31a3e">攻略</a> | <a href="space-home-collect-cplace.html" >好去處</a>
+				</div>
+			</div>
+				<!--#排序 end-->
+			<!--{template lbi_article_pain}-->
+				<script>
+					$(".laiyuan").live('click',function(){
+						loacl_cuanji();
+					})
+				</script>
+		</div>
+			<!--{elseif $ctype == 'place'}-->
+			<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select name="placeares" >
+					<option value="">選擇地區</option>
+					   {loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['placeares']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+						{/loop}
+				</select>
+				<select name="placecat">
+					<option value="">探險分類</option>
+						{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['placecat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['placename'])}$_GET['placename']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="{$act}"/>
+				<input type="hidden" name="ctype" value="{$ctype}"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+			<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+				<!--#排序 start-->
+			<div class="sortBox clearfix">
+				<div class="sort">排序：
+					<!--{loop $place_sort $key $asort}-->
+						<a href="{$mpurl1}&orderby={$key}&ordersc={if $order==$key && $sort == 'desc'}asc{else}desc{/if}"><span class="{if $order==$key && $sort=='desc'}sortdesc{elseif $order==$key && $sort=='asc'}sortasc{/if}">{$asort}</span></a>
+					<!--{/loop}-->
+				</div>
+				<div class="share_tab"><a href="space-home-collect.html">攻略</a> | <a href="space-home-collect-cplace.html" style="color:#e31a3e" >好去處</a></div>
+			</div>
+				<!--#排序 end-->
+			<!--{template lbi_place_pain}-->
+		</div>
+			<!--{elseif $ctype == 'comment'}-->
+			<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select><option = ''>景点</option></select>
+				<select name="placeares" >
+					<option value="">選擇地區</option>
+					   {loop $city_array1 $key $item}
+					<option value="{$key}" {if $_GET['placeares']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+						{/loop}
+				</select>
+				<select name="placecat">
+					<option value="">探險分類</option>
+						{loop $category_list $item}
+					<option value="{$item.catid}" {if $_GET['placecat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['placename'])}$_GET['placename']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="{$act}"/>
+				<input type="hidden" name="ctype" value="comment"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+			<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+				<!--#排序 start-->
+				<!--{eval $st = 'desc'; $scss = '';}-->	
+				{if $_GET['ordersc'] == 'desc'}
+				<!--{eval $st = 'asc'}-->
+				<!--{eval $scss = 'sortdesc' }-->
+				{else}
+				<!--{eval $st = 'desc'}-->
+				<!--{eval $scss = 'sortasc'}-->
+				{/if}
+			<div class="sortBox clearfix">
+				<div class="sort">排序：
+						<!--{loop $comment_sort $key $asort}-->
+					<a href="{$mpurl1}&orderby={$key}&ordersc={if $order == $key && $sort == 'desc'}asc{else}desc{/if}">
+						<span class="{if $order == $key && $sort == 'desc'}sortdesc{elseif $order == $key && $sort == 'asc' }sortasc{/if}">{$asort}</span>
+					</a>
+						<!--{/loop}-->
+				</div>
+				<div class="share_tab"><a href="space-home-collect.html">攻略</a> | <a href="space-home-collect-cplace.html" >好去處</a></div>
+			</div>
+				<!--#排序 end-->
+			<div class="comment">
+				<div class="mcon">
+						{loop $placecomment $place}
+					<ul>
+						<li class="thumb"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html"><img src="{$place.pcomment_img}"  onload="resizeThumb(this,165,108);"></a></li><li class="txt"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html">{$place.pcomment_title}</a><p>作者：<a href="space-{$place.user_id}.html">{$place.user_name}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;發表日期：<font color="#B32D46">{$place.addtime}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店家/好去處：<a href="space-place-id-{$place.place_id}.html" target="_blank" style="color:#000000;font-size:12px;font-weight:500"><font>{$place.placename}</font></a></p>{$place.content}</li>
+						<li class="views">
+							{if $place.admin_hot}<div class="tj_ico"><img src="image/tuijie.png"></div>{/if}
+							<div class="click_num">{$place.click_count}/{$place.diannum}</div>
+							<p><img src="template/default/images/view_zheng{$place.pcomment_type}.gif"></p>
+						</li>
+						<div class="clear"></div>
+						<div class="f_r">是次消費：每人平均約HK$ {$place.pcomment_consume}</div>
+					</ul>
+					<div class="clear"></div>
+					  {/loop}
+						<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div class="blank5"></div>
+					<div id="ad_lpagebotad">
+							<!--{ad($is_mobile,'lpagebotad')}-->
+					</div>
+						<!--{/if}-->
+					<div class="blank5"></div>
+					  {if $multi}
+					<div class="pagebar" id="pager">
+						<div class="page">
+								{$multi}
+						</div>
+					</div>
+						{/if}
+				</div>
+			</div>
+		</div>
+			<!--{/if}-->

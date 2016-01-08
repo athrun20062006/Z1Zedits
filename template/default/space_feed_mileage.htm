@@ -1,0 +1,163 @@
+		<div class="gift_tit">
+			<div class="gf_r">
+				<ul>
+					<li class="gfr_txt">特搜兌換價：</li>
+					<li>
+						<p>200探險里數 = <img src="image/ico_24.gif"/></p>
+						<p>10,000探險里數 = 50 <img src="image/ico_24.gif"/></p>
+					</li>
+				</ul>
+			</div>
+			<div class="gf_l">好幣兌換</div>
+		</div>
+		<div class="clear"></div>
+		<form action="space.php?do=home&act=price" method="post" id="accountForm" >
+			<div class="gift_view">
+				<div class="gfv_l">
+					<dl>
+						<dt>現有里數：</dt>
+						<dd><input type="text" class="input_gf" name="countgx" value="{$space[contribution]}" readonly id="zg"/></dd>
+					</dl>
+					<dl>
+						<dt>扣除里數：</dt>
+						<dd><div class="symbol"><a href="javascript:;" class="jia">&nbsp;</a><a href="javascript:;" class="jian">&nbsp;</a></div>
+							<input type="text" class="input_gf" value="0" style="width:135px" id="kc" name="kouchugx"/>
+							0,000
+							<div class="blank5"></div>
+							<a href="javascript:;" class="exchangejs"><img src="image/exchange_btn1.gif"/></a>
+							<a href="javascript:;" class="exchangesy"><img src="image/exchange_btn2.gif"/></a>
+						</dd>
+					</dl>
+					<dl>
+						<dt>餘下里數：</dt>
+						<dd><input type="text" name="shengyugx" class="input_gf" value="" id="sy" readonly /></dd>
+					</dl>
+					<dl>
+						<dt><img src="image/ico_24.gif"/>兌換好幣：</dt>
+						<dd><input type="text" name="price" class="input_gf" value="" id="jb" readonly /></dd>
+					</dl>
+				</div>
+				<div class="gfv_r">
+				<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfomap']}-->				     
+					<div id="ad_lpinfomap"><!--{ad($is_mobile,'lpinfomap')}--></div>
+				<!--{/if}-->
+				</div>
+			</div>
+			<div class="blank20"></div>
+			<p class="word"># 由於不同瀏覽器升級或其他原因，而導致探險里數(瀏覽器)錯誤，我們將以Google Analytics的瀏覽器數據作為最終獲得探險里數的標準。</p>
+			<p class="word"># 成功提交及審核後，預計兩至三個工作天會將好幣存到帳戶。</p>
+			<div class="blank35"></div>
+			<input type="hidden" name="dopriceSubmit" value="doprice"/>
+			<div class="exchange"><a href="javascript:;" class="pricsubmit">&nbsp;</a></div>
+		</form>
+			<script>
+				$(".jia").click(function(){
+					var zg = Number($("#zg").val());//现有贡献度
+					var k = Number($("#kc").val());//扣除贡献度	
+					if(zg < 10000)
+					{
+						alert('你的探險里數不足以兌換好幣！');
+					}else{						
+						$("#kc").val((k+1));
+					}
+				});
+				/* 按钮(-) */
+				$(".jian").click(function(){
+					var zg = Number($("#zg").val());
+					var k = Number($("#kc").val());					
+					
+					if((k-1) <= 0){
+						$("#kc").val(0);
+					}else{
+						$("#kc").val((k-1));
+					}
+				});
+				/* 兑换计算 */
+				$(".exchangejs").click(function(){
+					var zg = Number($("#zg").val());//总贡献度
+					var kc = Number($("#kc").val());//扣除贡献度
+					
+					var exchange = kc*10000;//兑换的贡献度
+					
+					//数据是否输入正确
+					if( exchange > zg || exchange < 10000 ){
+						alert('請正確輸入扣除探險里數的數值');						
+					}else{
+						//剩余贡献度
+						var lastg = (zg - exchange);
+						$("#sy").val(lastg);
+						$("#jb").val(kc*50);
+					}
+		
+				});
+				/* 兌換所有 */
+				$(".exchangesy").click(function(){
+				
+					var zg = Number($("#zg").val());//總探險里數
+					//贡献度是否可以兑换金币
+					if(zg < 10000){
+						alert('你的探險里數不足以兌換好幣！');
+					}else{
+						var jb = Math.floor(zg / 10000);//能兑换多少金币
+						var sy = zg-(jb*10000);
+						$("#sy").val(sy);//剩余金币数
+						$("#jb").val(jb*50);
+						$("#kc").val(jb);//扣除金币数
+					}
+				});
+				/* 提交信息 */
+				$(".pricsubmit").click(function(){
+					var jb = $("#jb").val();
+					if(jb == '' || jb.length <= 0){
+						alert('請輸入你要兌換的好幣數值');
+						return false;
+					}
+					$("#accountForm").submit();
+				})
+			</script>
+			<!--#兑换记录 start-->
+			{if $account}
+		<h2 class="exchange_record">兌換記錄</h2>
+		<div class="exchangeBox">
+			<div class="exchange_tit">
+				<table border="0" width="100%" cellpadding="0" cellspacing="0">
+					<tr align="center">
+						<td width="15%">日期</td>
+						<td width="16%">摘要</td>
+						<td width="18%">收入</td>
+						<td width="18%">支出</td>
+						<td width="18%">存款結餘</td>
+						<td width="15%">情況</td>
+					</tr>
+				</table>
+			</div>
+			<div class="exchange_con">
+				<table border="0" width="100%" cellpadding="5" cellspacing="6">
+				  {loop $account $log}
+					<tr align="center">
+						<td width="15%">{$log.change_time}</td>
+						<td width="16%">{$log.change_desc}</td>
+					{if $log.change_type == 1}
+						<td width="18%">--</td>
+						<td width="18%">{$log.pay_money}</td>
+					{else}
+						<td width="18%">{$log.pay_money}</td>
+						<td width="18%">--</td>
+					{/if}
+						<td width="18%">{$log.user_money}</td>
+						<td width="15%">{if $log.change_status == 1}已完成{else}處理中{/if}</td>
+					</tr>
+				  {/loop}
+				</table>
+			</div>
+			<div class="blank5"></div>
+			   {if $multi}
+			<div class="pagebar" id="pager">
+				<div class="page">
+					{$multi}
+				</div>
+			</div>					
+				{/if}
+		</div>
+			{/if}
+			<!--#兑换记录 end-->

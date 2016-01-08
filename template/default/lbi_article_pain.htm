@@ -1,0 +1,71 @@
+<div class="comment">
+	<div class="mcon">
+		{loop $article $key $item}
+		<ul style="padding:0px; position:relative; height:160px;">
+			<li class="thumb">
+				<a href="space-article-id-{$item.articleid}.html" class="laiyuan"><img src="{$item.thumb}" alt="{$item.thumb_alt}" width="160" height="120" onload="resizeThumb(this,160,120);"/></a>
+			</li>
+			<li class="txt" style="padding-right:0px;">
+			{if $item.placeid}
+				<p style="position:absolute; bottom:9px; left:186px;">
+				{if $item.article_rank>=5}
+					<img style="vertical-align: bottom;" src="template/default/images/01_3.png"/>
+				{elseif $item.article_rank>0}
+					<img style="vertical-align: bottom;" src="template/default/images/01_4.png"/>
+				{/if}
+					<strong style="color:#FF8000; font-size:12px;">
+						攻略涉及好去處&nbsp;:&nbsp;
+						<a style="color:#708090; font-size:12px; text-decoration:underline;" href="space-place-id-{$item.placeid}.html">{if empty($item.placename)}不知名好去處{else}{$item.placename}{/if}</a>
+					</strong>
+				</p>
+			{/if}
+				<a href="space-article-id-{$item.articleid}.html" class="laiyuan">{$item['title']}</a>
+				<p>
+					作者：{if $item.uinfo['is_star']==2}<img src="image/sstar.gif" class="star"/>{/if}
+					<a href="space.php?uid={$item.userid}">{$item.uinfo['username']}</a>
+					{$levelUp}發表日期：<font color="#B32D46">{$item.addtime}</font>
+				</p>
+				<div>{$item.content}</div>
+			</li>
+			<li class="views" style="position:absolute; overflow:visible; float:none; top:0px; right:0px;">
+				{if $item.admin_hot==1}<div class="tj_ico"><img src="image/tuijie.png"/></div>{/if}
+				<div class="click_num">{$item.clicknum}/{$item.commentnum}留言</div>
+				<div class="clear"></div>
+				<div id="dian_{$item.articleid}" class="art_dian" name="{$item.diannum}">{$item.diannum}</div>
+				<p><img src="template/default/images/{$item.dian_img}.gif" id="img_{$item.articleid}" onclick="dian({$item.articleid})" class="dian"/></p>
+				{if !is_null($item.price)}<div class="clear"></div><div class="f_r">是次消費：每人平均約HK$ {$item.price}</div>{/if}
+			</li>
+		</ul>
+		{/loop}
+		{if $multi}
+		<div class="blank5"></div>
+		<div class="pagebar" id="pager">
+			<div class="page">
+				{$multi}
+			</div>
+		</div>
+		{/if}
+	</div>
+</div>
+<script>
+	function dian(aid){
+		jQuery.ajax({
+		   type: "POST",
+		   url: "space.php?do=article",
+		   data: "artid="+aid+"&ctype=adclick",
+		   dataType:'json',
+		   success:click_result
+		});	
+	}
+	function click_result (msg) {
+		if(msg.error <= 0){
+			alert(msg.msg);
+		}else{// fanny 修改攻略掂出错问题 2013-11-22
+			alert(msg.msg);
+			if(msg.error ==1){
+				jQuery('#dian_'+msg.artid).html(msg.dnum);
+				jQuery('#img_'+msg.artid).attr('src','template\/default\/images\/dian2.gif');
+			}
+		}
+	}
+</script>

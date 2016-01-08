@@ -1,0 +1,47 @@
+<style>
+/* 弹出层 */
+.h_window_bg{position: absolute;z-index:100; filter:Alpha(opacity=50);opacity:0.5;background-color:#000000;top:0px;left:0px;width: 100%;height:100%;}
+.h_window{background-color:#FFFFFF; width:750px; margin-left:-450px; position:fixed; _position:absolute; z-index:1000; top:100px; _top:expression( eval((document.documentElement.scrollTop)+100)); border:4px solid #999;overflow:hidden;}
+.h_window_title,.h_window_footer{padding:5px 0;line-height: 150%;background-color: #F2F2F2;color: #333;}
+.h_window_footer{text-align:center}
+.h_window_title span{font-size: 14px;margin-left: 10px; font-weight:bold;}
+.h_window_title .fclose{float:right;cursor:pointer;font-size:20px;color:#000;}
+.h_window_content {padding:10px;height:500px;}
+html {_background-image: url(about:blank);_background-attachment: fixed;}
+</style>
+<div id="h_window_bg" class="h_window_bg"  style="display:none" onclick="display_none('h_window_bg');display_none('h_window');"></div>
+<div style="left:50%;display:none" class="h_window" id="h_window" >
+	<div class="h_window_title">
+		<span class="fclose" onclick="display_none('h_window_bg');display_none('h_window');" style="margin-right:5px">×</span>
+		<span>地圖</span>
+	</div>
+	<div class="h_window_content" id='window_content'>	
+		<div id="map_canvass" style="width:100%;height:100%"></div>
+		
+	</div>
+	<div class="h_window_footer"></div>
+</div>
+<script>
+	function test1(f){
+		var d = document.getElementById('h_window_bg'),wh = getWH(f);
+		d.style.cssText +=";width:"+wh.w+'px;height:'+wh.h+'px'
+	}
+	var getWH = function (){
+		var d = document,doc = d[d.compatMode == "CSS1Compat"?'documentElement':'body'];
+		return function(f){
+			return {
+				w:doc[(f?'client':'scroll')+'Width'],
+				h:f?doc.clientHeight:Math.max(doc.clientHeight,doc.scrollHeight)
+			}
+		}
+	}()
+		
+	function display_none(div_id){
+	  document.getElementById(div_id).style.display='none';
+	}
+	function display_block(div_id){
+	  document.getElementById(div_id).style.display='';
+	  test1();
+	}
+</script>
+	

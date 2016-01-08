@@ -1,0 +1,50 @@
+{if $short_list}
+<div class="slider">
+	<span class="sprev no_click" id="sprev"><<</span>
+	<span class="snext " id="snext">>></span>
+	<div id="slider_pic">
+		<ul>
+		{loop $short_list $short}	
+			<li><a href="{$short.surl}"><img width="72" height="63" src="{$short.sicon}"></a></li>			
+		 {/loop}		
+		   
+		</ul>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery(function(){
+		var oPic=jQuery('#slider_pic').find('ul');
+		var oImg=oPic.find('li');
+		var oLen=oImg.length;
+		var oLi =oImg.width();
+		var sprev=jQuery("#sprev");
+		var snext=jQuery("#snext");		
+		 
+		oPic.width(oLen*75);//计算总长度
+		var iNow=0;
+		var iTimer=null;
+		sprev.click(function(){
+			if(iNow>0){ 
+			   iNow--;
+			}
+			ClickScroll();
+		})
+		snext.click(function(){
+			if(iNow<oLen-9){
+				iNow++
+			}
+			ClickScroll();
+		})
+
+		function ClickScroll()
+		{
+			iNow==0? sprev.addClass('no_click'): sprev.removeClass('no_click');
+			iNow==oLen-9?snext.addClass("no_click"):snext.removeClass("no_click");
+			oPic.animate({left:-iNow*75})
+		}
+	 })
+ </script>
+ <div class="blank15"></div>
+{/if}
+
+

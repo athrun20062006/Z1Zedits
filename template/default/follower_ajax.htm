@@ -1,0 +1,37 @@
+<!--{if $ulist}-->
+	<div class="ulist" id="ulist">
+		<div class="ulBox">
+		  <!--{eval $ui=1;}-->	
+		  {loop $ulist $key $fl}
+			 <!--{if $ui == 7}--><div id="ulist_item" class="ulist_item"><!--{/if}-->
+			<div class="ulItem">
+				<div class="ulist_img">{if $fl.is_star == 2}<img src="image/bstar.gif" class="bigstar"/> {/if}<a href="{$fl.user_url}" target="_blank"><img src="{$fl['image']}" onerror='this.src="/ucenter/images/noavatar_middle.gif";'></a></div>
+				<div class="ulist_txt">
+					<div class="ulist_name">
+						<a href="{$fl.user_url}" target="_blank">{$fl.username}</a>
+					</div>
+					{$_SGLOBAL[grouptitle][$fl[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$fl[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$fl[groupid]][icon]}"/> {/if}
+				</div>
+				<div class="clear"></div>
+			</div>	
+			<!--{eval $ui++;}-->
+		  {/loop}
+			<!--{if $ui >= 7}--></div><!--{/if}-->
+		  <div class="clear"></div>
+		</div>
+		<!--{if $ui >= 7}--><div class="domore" onclick="show_more(this)">更多...</div><!--{/if}-->	
+		
+	   {if $multi}
+		<div class="blank5"></div>
+		<div class="pagebar" id="pager">
+			<div class="page" id="Link">
+				{$multi}
+			</div>
+		</div>					
+		{/if}	
+	</div>	
+	<div class="blank15"></div>
+<!--{else}-->
+<div class="no_data" >暫無追隨的探險家</div>
+	<div class="blank15"></div>
+<!--{/if}-->	

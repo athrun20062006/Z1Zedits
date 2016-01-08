@@ -1,0 +1,96 @@
+<div class="AreaR">
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage01']}-->
+	<!--{ad($is_mobile,'rpage01')}-->
+	<div class="blank20"></div>
+	<!--{/if}-->
+	<div class="fotBox" id="fotBox">
+		<div id="fot_scroll" >
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage02']}-->
+			<!--{ad($is_mobile,'rpage02')}-->
+			<div class="blank20"></div>
+			<!--{/if}-->
+		</div>
+	</div>
+</div>
+
+<style>
+.fotBox{ width:300px;overflow:hidden;}
+.fotBoxr{ position:static;}
+.fot_scroll{width:300px;position:fixed;_position:absolute;z-index:1000;top:0px;_top:expression( eval((document.documentElement.scrollTop)));}
+.relative{position:static;}
+html {_background-image: url(about:blank);_background-attachment: fixed;}
+</style>
+
+<script>
+
+	$(".tt").each(function(i){
+		$(this).mouseover(function(){
+			$("#topcon_1").html('<div style="text-align:center;"><img src="template/default/images/loading.gif" /></div>');
+			get_ajax_topusers('topuser',this.id);
+		});
+	})
+	/*$(".tt").live('mouseover',function(){
+		$("#topcon_1").html('<div style="text-align:center;"><img src="template/default/images/loading.gif" /></div>');
+		get_ajax_topusers('topuser',this.id);
+	});*/
+	
+	function get_ajax_topusers(action,type_id){
+		jQuery.ajax({
+			type: "POST",
+			cache:false,
+			url: "ajax_info.php",
+			data: "do="+action+"&type="+type_id,
+			dataType:'json',
+			success: function(res){				
+					res_right_users(res);
+			}
+		});
+	}
+	
+	function res_right_users(res)
+	{
+		var right_text='';
+		if(res){
+			var h = 1;
+			for(j=0;j<res.length;j++)
+			{
+				right_text += '<ul class="clearfix"><li class="topsort">'+h+'</li><li class="topimg">'+res[j]['user_logo']+'</li><li>'+res[j]['username']+'<br>看 <a href="'+res[j]['space_url']+'" target="_blank">Blog ></a></li></ul>';
+				h++;
+			}
+		}
+		jQuery("#topcon_1").html(right_text);
+	}
+	get_ajax_topusers('topuser','uw');
+</script>
+
+<script>
+  window.onscroll=function(){
+  	var c = $("#fotBox").offset().top;
+	var f = $("#fot_num").offset().top - c;	
+	$("#fotBox").height(f);
+	var e = $("#fot_scroll").parent().offset().top - parseFloat($("#fot_scroll").css("marginTop").replace(/auto/, 0));
+	var h = $(this).scrollTop();
+	var b = document.getElementById("fotBox").offsetHeight;	
+	var x = document.getElementById("fot_scroll").offsetHeight;	
+	var a = c + f - h ;	
+	
+	var g = document.getElementById("fot_scroll").offsetHeight; 
+	if (a > g) {
+		$("#fot_scroll").css('margin-top',0);
+		$("#fot_scroll").removeClass("relative");
+		$("#fotBox").removeClass('fotBoxr');
+		if (h >= e) {
+			$("#fot_scroll").addClass("fot_scroll")
+		} else {
+			$("#fot_scroll").removeClass("fot_scroll")
+		}
+		
+	} else {
+		$("#fot_scroll").removeClass("fot_scroll");
+		$("#fot_scroll").addClass("relative");
+		$("#fotBox").addClass('fotBoxr');
+		$("#fot_scroll").css('margin-top',b-x);
+	}
+  }
+</script>
+

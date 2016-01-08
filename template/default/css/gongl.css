@@ -1,0 +1,165 @@
+
+.gll_header {
+    border-top: 1px solid #8D8D8D;
+    clear: both;
+    overflow: hidden;
+}
+
+.adbtn {
+    background: url("../images/btn_bg7.gif") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    float: left;
+    font-size: 20px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    width: 114px;
+}
+
+.adbtn1{
+	float:right;
+	background:url("../images/btn_bg6.gif") no-repeat scroll;
+	width:105px;
+	height:28px;
+	color:#ffffff;
+	line-height:28px;
+	font-size:20px;
+	text-align:center;
+	padding-left:28px;
+}
+.search_con{
+	clear:both;
+	overflow:hidden;
+}
+.scon_item{
+	float:left;
+	width:200px;
+	overflow:hidden;
+	margin-right:10px;
+}
+.scon_item1{
+	float:left;
+	width:150px;
+	overflow:hidden;
+	padding-right:10px;
+}
+.sitop{
+	background:url(../images/yuanjiao1.gif) no-repeat scroll;
+	width:200px;
+	height:9px;
+	overflow:hidden
+}
+.simid{
+	border:1px solid #a0a0a0;
+	overflow:hidden;
+	clear:both;
+	border-top:0px;
+	border-bottom:0px;
+	padding:0px 7px;
+	
+}
+.simid h2{ 
+	background:url(../images/tit_04.gif) no-repeat scroll;
+	width:172px;
+	height:24px;
+	line-height:24px;
+	padding-left:10px;
+	color:#ffffff;
+	padding-bottom:5px;
+	font-size:14px;
+	font-weight:500
+}
+.sibot{
+	background:url(../images/yuanjiao1.gif) no-repeat scroll 0 -11px;
+	width:200px;
+	height:9px;
+	overflow:hidden
+}
+
+
+.sitop1{
+	background:url(../images/yuanjiao2.gif) no-repeat scroll ;
+	width:150px;
+	height:9px;
+	overflow:hidden
+}
+.sibot1{
+	background:url(../images/yuanjiao2.gif) no-repeat scroll 0 -11px;
+	width:150px;
+	height:9px;
+	overflow:hidden
+}
+.scon_item1 .simid h2{width: 124px;}
+.com_b .sort{float:right;color:#8e8e8e;font-size:12px;}
+
+/* 排序 css */
+.com_b .sort span{ background:url(../images/direction.gif) no-repeat scroll right;padding-right:10px;margin-right:5px}
+.com_b .sort span.sortasc{background:url(../images/asc.gif) no-repeat scroll right;}
+.com_b .sort span.sortdesc{background:url(../images/desc.gif) no-repeat scroll right;}
+
+
+/* 排序 css */
+
+
+.ss_tj{overflow:hidden; clear:both;line-height:24px;}
+.ss_tj font{font-size:18px;float:left;padding-top:6px}
+.tj_key{float:right;}
+
+.tj_con{
+	float:right;
+	width:460px;
+	overflow:hidden;
+	padding-top:6px;
+	height:24px;
+}
+
+.se_btn{ background:url(../images/search_bg.gif) no-repeat scroll;width:32px;height:33px; border:0px;text-indent: -100px;cursor:pointer;}
+.tkey{width:135px;height:20px;line-height:20px;padding-left:10px}
+.sinfo{
+	border:1px solid #c0c0c0;
+	height:22px; 
+	line-height:22px;
+	padding:0px 7px;
+	float:left;	
+	margin-right:5px;
+	overflow:hidden;
+}
+.sinfo span{float:left;padding-right:5px;line-height:22px;height:22px;}
+.delSea{float:left;padding-top:5px;cursor:pointer}
+
+.sinfom{float:left;}
+
+/* 香港好去處 */
+.map_css{
+	background:url(../images/tit_08.gif) repeat-x scroll left top;
+	padding-top:15px;
+	overflow:hidden;
+	text-align:center;
+}
+.flag{
+	/*background: url("../images/flag.gif") no-repeat scroll 0 0 transparent;
+    font-size: 14px;
+    font-weight: 600;
+    height: 40px;
+    margin-left: 13px;
+	_margin-left:9px;
+    margin-top: 5px;
+    padding-left: 14px;
+    padding-top: 5px;
+    position: absolute;
+    width: 40px;*/
+	
+	background: url("../images/flag.gif") no-repeat scroll 0 0 transparent;
+    float: right;
+    font-size: 18px;
+    font-weight: 600;
+    height: 35px;
+    line-height: 35px;
+    margin-left: 123px;
+    margin-top: 70px;
+	position: absolute;
+    text-align: center;
+    width: 35px;
+	color:#713c17;
+	font-family:Brush Script MT;
+}

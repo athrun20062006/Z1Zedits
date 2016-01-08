@@ -1,0 +1,30 @@
+body {
+    color: #000000;
+    font-size: 90%;
+}
+#control {
+    margin-bottom: 20px;
+}
+
+a img {
+    border: 0 none;
+}
+.tb-coupon tr {
+    vertical-align: top;
+}
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+table.shop_credit td {
+    color: #FF3333;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.print_info img {
+    margin-right: 5px;
+    vertical-align: middle;
+}

@@ -1,0 +1,478 @@
+<!--{template header}-->
+<link href="template/default/css/user.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<link href="template/default/css/jing_info.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/pre_next.js"></script>
+<script charset="utf-8" src="js/jquery.json-2.4.js"></script>
+<div id="h_window_bg" class="h_window_bg" style="display:none; position:fixed;" onclick="display_none('h_window_bg');display_none('h_window');"></div>
+<div class="mainbox clearfix">
+    <div class="AreaL">
+        <div class="userBox">
+            <div class="userr">
+               <a href="javascript:;" onclick="supe_message()" class="f_r"><img src="image/user_msg.gif"/></a>
+			   <div id="follbtn">{if $is_foll}<a href="javascript:;" onclick="qfollowers({$uid})"><img src="image/user_qzs.gif"/></a>{else}
+                <a href="javascript:;" onclick="followers({$h_userinfo.userid})"><img src="image/user_zs.gif"/></a>{/if}</div>
+                <div class="blank15"></div>
+                <div class="gain">
+                    <h2>探險家成就</h2>
+                    <div class="clear"></div>
+                    <ul>
+                        <li class="gl"><img src="image/ico_23.gif"/>攻略數目{$h_userinfo.totalarticle}</li>
+						<li class="gl"><img src="image/ico_21.gif"/>編輯推介攻略{$h_userinfo.adminhot}</li>
+						<li class="gl"><img src="image/ico_20.gif"/>會員推介攻略{$h_userinfo.art_dian}</li>
+						<li class="gl"><img src="image/ico_20.gif"/>我推介的攻略{$h_userinfo.ishot}</li>
+                    </ul>
+					<div class="clear"></div>
+                </div>
+            </div>
+            <div class="userl">
+				<div class="user_txt">
+                    <ul>
+                        <li>{$h_userinfo.username}</li>
+                        <li>{$_SGLOBAL[grouptitle][$space[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$space[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$space[groupid]][icon]}"/> {/if}</li>
+                        <li>經驗值：{$h_userinfo.experience}  <a href="space.php?do=help&essay_id=19#001" style="color:#adadad;text-decoration:none">(指南)</a></li>
+						{if $space[groupid] > 1}
+                        <li><div class="jy_num"><span style="width:{if $rise>100}100{else}{$rise}{/if}%">&nbsp;</span><div class="rise">{$riseFace}%</div></div></li>
+						{/if}
+                        <li><div class="rq_click">人氣指數 {$space[viewnum]}</div></li>
+                    </ul>
+                </div>
+                <div class="user_img">
+                    <div class="pm">第{$h_userinfo.ranksort}名</div>
+                    <div class="user_logo">{if $h_userinfo['is_star'] == 2}<img class="bigstar" src="image/bstar.gif">{/if}<img src="{$h_userinfo.avatarbig}" onerror='this.src="/ucenter/images/noavatar_big.gif";'></div>
+                </div>
+            </div>
+			<div class="clear"></div>
+        </div>
+        <div class="blank15"></div>
+        <div id="com_b" class="tab">
+			<h2 name="first" {if $dtype == 'article'} class="first-h2"{/if}><a href="space-{$h_uid}.html">攻略</a></h2>
+			<h2 {if $dtype == 'followers'}class="first-h2"{/if}><a href="space-followers-{$h_uid}.html">追隨的探險家</a></h2>
+			<h2 {if $dtype == 'follusers'}class="first-h2"{/if}><a href="space-follusers-{$h_uid}.html">追隨者</a></h2>
+        </div>
+        <div class="blank20"></div>
+		<!--{if $dtype == 'article'}-->
+			<!--#搜索 start-->
+			<div class="searchBox">
+				<form action="space.php?uid={$h_uid}">
+					<select><option>攻略</option></select>
+					<select name="startaddress" >
+						<option value="">選擇地區</option>
+					   {loop $city_array1 $key $item}
+							<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+						{/loop}
+					</select>
+					<select name="site_cat">
+						<option value="">探險分類</option>
+						{loop $category_list $item}
+							<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+					</select>
+					<input type="hidden" name="uid" value="{$uid}"/>
+					<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}{$_GET['title']}{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+					<input type="submit" value="" class="btn_bg3"/>
+				</form>
+			</div>
+			<!--#搜索 end-->
+			<div class="blank15"></div>
+			<!--#分享的攻略 start-->
+			<div class="shareBox">
+				<!--#排序 start-->
+				<div class="sortBox clearfix">
+					<!--{template lbi_article_sort}-->
+					<div class="share_tab">攻略</div>
+				</div>
+				<!--#排序 end-->
+				<!--{template lbi_article_pain}-->
+			</div>
+		<!--{elseif $dtype == 'comment'}-->
+			<!--#搜索 start-->
+			<div class="searchBox">
+				<form action="space.php">
+					<select><option>好去處</option></select>
+					<select name="placeares" >
+						<option value="">選擇地區</option>
+					   {loop $city_array2 $key $item}
+							<option value="{$key}" {if $acity==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+						{/loop}
+					</select>
+					<select name="placecat">
+						<option value="">探險分類</option>
+						{loop $pcategory_list $item}
+							<option value="{$item.catid}" {if $placecat == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+						{/loop}
+					</select>
+					<input type="hidden" name="uid" value="{$uid}"/>
+					<input type="hidden" name="type" value="{$dtype}"/>
+					<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}{$_GET['title']}{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+					<input type="submit" value="" class="btn_bg3"/>
+				</form>
+			</div>
+			<!--#搜索 end-->
+			<div class="blank15"></div>
+			<!--#分享的評論 start-->
+			<div class="shareBox">
+				<!--#排序 start-->
+				<div class="sortBox clearfix">
+					<!--{template lbi_comment_sort}-->
+					<div class="share_tab">評論</div>
+				</div>
+				<!--#排序 end-->
+				<!--#好去處評論信息 start-->
+				<div class="blank10"></div>
+				<!--{template lbi_comment_main}-->
+			</div>
+			<!--#好去處評論信息 end-->
+		<!--{elseif $dtype == 'followers'}-->
+			<!--#追随者用户信息-->
+				<div class="blank10"></div>
+				<div class="top_search">
+					<input type="text" name="username" id="sfollower" class="tuser" onblur="this.value==''?this.value='搜尋探險家':'';" onfocus="this.value=='搜尋探險家'?this.value='':'';" value="搜尋探險家"><input type="button" class="sfbtn" value=""/>
+				</div>
+				<script>
+				 //根据名称获取相应的追随者信息
+				  jQuery(".sfbtn").click(function(){
+					var uname = jQuery("#sfollower").val();
+					uname = uname.replace(/(^\s*)|(\s*$)/g, "");
+					if(uname == '搜尋探險家'){
+						uname  = '';
+					}
+					ajaxget('ajax_info.php?do=sfollowers&uid='+{$uid}+'&uname='+uname, 'folluser', 'folluser');
+				  })
+				</script>
+				<div class="blank5"></div>
+				<div id="folluser"></div>
+				<script>
+					jQuery(document).ready(function(){
+					  ajaxget('ajax_info.php?do=sfollowers&uid='+{$uid}+'&uname=', 'folluser', 'folluser');
+					});
+					function show_more(obj){
+						var uit = jQuery("#ulist_item").attr("class");
+						if(uit == 'ulist_item'){
+							jQuery("#ulist_item").removeClass('ulist_item');
+							jQuery("#ulist_item").addClass('ulist_item1');
+							jQuery(obj).addClass('upmore');
+							jQuery(obj).html('收起');
+						}else{
+							jQuery("#ulist_item").removeClass('ulist_item1');
+							jQuery("#ulist_item").addClass('ulist_item');
+							jQuery(obj).removeClass('upmore');
+							jQuery(obj).html('更多...');
+						}
+					}
+				</script>
+				<!--{if $ftype == 'article'}-->
+				<!--#搜索 start-->
+				<div class="searchBox">
+					<form action="space.php" onsubmit="checkfollowers()">
+						<select><option>攻略</option></select>
+						<select name="startaddress" >
+							<option value="">選擇地區</option>
+						   {loop $city_array1 $key $item}
+								<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+							{/loop}
+						</select>
+						<select name="site_cat">
+							<option value="">探險分類</option>
+							{loop $category_list $item}
+								<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+							{/loop}
+						</select>
+						<input type="text" name="title" id="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+						<input type="hidden" name="type" value="followers"/>
+						<input type="hidden" name="uid" value="{$uid}"/>
+						<input type="hidden" name="ftype" value="{$ftype}"/>
+						<input type="submit" value="" class="btn_bg3"/>
+					</form>
+					<script>
+						function checkfollowers(){
+							var title = jQuery("#title").val();
+							if(title == '關鍵字輸入'){
+								jQuery("#title").val('');
+							}
+							return true;
+						}
+					</script>
+				</div>
+				<!--#搜索 end-->
+				<div class="blank15"></div>
+				<div class="shareBox">
+					<!--#排序 start-->
+					<div class="sortBox clearfix">
+						<!--{template lbi_article_sort}-->
+						<div class="share_tab"><a href="space-followers-{$uid}.html" style="color:#e31a3e">攻略</a></div>
+					</div>
+					<!--#排序 end-->
+					<!--{template lbi_article_main}-->
+				</div>
+				<script>$(".laiyuan").live('click',function(){loacl_cuanji();})</script>
+			<!--{elseif $ftype == 'comment'}-->
+				<!--#搜索 start-->
+				<div class="searchBox">
+					<form action="space.php" onsubmit="checkfollowers()">
+						<select><option>攻略</option></select>
+						<select name="startaddress" >
+							<option value="">選擇地區</option>
+						   {loop $city_array1 $key $item}
+								<option value="{$key}" {if $_GET['startaddress']==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+							{/loop}
+						</select>
+						<select name="site_cat">
+							<option value="">探險分類</option>
+							{loop $category_list $item}
+								<option value="{$item.catid}" {if $_GET['site_cat'] == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+							{/loop}
+						</select>
+						<input type="text" name="title" id="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+						<input type="hidden" name="type" value="followers"/>
+						<input type="hidden" name="uid" value="{$uid}"/>
+						<input type="hidden" name="ftype" value="article"/>
+						<input type="submit" value="" class="btn_bg3"/>
+					</form>
+					<script>
+						function checkfollowers(){
+							var title = jQuery("#title").val();
+							if(title == '關鍵字輸入'){
+								jQuery("#title").val('');
+							}
+							return true;
+						}
+					</script>
+				</div>
+				<!--#搜索 end-->
+				<div class="blank15"></div>
+				<div class="shareBox">
+					<!--#排序 start-->
+					<!--{eval $st = 'desc'; $scss = '';}-->	
+					{if $_GET['ordersc'] == 'desc'}
+					<!--{eval $st = 'asc'}-->
+					<!--{eval $scss = 'sortdesc' }-->
+					{else}
+					<!--{eval $st = 'desc'}-->
+					<!--{eval $scss = 'sortasc'}-->
+					{/if}
+					<div class="sortBox clearfix">
+						<div class="sort">排序：
+							<a href="{$mpurl1}&orderby=addtime&ordersc={if $_GET['orderby'] == 'addtime'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'addtime'} class="{$scss}" {/if}>發表日期</span></a>
+							<a href="{$mpurl1}&orderby=diannum&ordersc={if $_GET['orderby'] == 'diannum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'diannum'}class="{$scss}"{/if}>'掂'數</span></a>
+							<a href="{$mpurl1}&orderby=click_count&ordersc={if $_GET['orderby'] == 'click_count'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'click_count'}class="{$scss}"{/if}>人氣</span></a>
+							<a href="{$mpurl1}&orderby=admin_hot&ordersc={if $_GET['orderby'] == 'admin_hot'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'admin_hot'} class="{$scss}"{/if}>編輯推薦</span></a>
+						</div>
+						<div class="share_tab"><a href="space-followers-{$uid}.html">攻略</a> | <a href="space.php?uid={$uid}&type=followers&ftype=comment" style="color:#e31a3e" >評論</a></div>
+					</div>
+					<!--#排序 end-->
+					<!--{template lbi_comment_main}-->
+				</div>
+			<!--{/if}-->
+		<!--{elseif $dtype == 'follusers'}-->
+		    <div class="top_search">
+			    <form action="space.php" method="get">
+					<input type="text" name="username" id="sfollower" class="tuser" onblur="this.value==''?this.value='搜尋探險家':'';" onfocus="this.value=='搜尋探險家'?this.value='':'';" value="搜尋探險家"><input type="submit" value="" class="sfbtn" >
+					<input type="hidden" name="type" value="follusers"/>
+					<input type="hidden" name="uid" value="{$uid}"/>
+				</form>
+			</div>
+			<div class="blank10"></div>
+			<!--{if $folllist}-->
+			<div class="ucomment">
+				<div class="mcon">
+					<div class="ulist" >
+						<div class="ulBox">
+						 {loop $folllist $key $fl}
+							<div class="ulItem">
+								<div class="ulist_img">{if $fl.is_star == 2}<img src="image/bstar.gif" class="bigstar"/> {/if}<a href="{$fl.user_url}" target="_blank"><img src="{$fl['image']}" onerror='this.src="/ucenter/images/noavatar_middle.gif";'></a></div>
+								<div class="ulist_txt"><div class="ulist_name"><a href="{$fl.user_url}" target="_blank">{$fl.username}</a></div>{$_SGLOBAL[grouptitle][$fl[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$fl[groupid]][icon]}<img style="vertical-align:middle" src="{$_SGLOBAL[grouptitle][$fl[groupid]][icon]}"/>{/if}</div>
+								<div class="clear"></div>
+							</div>
+						  {/loop}
+						  <div class="clear"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--{/if}-->
+		<!--{/if}-->
+		<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+		<div class="blank5"></div>
+		<div id="ad_lpagebotad">
+			<!--{ad($is_mobile,'lpagebotad')}-->
+		</div>
+		<!--{/if}-->
+		<div class="blank5"></div>
+		{if $multi}
+		<div class="pagebar" id="pager">
+			<div class="page">{$multi}</div>
+		</div>
+		{/if}
+		<div class="blank5"></div>
+    </div>
+    <!--{template lbi_user_right}-->
+</div>
+<script>
+function dian(aid){
+    jQuery.ajax({
+       type: "POST",
+       url: "space.php?do=article",
+       data: "artid="+aid+"&ctype=adclick",
+       dataType:'json',
+       success:click_result
+    });
+}
+function click_result (msg) {
+	if(msg.error <= 0){
+		alert(msg.msg);
+	}else{
+		/** fanny 修改点击攻略掂出错的问题 2013-11-22 */
+		alert(msg.msg);
+		if(msg.error ==1){
+			jQuery('#dian_'+msg.artid).html(msg.dnum);
+			jQuery('#img_'+msg.artid).attr('src','template\/default\/images\/dian2.gif');
+		}
+	}
+}
+$(".laiyuan").live('click',function(){
+	loacl_cuanji();
+})
+</script>
+<div style="left:50%;display:none" class="h_window" id="h_window" >
+	<div class="h_window_title">
+		<span class="mclose" onclick="display_none('h_window_bg');display_none('h_window');" >×</span>
+		<span>發送消息</span>
+    </div>
+    <div class="h_window_content">
+		<div class="gli_pl" style="width:auto;padding-top:16px;">
+			<div id="reviewmsg"></div>
+			<form method="post" action="comment.php">
+				<div class="acBox">
+					<div class="acLeft"><!--{if $send_is_star == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL[supe_uid]}.html" target="_blank"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></div>
+					<div class="acRight" style="width:515px">
+						<textarea maxlength="500" id="message" name="message" class="commcon" ></textarea>
+						<p style="color:#B7B7B7">最多能輸入500字</p>
+						<div class="blank5"></div>
+						<input type="hidden" name="receiver_id" class="commcon" value="{$h_userinfo.userid}"/>
+						<input type="button" id="sendmsg" value="回應" class="f_r send_msg"  name="dosubmit">
+						<div class="blank10"></div>
+						<div id="face_list" class="facebox1"></div>
+					</div>
+				</div>
+			</form>
+			<div class="clear"></div>
+			<script>
+				/*function check(t1) {
+					var regC = /[^ -~]+/g;
+					var regE = /\D+/g;
+					var str = t1.value;
+					if (regC.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+					if(regE.test(str)){
+						t1.value = t1.value.substr(0,150);
+					}
+				} fanny 添加表情图片信息 2013-11-25*/
+				jQuery(document).ready(function(){
+					document.getElementById("face_list").innerHTML ="";
+					var faceul = document.createElement("ul");
+					for(i=1; i<21; i++) {
+						getStatusFace(i, faceul);
+					}
+					document.getElementById('face_list').appendChild(faceul);
+				});
+				//获取表情
+				function getStatusFace(i, faceul) {
+					var faceli = document.createElement("li");
+					faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'message\')"/>';
+					faceul.appendChild(faceli);
+				}
+			</script>
+		</div>
+    </div>
+    <div class="h_window_footer"></div>
+</div>
+<script>
+	function test1(f){
+		var d = document.getElementById('h_window_bg'),wh = getWH(f);
+		d.style.cssText +=";width:"+wh.w+'px;height:'+wh.h+'px'
+	}
+	var getWH = function (){
+		var d = document,doc = d[d.compatMode == "CSS1Compat"?'documentElement':'body'];
+		return function(f){
+			return {
+				w:doc[(f?'client':'scroll')+'Width'],
+				h:f?doc.clientHeight:Math.max(doc.clientHeight,doc.scrollHeight)
+			}
+		}
+	}()
+    function display_none(div_id){
+      document.getElementById(div_id).style.display='none';
+    }
+	function display_block(div_id){
+		test1();
+		document.getElementById(div_id).style.display='';
+    }//發送個人訊息處理
+	function supe_message(){
+		var supe_uid = '{$_SGLOBAL[supe_uid]}';	
+		var receiver_id = '{$h_userinfo.userid}';
+		if(supe_uid <= 0){
+			alert('你需要先登錄才能繼續本操作！');
+			return false;
+		}
+		if(receiver_id == supe_uid){
+			alert('自己不能給自己發送消息！');
+			return false;
+		}
+		jQuery.ajax({
+			type: "POST",
+			cache: false,
+			url: "ajax_info.php",
+			dataType:'json',
+			data: 'do=reviewmsg&receiver_id='+receiver_id,
+			success: function(msg){
+				if(msg.error){
+					jQuery("#reviewmsg").css({ "border": "1px solid #CCCCCC", "margin-bottom": "5px","padding": "10px","width": "577px","float":'left' });
+					jQuery("#reviewmsg").html(msg.content);
+				}
+				display_block('h_window_bg');
+				display_block('h_window');
+			}
+	    })
+	}//信息數據處理
+	jQuery("#sendmsg").click(function(){
+		var content = jQuery('#message').val();
+		if(content.length>0)
+		{
+			var obj = new Object();
+			jQuery(".commcon").each(function(i){
+				if(jQuery(this).attr('name') == 'message'){
+					var lpcon = jQuery(this).val().replace(/[\n]/gm,"<br/>");
+					obj[jQuery(this).attr('name')] = encodeURIComponent(lpcon);
+				}else{
+					obj[jQuery(this).attr('name')] = encodeURIComponent(jQuery(this).val());
+				}
+			});
+			jQuery.ajax({
+			   type: "POST",
+			   cache: false,
+			   url: "ajax_info.php",
+			   dataType:'json',
+			   data: 'do=sendmsg&dosubmit='+jQuery.toJSON(obj),
+			   success: function(msg){
+					if(Number(msg.error) > 0){
+						alert(msg.message);
+						display_none('h_window_bg');
+						display_none('h_window');
+					}else{
+						alert('消息已發送成功！');
+						display_none('h_window_bg');
+						display_none('h_window');
+						if(msg.msgid == -6){fshowreward();}
+					}
+			   }
+			});
+		}else{
+			alert("请输入内容！");
+			return false;
+		}
+	})
+</script>
+<!--{template footer}-->

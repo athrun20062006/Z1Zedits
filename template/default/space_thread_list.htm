@@ -1,0 +1,130 @@
+<!--{eval $_TPL['titles'] = array('群組話題');}-->
+<!--{template header}-->
+
+<!--{if !empty($_SGLOBAL[inajax])}-->
+	<div id="space_photo">
+		<h3 class="feed_header">
+			<a href="cp.php?ac=thread" class="r_option" target="_blank">發表話題</a>
+			群組話題(共 $count 個)</h3>
+		<!--{if $list}-->
+		<ul class="line_list">
+		<!--{loop $list $key $value}-->
+			<li><a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]" target="_blank">$value[subject]</a>
+			<span class="gray">&nbsp;<a href="space.php?do=mtag&tagid=$value[tagid]" target="_blank">$value[tagname]</a></span></li>
+		<!--{/loop}-->
+		</ul>
+		<div class="page">$multi</div>
+		<!--{else}-->
+		<div class="c_form">還沒有話題列表。</div>
+		<!--{/if}-->
+	</div><br>
+<!--{else}-->
+
+<!--{if $space[self]}-->
+<div class="searchbar floatright">
+<form method="get" action="space.php">
+	<input name="searchkey" value="" size="15" class="t_input" type="text">
+	<input name="searchsubmit" value="搜索話題" class="submit" type="submit">
+	<input type="hidden" name="searchmode" value="1" />
+	<input type="hidden" name="do" value="thread" />
+	<input type="hidden" name="view" value="all" />
+</form>
+</div>
+<h2 class="title"><img src="image/app/mtag.gif">群組 - 話題</h2>
+<div class="tabs_header">
+	<ul class="tabs">
+		<li class="active"><a href="space.php?uid=$space[uid]&do=thread"><span>群組話題</span></a></li>
+		<li><a href="space.php?do=mtag&view=me"><span>我參與的群組</span></a></li>
+		<li><a href="space.php?do=mtag&view=manage"><span>我管理的群組</span></a></li>
+		<li><a href="space.php?do=mtag&view=hot"><span>熱門群組</span></a></li>
+		<li><a href="space.php?do=mtag&view=recommend"><span>推薦群組</span></a></li>
+		<li class="null"><a href="cp.php?ac=thread">發起新話題</a></li>
+		<li class="null"><a href="cp.php?ac=mtag">創建群組</a></li>
+	</ul>
+</div>
+<div class="h_status">
+	<a href="space.php?uid=$space[uid]&do=thread&view=hot"$actives[hot]>熱門話題</a><span class="pipe">|</span>
+	<a href="space.php?uid=$space[uid]&do=thread&view=new"$actives[new]>最新話題</a><span class="pipe">|</span>
+	<a href="space.php?uid=$space[uid]&do=thread&view=me"$actives[me]>我的話題</a>
+</div>
+<!--{else}-->
+<!--{eval 
+	$_TPL['spacetitle'] = "話題";
+	$_TPL['spacemenus'][] = "<a href=\"space.php?uid=$space[uid]&do=thread&view=me\">TA的所有話題</a>";
+}-->
+<!--{template space_menu}-->
+<div class="h_status">按照發佈時間排序</div>
+<!--{/if}-->
+
+<!--{if $searchkey}-->
+<div class="h_status">以下是搜索話題 <span style="color:red;font-weight:bold;">$searchkey</span> 結果列表</div>
+<!--{/if}-->
+
+<!--{if $list}-->
+<div class="topic_list">
+	<table cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<td class="subject">主題</td>
+				<td class="mtag">群組</td>
+				<td class="author"><!--{if $_GET[view]!='me'}-->作者 <!--{/if}-->(回應/閱讀)</td>
+				<td class="lastpost">最後更新</td>
+			</tr>
+		</thead>
+		<tbody>
+		<!--{loop $list $key $value}-->
+			<!--{eval $magicegg = ""}-->							
+			<!--{eval if($value[magicegg]) for($i=0; $i<$value[magicegg]; $i++) $magicegg .= '<img src="image/magic/egg/'.mt_rand(1,6).'.gif" />';}-->
+			<tr<!--{if $key%2==1}--> class="alt"<!--{/if}-->>
+				<td class="subject">
+					$magicegg <a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]" <!--{if $value[magiccolor]}--> class="magiccolor$value[magiccolor]"<!--{/if}-->>$value[subject]</a>
+					<!--{if $value[hot]}-->
+					<br><span class="gray">$value[hot] 人推薦</span>
+					<!--{/if}-->
+				</td>
+				<td><a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a></td>
+				<td class="author"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a><br><em>$value[replynum]/$value[viewnum]</em></td>
+				<td class="lastpost"><a href="space.php?uid=$value[lastauthorid]" title="{$_SN[$value[lastauthorid]]}">{$_SN[$value[lastauthorid]]}</a><br><!--{date('m-d H:i',$value[lastpost],1)}--></td>
+			</tr>
+		<!--{/loop}-->
+		</tbody>
+	</table>
+	<div class="page">$multi</div>
+</div>
+<!--{else}-->
+<div class="c_form">還沒有話題列表。</div>
+<!--{/if}-->
+
+
+<!--{if $rlist}-->
+	<div style="padding-bottom:10px;">
+		<h3 class="l_status">
+			<div class="r_option"><a href="space.php?do=mtag&view=hot">查看更多</a></div>
+			熱門群組
+		</h3>
+		<ul class="thread_list">
+		<!--{loop $rlist $value}-->
+			<li>
+			<table width="100%">
+				<tr>
+				<td width="80">
+					<div class="threadimg60"><a href="space.php?do=mtag&tagid=$value[tagid]"><img src="$value[pic]" style="width:60px;"></a></div>
+				</td>
+				<td>
+					<a href="space.php?do=mtag&tagid=$value[tagid]" style="font-weight:bold;">$value[tagname]</a>
+					<div class="gray">$value[title]</div>
+					已有 <span class="num">$value[membernum]</span> 人加入
+					<div class="gray">
+						話題: $value[threadnum], 回帖: $value[postnum]
+					</div>
+				</td>
+				</tr></table>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+<!--{/if}-->
+
+<!--{/if}-->
+
+<!--{template footer}-->

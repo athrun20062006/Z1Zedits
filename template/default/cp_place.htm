@@ -1,0 +1,532 @@
+<!--{template header}-->
+	<link href="template/default/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="template/default/css/h_style.css" rel="stylesheet" type="text/css" />
+	<script charset="utf-8" src="template/default/js/checkform.js"></script>
+	<script charset="utf-8" src="js/jquery.json-2.4.js"></script>
+	<script>var kid = 'placedescs';</script>
+	<!--{template kindEditor}-->
+	<style type="text/css">
+.categoryleveltwo
+{
+	display:none;
+	clear:both;
+	border-top: 1px;
+	border-top-color:#000000;
+	border-top-style:dashed;
+	padding-top: 5px;
+}
+.categoryleveltwo label
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.categorylevelthree
+{
+	display:none;
+	clear:both;
+	border-top: 1px;
+	border-top-color:#000000;
+	border-top-style:dashed;
+	padding-top: 5px;
+}
+.categorylevelthree label
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.subarea
+{
+	display:none;
+	clear:both;
+	border-top: 1px;
+	border-top-color:#000000;
+	border-top-style:dashed;
+	padding-top: 5px;
+}
+.subarea label
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.areatitle
+{
+	width:80px;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.cattitle
+{
+	width:80px;
+	height:100%;
+	float:left;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+.additionalDetails
+{
+	display:none;
+}
+	</style>
+	<script charset="utf-8" src="js/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+	jQuery(function(){
+		jQuery(".cateclick").change(function(){
+			if(jQuery(this).attr('checked') == "checked"){
+				jQuery(this).after("<input type='hidden' value='"+jQuery(this).attr('catname')+"' name='place[placecatname][]' />");
+			} else {
+				jQuery(this).next().remove();
+			}
+		})
+	})
+</script>
+	<div class="mainbox clearfix">
+		<div class="AreaL" style="margin:0px;">
+            <div>
+                <font class="cfb191d f_r">*必須輸入</font>
+				<span class="fs34 cfb191d">{if $placeid>0}好去處資料更正{else}新增好去處資料{/if}</span>
+				<form action="cp.php?ac=place" method="post" id="placeform" enctype="multipart/form-data">
+					<input type="hidden" name="MAX_FILE_SIZE" value="8388608" />
+					<table style="width:100%;border:0px;" cellspacing="0" cellpadding="0" class="add_table" id="placeAdder">
+						<tr>
+							<th style="width:100px;"><img src="image/ico_06.gif" />好去處名稱：</th>
+							<td><input type="text" name="place[placename]" value="{$place.placename}" class="add_input" dataType="LimitB" min="1" msg="好去處名稱必須填寫！"/></td>
+						</tr>
+						<tr>
+							<th>電話：</th>
+							<td><input type="text" name="place[placemobile]" value="{$place.placemobile}" class="add_input"/></td>
+						</tr>
+						<tr>
+							<th>地址：</th>
+							<td>
+								<input type="text" name="place[placeaddress]" value="{$place.placeaddress}" class="add_input"/>
+								<a onclick="display_block('h_window_bg');display_block('h_window');loadScript()" style="color:#3399ff; cursor:pointer;">按我尋找地圖<img src="image/ico_15.gif"/></a><br>
+								<input type="hidden" name="place[mapaddress]" value="{$place.mapaddress}" id="mapaddress"/><span id="coordEchoer"></span>
+							</td>
+						</tr>
+						<tr>
+							<th>好去處相片：</th>
+							<td>
+								<div><img id="loading" src="image/loading1.gif" style="display:none;"></div>
+								<table id="bombardImage">
+									<tr>
+										<td>
+											<div><img id="loading" src="image/loading1.gif" style="display:none;"></div>
+											<div class="up_img">
+												<input id="fileToUpload1" type="file" name="fileToUpload1" onchange="return ajaxFileUpload(1);"/>
+												<p>（封面相片，相片必須橫向，如下圖）</p>
+												<div id="place_cover1">{if $place.placeimg1}<img src="{$place.placeimg1}" alt="{$place.altimg1}" width="165"/>{else}<img src="image/nopic.jpg" />{/if}</div>
+											</div>
+											<div class="blank5"></div>
+											<div class="up_img">
+												<input id="fileToUpload2" type="file" name="fileToUpload2"  onchange="return ajaxFileUpload(2);"/>
+												<div id="place_cover2"></div>
+											</div>
+											<div class="blank5"></div>
+											<div class="up_img">
+												<input id="fileToUpload3" type="file" name="fileToUpload3"  onchange="return ajaxFileUpload(3);"/>
+												<div id="place_cover3"></div>
+											</div>
+											<div class="blank5"></div>
+											<div class="up_img">
+												<input id="fileToUpload4" type="file" name="fileToUpload4"  onchange="return ajaxFileUpload(4);"/>
+												<div id="place_cover4"></div>
+											</div>
+											<div class="blank5"></div>
+											<div class="up_img">
+												<input id="fileToUpload5" type="file" name="fileToUpload5"  onchange="return ajaxFileUpload(5);"/>
+												<div id="place_cover5"></div>
+											</div>
+											<div class="blank5"></div>
+											<div class="up_img">
+												<input id="fileToUpload6" type="file" name="fileToUpload6"  onchange="return ajaxFileUpload(6);"/>
+												<div id="place_cover6"></div>
+											</div>
+											<div id="place_img"></div>
+										</td>
+									</tr>
+								</table>
+								<div id="place_img"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>營業時間：</th>
+							<td>
+								<input type="text" class="add_input" name="place[placetime]" id="placetime" value="{$place.placetime}"/>
+							</td>
+						</tr>
+						<tr>
+							<th>網址：</th>
+							<td><input type="text" name="place[placeurl]" value="{$place.placeurl}" class="add_input" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div class="ccontent">
+									<h1 style="background:#50A0C0; width:100%; height:24px; line-height:24px; padding-left:5px; color:#ffffff; font-size:14px; font-weight:500">探險分類：</h1>
+									<div class="catitem">
+									  {loop $category_view $key $item}
+										<label class="cattitle"><img id="cat{$item.catid}" value="{$item.catid}" style="padding-top:0px; vertical-align:bottom;" src="image/img/btn_fold.gif" onclick="catDisplay({$item.catid});">{$item.catname}</label>
+									  {/loop}
+									</div>
+									<div id="levelTwoCatToggle">
+									  {loop $category_view $key $item}
+										<div class="categoryleveltwo" id="subcat{$item.catid}">
+										  {loop $item.child $skey $sitem}
+											{if $sitem.child}
+											<label class="cattitle"><img id="lv2cat{$sitem.catid}" value="{$sitem.catid}" style="padding-top:0px; vertical-align:bottom;" src="image/img/btn_fold.gif" onclick="catDisplay1({$sitem.catid});">{$sitem.catname}</label>
+											{else}
+											<label style="height:18px;"><input type="checkbox" class="cateclick" style="margin:0px;" name="place[placecat][]" value="{$sitem.catid}" {if in_array($sitem.catid,(array)$place[placecat])} checked {/if} />{$sitem.catname}{if in_array($sitem.catid,(array)$place[placecat])}<input type='hidden' value="{$sitem.catname}" name='place[placecatname][]' />{/if}</label>
+											{/if}
+										  {/loop}
+										</div>
+									  {/loop}
+									</div>
+									<div id="catLevelThree">
+									  {loop $category_view $key $item}
+										  {loop $item.child $key2 $item2}
+										<div class="categorylevelthree" id="suckat{$item2.catid}">
+										  {loop $item2.child $key3 $item3}
+											<label><input type="checkbox" class="cateclick" style="margin:0px;" name="place[placecat][]" value="{$item3.catid}" {if in_array($item3.catid,(array)$place[placecat])} checked {/if} />{$item3.catname}{if in_array($item3.catid,(array)$place[placecat])}<input type='hidden' value="{$item3.catname}" name='place[placecatname][]' />{/if}</label>
+										  {/loop}
+										</div>
+										  {/loop}
+									  {/loop}
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<input type="button" id="moreDetailsPleese" onclick="toggleDetails(this)" value="提交更多資料">
+							</td>
+						</tr>
+						<tr class="additionalDetails">
+							<td colspan="2">
+								<div class="ccontent">
+									<h1 style="background:#50A0C0; width:100%; height:24px; line-height:24px; padding-left:5px; color:#ffffff; font-size:14px; font-weight:500">地區：</h1>
+									<div class="catitem">
+									  {loop $fplace_city $key $item}
+										<label class="areatitle"><img id="area{$key}" value="{$key}" style="padding:0px;" src="image/img/btn_fold.gif" onclick="areaDisplay({$key});">{$item.name}</label>
+									  {/loop}
+									</div>
+									<div id="areaToggle">
+									  {loop $fplace_city $key $item}
+										{if $item.child}
+										<div class="subarea" id="subarea{$key}">
+										  {loop $item.child $skey $sitem}
+											<label><input type="checkbox" class="adresclick" style="margin:0px;" name="place[placeares][]" value="{$skey}" {if in_array($skey,(array)$place[placeares])} checked {/if} />{$sitem.name}</label>
+										  {/loop}
+										</div>
+										{/if}
+									  {/loop}
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr class="additionalDetails">
+							<th>價目表：</th>
+							<td>
+								<table cellspacing="0" cellpadding="0" id="gallery-table" class="formtable">
+									<tbody>
+										<tr>
+											<td>
+												<div><img id="ploading" src="image/loading1.gif" style="display:none;"></div>
+												描述 <input type="text" size="20" name="img_desc[1]">上傳 <input id="fileToUploadp1" type="file" name="fileToUploadp1"  onchange="return ajaxFileUploadp(1);">
+												<div id="place_price1"></div>
+											</td>
+										</tr>	
+										<tr>
+											<td>
+												描述 <input type="text" size="20" name="img_desc[2]">上傳 <input id="fileToUploadp2" type="file" name="fileToUploadp2"  onchange="return ajaxFileUploadp(2);">
+											<div id="place_price2"></div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												描述 <input type="text" size="20" name="img_desc[3]">上傳 <input id="fileToUploadp3" type="file" name="fileToUploadp3"  onchange="return ajaxFileUploadp(3);">
+												<div id="place_price3"></div>
+												<div id="price_img"></div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr class="additionalDetails">
+							<th>價格：</th>
+							<td>
+								<select name="place[placeprice]" id="placeprice">
+									<option value="">選擇價格</option>
+							  {loop $place_price $skey $section}
+									<option value="{$skey}" {if $place.placeprice == $skey}selected{/if}>{$section.name}</option>
+							  {/loop}	
+								</select>
+							</td>
+						</tr>
+						<tr class="additionalDetails">
+							<th>付款方式：</th>
+							<td><input type="text" name="place[placepay]" value="{$place.placepay}" class="add_input"></td>
+						</tr>
+					{if !empty($encode)}
+						<tr class="additionalDetails">
+							<th>關鍵字：</th>
+							<td><input type="text" name="place[placekeywords]" value="{$place.placekeywords}" class="add_input"/></td>
+						</tr>
+					{/if}
+						<tr class="additionalDetails">
+							<th>簡單介紹：</th>
+							<td>
+								<textarea name="place[placedesc]" class="textarea" rows="6" >{$place.placedesc}</textarea>
+								<div class="blank5"></div>
+								<div class="blank10"></div>
+							</td>
+						</tr>
+						<tr class="additionalDetails">
+							<th>詳細介紹：</th>
+							<td><textarea name="place[placedescs]" id="placedescs" style="width:570px;height:330px;visibility:hidden;">{$place.placedescs}</textarea></td>
+						</tr>
+						<tr style="height:15px"><td colspan="2"></td></tr>
+						<tr class="additionalDetails">
+							<th valign="top">備註：</th>
+							<td>
+								<textarea name="place[placeremark]" class="textarea" rows="6" >{$place.placeremark}</textarea>
+								<div class="blank5"></div>
+								<div class="blank10"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center" >
+							{if $placeid>0}
+								<input type="hidden" value="edit" name="dosubmit"/>
+								<input type="hidden" value="{$place.placeid}" name="place[placeid]"/>
+								{else}
+								<input type="hidden" value="add" name="dosubmit"/>
+							{/if}
+								<input type="button" id="plactbtn" value="" class="place_btn"/>
+							</td>
+						</tr>
+					</table>
+                </form>
+            </div>
+			<div class="blank10"></div>         
+			<!--{template data/adtpl/12}-->
+		</div>
+		<!--{template lbi_place_right}-->
+	</div>	
+	 <script>
+        //表单提交
+        jQuery("#plactbtn").click(function(){
+            if(Validator.Validate(document.getElementById('placeform'),3)){               
+                jQuery("#placeform").submit();
+            }
+        });     
+		jQuery(".domore").click(function(){
+			var ty = jQuery(this).attr("id");
+			var vl = jQuery("#"+ty).html();
+			if(vl == '顯示更多'){
+				jQuery("#"+ty+"_content").show();
+				jQuery("#"+ty).html('收起');
+				jQuery("#"+ty).addClass('upmore');
+			}else{
+				jQuery("#"+ty+"_content").hide();
+				jQuery("#"+ty).html('顯示更多');
+				jQuery("#"+ty).removeClass('upmore');
+			}
+		})	
+    </script>
+	<script type="text/javascript">
+		function ajaxFileUpload(num)
+		{	
+			
+			jQuery("#loading")
+			.ajaxStart(function(){
+				jQuery(this).show();
+			})
+			.ajaxComplete(function(){
+				jQuery(this).hide();
+			});
+
+			jQuery.ajaxFileUpload
+			(
+				{
+					url:'doajaxfileuploadp.php',
+					secureuri:false,
+					fileElementId:'fileToUpload'+num,
+					dataType: 'json',
+					data:{filenum:num},	
+					success: function (data, status)
+					{
+						if(typeof(data.error) != 'undefined')
+						{
+							if(data.error != '')
+							{
+								alert(data.msg);
+							}else
+							{
+								/*if(data.filenum == 1){*/
+								jQuery("#place_cover"+data.filenum).html('<img src="'+data.img_url+'" width="178"/>');
+							/*}*/
+								jQuery("#place_img").append('<input type="hidden" value="'+data.thumb_url+'" name="thumb_url['+data.filenum+']"/><input type="hidden" value="'+data.img_url+'" name="img_url['+data.filenum+']"/><input type="hidden" value="'+data.img_original+'" name="img_original['+data.filenum+']"/>')
+								//if(data.filenum != 1){alert('圖片上傳成功！')}							
+							}
+						}
+					},
+					error: function (data, status, e)
+					{
+						alert(e);
+					}
+				}
+			)
+			return false;
+		}
+		function ajaxFileUploadp(num)
+		{
+			jQuery("#ploading")
+			.ajaxStart(function(){
+				jQuery(this).show();
+			})
+			.ajaxComplete(function(){
+				jQuery(this).hide();
+			});
+
+			jQuery.ajaxFileUpload
+			(
+				{
+					url:'doajaxfileuploadp.php',
+					secureuri:false,
+					fileElementId:'fileToUploadp'+num,
+					dataType: 'json',
+					data:{filenum:num,filetype:'price'},	
+					success: function (data, status)
+					{
+						if(typeof(data.error) != 'undefined')
+						{
+							if(data.error != '')
+							{
+								alert(data.msg);
+							}
+							else
+							{								
+								jQuery("#price_img").append('<input type="hidden" value="'+data.thumb_url+'" name="price_img['+data.filenum+']"/>');
+								jQuery("#place_price"+data.filenum).html('<img src="'+data.thumb_url+'" width="178"/>');	
+							}
+						}
+					},
+					error: function (data, status, e)
+					{
+						alert(e);
+					}
+				}
+			)
+			return false;
+		}
+	</script>
+ <div id="map-canvas" style="width:100%; height:100%"></div>
+<script type="text/javascript">
+	function catDisplay(input)
+	{
+		var catsLv2=document.getElementById("levelTwoCatToggle").getElementsByClassName("categoryleveltwo");
+		for(var i=0;i<catsLv2.length;i++)
+		{
+			catsLv2[i].style.display="none";
+		}
+		var catsLv3=document.getElementById("catLevelThree").getElementsByClassName("categorylevelthree");
+		for(var i=0;i<catsLv3.length;i++)
+		{
+			catsLv3[i].style.display="none";
+		}
+		var catShowButtonsLv1=document.getElementById("levelTwoCatToggle").parentNode.getElementsByClassName("cattitle");
+		for(var i=0;i<catShowButtonsLv1.length;i++)
+		{
+			var whatsaplus=catShowButtonsLv1[i].getElementsByTagName("img");
+			for(var j=0;j<whatsaplus.length;j++)
+			{
+				whatsaplus[j].src="image/img/btn_fold.gif";
+			}
+		}
+		var catShowButtonsLv2=document.getElementById("levelTwoCatToggle").parentNode.getElementsByClassName("cattitle");
+		for(var i=0;i<catShowButtonsLv2.length;i++)
+		{
+			var whatsaplus=catShowButtonsLv2[i].getElementsByTagName("img");
+			for(var j=0;j<whatsaplus.length;j++)
+			{
+				whatsaplus[j].src="image/img/btn_fold.gif";
+			}
+		}
+		sourceDiv="cat"+input;
+		targetDiv="subcat"+input;
+		document.getElementById(targetDiv).style.display="block";
+		document.getElementById(sourceDiv).src="image/img/btn_unfold.gif";
+	}
+	function catDisplay1(input)
+	{
+		var subcats=document.getElementById("catLevelThree").getElementsByClassName("categorylevelthree");
+		for(var i=0;i<subcats.length;i++)
+		{
+			subcats[i].style.display="none";
+		}
+		var categories=document.getElementById("levelTwoCatToggle").getElementsByClassName("cattitle");
+		for(var i=0;i<categories.length;i++)
+		{
+			var whatsaplus=categories[i].getElementsByTagName("img");
+			for(var j=0;j<whatsaplus.length;j++)
+			{
+				whatsaplus[j].src="image/img/btn_fold.gif";
+			}
+		}
+		sourceDiv="lv2cat"+input;
+		targetDiv="suckat"+input;
+		document.getElementById(targetDiv).style.display="block";
+		document.getElementById(sourceDiv).src="image/img/btn_unfold.gif";
+	}
+	function areaDisplay(input)
+	{
+		var subareas=document.getElementById("areaToggle").getElementsByClassName("subarea");
+		for(var i=0;i<subareas.length;i++)
+		{
+			subareas[i].style.display="none";
+		}
+		var areas=document.getElementById("areaToggle").parentNode.getElementsByClassName("areatitle");
+		for(var i=0;i<areas.length;i++)
+		{
+			var whatsanimus=areas[i].getElementsByTagName("img");
+			for(var j=0;j<whatsanimus.length;j++)
+			{
+				whatsanimus[j].src="image/img/btn_fold.gif";
+			}
+		}
+		sourceDiv="area"+input;
+		targetDiv="subarea"+input;
+		document.getElementById(targetDiv).style.display="block";
+		document.getElementById(sourceDiv).src="image/img/btn_unfold.gif";
+	}
+	function toggleDetails(obj)
+	{
+		var moarDetails=document.getElementById("placeAdder").getElementsByClassName("additionalDetails");
+		var showButton=new RegExp(/(.*)(\u63d0\u4ea4\u66f4\u591a\u8cc7\u6599)(.*)/i);//unicode for:"提交更多資料"
+		var hideButton=new RegExp(/(.*)(\u6536\u8d77\u8cc7\u6599)(.*)/i);//unicode for:"收起資料"
+		if(showButton.test(obj.value))
+		{
+			for(var i=0;i<moarDetails.length;i++)
+			{
+				moarDetails[i].style.display="table-row";
+			}
+			obj.value="\u6536\u8d77\u8cc7\u6599";
+		}
+		else if(hideButton.test(obj.value))
+		{
+			for(var i=0;i<moarDetails.length;i++)
+			{
+				moarDetails[i].style.display="none";
+			}
+			obj.value="\u63d0\u4ea4\u66f4\u591a\u8cc7\u6599";
+		}
+	}
+</script>
+<!--{template place_footer}-->

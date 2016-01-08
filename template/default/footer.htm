@@ -1,0 +1,87 @@
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<div  id="fot_num"></div>
+<div class="blank15"></div>
+<div class="block_main">
+	<div class="bybg">
+		<div class="footer">
+			<a href="/">首頁</a> &nbsp;&nbsp;<a href="space-article.html">探險家攻略</a> &nbsp;&nbsp;<a href="space-place.html">香港好去處</a> &nbsp;&nbsp;<a href="space-top.html">探險家排行榜</a> &nbsp;&nbsp;<a href="space-help.html">新手指南</a> &nbsp;&nbsp;<a href="do-contact.html">聯絡我們</a>
+			<p style="padding:25px 0px 10px 0px">Copyright@2012 SeeWide.com 「All Rights Reserved 版權所有，不得轉載」</p>
+			<p style="padding-bottom:10px">網站上的資訊及圖片，若閣下為部份資訊的版權擁有者，如有觸犯你的知識版權，請來信info@seewide.com，我們接到投訴後即時處理</p>
+			<p style="padding-bottom:10px">重要聲明：本網站是以即時上載留言等方式運作，對所有留言的真實性、完整性及立場等，不負任何法律責任。而一切留言之言論只代表留言者個人意見，並非本網站之立場，讀者及用戶不應信賴內容，並應自行判斷內容之真實性。</p>
+			<p style="padding-bottom:10px">SeeWide 香港特搜 致力打造 香港好去處、活動 指南，聚集全港探險家，一同搜羅及分享精彩的 玩樂、消閒、香港好去處 等情報，務求讓大家能看多一點、闊一點！</p>
+		</div>
+	</div>
+</div>	
+<div class="blank15"></div>
+
+<!--{if $vtype =='coupon' }-->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-10']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--{/if}-->	
+
+
+
+<script>		
+	function showview(con,nu,nm){
+		for(var i=1;i<=con;i++)
+		{
+			jQuery("#"+nm+'_'+i).css('display','none');
+		}
+		
+		jQuery("#"+nm+'_'+nu).css('display','block');
+	}
+</script>
+<!--{if $_SCOOKIE[reward_log]}--><script type="text/javascript">showreward();</script><!--{/if}-->
+<!--{if $_SCOOKIE[reward_log1]}--><script type="text/javascript">
+	<!--{if $_SCOOKIE[reward_log]}-->
+	setTimeout("fshowreward()","5000");
+	<!--{else}-->
+	fshowreward();
+	<!--{/if}-->
+	</script>
+<!--{/if}-->
+<SCRIPT type=text/javascript>
+function gotopbtn() {
+	jQuery('<div class="m-gotopbtn"><a href="javascript:void(0);" hidefocus="true" title="返回頂部" rel="nofollow"></a></div>').find("a").bind("click",
+	function() {
+		jQuery("html,body").animate({
+			scrollTop: 0
+		},
+		500)
+	}).end().appendTo(jQuery("body"));
+	jQuery(window).bind("scroll",
+	function() {
+		if (jQuery(document).scrollTop() > 500) {
+			if (jQuery(".m-gotopbtn a").position().top == 100) {
+				jQuery(".m-gotopbtn a").animate({
+					top: -200
+				},
+				300)
+			}
+		} else {
+			if (jQuery(".m-gotopbtn a").position().top == -200) {
+				jQuery(".m-gotopbtn a").animate({
+					top: 100
+				},
+				300)
+			}
+		}
+	})
+}
+jQuery(document).ready(function(){
+		gotopbtn();
+    });
+</SCRIPT>
+</body>
+</html>
+<!--{/if}-->

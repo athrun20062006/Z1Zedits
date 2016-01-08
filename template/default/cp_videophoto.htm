@@ -1,0 +1,43 @@
+<!--{template header}-->
+<!--{template cp_header}-->
+
+<div class="c_form">
+
+<table cellspacing="0" cellpadding="0" class="formtable">
+	<caption>
+		<h2><!--{if $space[videostatus]}-->我的視頻認證照片<!--{else}-->申請視頻認證<!--{/if}--></h2>
+		<p>
+		<!--{if $space[videostatus]}-->
+		以下是您認證的視頻照片。如果站長允許重複認證，您可以<a href="userapp.php?id=1036584">重新進入視頻認證程序</a>。
+		<!--{else}-->
+		您需要準備好攝像頭，然後點擊下面的按鈕進行視頻認證，通常認證通過後，是不允許重複認證的。
+		<!--{/if}-->
+		</p>
+	</caption>
+	<tr>
+		<td>
+			<!--{if $space[videostatus]}-->
+			<img src="$videophoto" id="avatar" alt="" width="400" />
+			<!--{elseif $_SCONFIG['videophoto']}-->
+			<a href="userapp.php?id=1036584&my_suffix=Lw%3D%3D"><img src="image/videophoto_btn.gif" alt=""></a>
+			<!--{/if}-->
+		</td>
+	</tr>
+</table>
+
+<!--{if checkperm('managevideophoto')}-->
+<table cellspacing="0" cellpadding="0" class="formtable">
+	<caption>
+		<h2>視頻認證審核</h2>
+		<p>您可以進入視頻認證平台，自行進行設置認證審核管理</p>
+	</caption>
+	<tr>
+		<td>
+			<a href="userapp.php?id=1036584" class="submit">視頻認證審核管理</a>
+		</td>
+	</tr>
+</table>
+<!--{/if}-->
+	
+</div>
+<!--{template footer}-->

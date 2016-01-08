@@ -1,0 +1,349 @@
+.tit{
+	clear:both;
+	overflow:hidden;	
+	text-align:left;
+	padding-left:15px;
+}
+.tit h1{font-size:25px;}
+.tit h2{font-size:25px;}
+.action{float:right;padding-top:10px;}
+.tab_tit{
+	background:url(../images/tit_09.gif) repeat-x scroll;
+	height:28px;
+	line-height:28px;
+	overflow:hidden;
+	padding-top:3px;
+}
+.tab_tit ul li{float:left;padding:0px 20px;font-size:15px; position: relative;}
+.tab_tit ul li a{color:#307E87}
+.tab_tit ul li.cur{
+	background-image:url(../images/tab_bg.gif);
+	background-size:100% 100%;
+	height:28px;
+}
+.tab_tit ul li.cur a{color:#351500}
+.tab_tit ul li.cur span{
+	background:url(../images/tab_bgr.gif) no-repeat scroll; 
+	height:28px;
+	width:5px;  
+	position: absolute;
+    right: 0;
+    top: 0;
+}
+.viewBox {
+	overflow:hidden;
+	clear:both;
+}
+.view_img{
+	float:left;
+	width:370px;
+	height:230px;
+	overflow:hidden;
+}
+.view_txt{
+	width:345px;
+	border: 1px solid #ccc;
+	float:right;
+	overflow:hidden;
+}
+.view_txt h1{
+	color:#5d442e;
+	font-size:20px;
+	padding-top:20px;
+	padding-bottom:10px;
+}
+.view_txt h2{
+	color:#5d442e;
+	font-size:20px;
+	padding-top:20px;
+	padding-bottom:10px;
+}
+.view_txt p
+{
+	font-size:13px;
+	padding:15px;
+	color:#000000;
+}
+.view_zheng{
+	background:url(../images/view_zheng.gif) no-repeat scroll;
+	width:81px;
+	padding-top:90px;
+	float:left;
+	text-align:center;
+	padding-right:20px;
+	font-size:14px;
+}
+.view_de{
+	background:url(../images/view_zheng1.gif) no-repeat scroll center 32px;
+	width:43px;
+	padding-top:90px;
+	float:left;
+	text-align:center;	
+	font-size:14px;
+}
+.view_del{
+	background:url(../images/view_zheng2.gif) no-repeat scroll center 32px;
+	width:43px;
+	padding-top:90px;
+	float:left;
+	text-align:center;
+	margin-left:20px;
+	font-size:14px;
+}
+.view_img .play {
+    float: left;
+    height: 270px;
+    overflow: hidden;
+    position: relative;
+    width: 375px;
+}
+.view_img .play li {
+    float: left;
+    height: 275px;
+    overflow: hidden;
+    width: 375px;
+	text-align:center;
+	position:relative;
+}
+.view_img .img_tab {	
+	float: right;   
+    overflow: hidden;
+    width: 115px;
+	overflow-y:auto;
+	overflow:auto;
+	height:247px;
+}
+.view_img .img_tab  li {
+    font-size: 0;
+   /* height: 56px;*/
+    overflow: hidden;
+    padding-left: 5px;
+    width: 84px;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+.view_img .img_tab li img {
+   /* height: 56px;
+    width: 84px;*/
+}
+.mapBox{
+	border:1px solid #D5D5D5;
+	padding:15px 0 0 15px;
+	overflow:hidden;
+	clear:both;
+}
+.mapl{
+	float:right;
+	width:360px;
+	overflow:hidden;
+}
+.mapr{
+	float:right;
+	width:300px;	
+	/*height:430px;*/
+	overflow:hidden;
+}
+.map_item li
+{
+	font-size:13px;
+	position:relative;
+}
+.map_item li img{vertical-align:middle;margin-right:5px;}
+.map_item li a{font-size:13px;color:#3d3b6d; text-decoration:underline}
+.view_share{padding-top:1px; clear:both; overflow:hidden;}
+.gli_view ul li dd {
+    float: left;
+    font-size: 14px;
+    width: 190px;
+}
+.share_msg dl dt.dt1 {
+    background: url("../images/share_01.gif") no-repeat scroll 0 0 transparent;
+}
+.tuij{float:right;overflow:hidden}
+.tuij dt{
+	background: url("../images/share_04.gif") no-repeat scroll 0 0 transparent;
+    height: 33px;
+    line-height: 28px;
+    padding-bottom: 2px;   
+    width: 18px;
+	padding-left:24px;
+}
+.map_tit{
+	background: url("../images/ico_16.gif") no-repeat scroll left 11px transparent;
+    clear: both;
+    font-size: 16px;
+    overflow: hidden;
+    padding-left: 23px;
+    padding-top: 10px;
+}
+.map_tit span{float:left;}
+.map_tit a{color:#a74544; float:left; padding:0px 3px;cursor:pointer}
+.mapInfo{width:300px;height:250px;overflow:hidden;}
+
+.btn_action a{float:left;}
+.btn_up{
+	background:url(../images/ico_17.gif) no-repeat scroll left center;
+	padding-left:30px; 
+	color:#d52317;
+	font-size:16px;
+	margin-left:4px;
+	margin-top:11px;
+}
+.jd_top{
+	background:url(../images/yuanjiao5.gif) no-repeat scroll;
+	height:6px;
+	width:728px;
+	overflow:hidden;
+}
+.jd_mid{
+	float: right;
+	background: url(../images/yj5_bg.gif) repeat-y scroll;
+	width: 340px;
+	overflow: hidden;
+}
+.jd_but{
+	background:Url(../images/yuanjiao5.gif) no-repeat scroll 0px -9px;
+	height:6px;
+	width:728px;
+	overflow:hidden;
+}
+.ifocus_tit{
+	height:30px;
+	overflow:hidden;
+	clear:both;
+}
+.adsBox{overflow:hidden;clear:both;}
+.way_go ul li{
+	float:left;
+	border:1px solid #dedede;
+	padding:5px;
+	overflow:hidden;
+	margin:10px 5px 20px 5px;
+}
+.way_go ul li p{
+	padding-top:2px;
+	font-size:24px;
+}
+/* 优惠详细页 */
+.yh_top{
+	background:url(../images/yht_bg.gif) no-repeat scroll;
+	width:710px;
+	height:2px;
+	overflow:hidden;
+}
+.yh_mid{
+	background:url(../images/yhm_bg.gif) repeat-y scroll;
+	width:700px;	
+	overflow:hidden;
+	padding:10px 5px 20px 5px;
+}
+.yh_tit{
+	background:url(../images/line2.gif) repeat-x scroll bottom;
+	padding-bottom:10px;
+	overflow:hidden;
+	clear:both;
+}
+.yh_tit p{font-size:30px;}
+
+.yh_con{
+	padding:0px 20px;
+	overflow:hidden;
+	clear:both;
+}
+.yh_shop{
+	padding-top:35px;
+	overflow:hidden;
+	clear:both;
+	font-size:18px;
+	padding-bottom:10px;
+}
+.print_no{
+	background:url(../images/ico_19.gif) no-repeat scroll left;
+	height:35px;
+	padding-left:38px;
+	line-height:53px;
+}
+.yh_time{
+	position:absolute;
+	top:0px;
+	right:0px;
+	background-color:#DDE9EE;
+	overflow:hidden;
+}
+.yh_time table{
+	height:100%;
+}
+.yh_time td{
+	font-size:20px;
+	text-align:center;
+}
+.print{
+	background:Url(../images/print.gif) no-repeat left center;
+	padding-left:46px;
+	height:45px;
+	line-height:45px;
+	text-decoration:underline;
+	color:#1c619a;
+	float:right;
+	font-size:15px;
+}
+/* 景点攻略css */
+.gl_num{
+	border:3px solid #000000;
+	background-color:#fffb9a;
+	overflow:hidden;
+	padding-left:10px;
+	padding-bottom:10px;
+}
+.gl_name{
+	float:left;
+	overflow:hidden;
+	color:#4b4400;
+	padding-bottom:2px;
+}
+.gl_name h2{
+	font-size:31px;
+}
+.gl_name p{padding-top:5px;}
+
+.gl_page{float:right;padding-top:8px;}
+
+.gl_page{}
+
+.gl_page .sort {
+    color: #8E8E8E;
+    float: right;
+    font-size: 12px;
+}
+.gl_page .sort a span {
+    background: url("../images/sort.gif") no-repeat scroll right center transparent;
+    margin-right: 5px;
+    padding-right: 10px;
+	color:#8E8E8E;
+}
+.gli_tit{
+	overflow:hidden;
+	padding-bottom: 10px;	
+}
+.gli_tit a{font-size: 15px;white-space: nowrap;font-weight: bolder;color: #0D5E77;}
+.gli_top h2{color:#ff7c3e;font-size:24px;padding-top:10px}
+.gli_top p{padding-top:20px;font-size:14px;color:#c3c2c7;}
+.gli_dian{ background:url(../images/dian1.gif) no-repeat right center;text-align:right;height:36px;line-height:36px;padding-top:5px;padding-right:52px;color:#db363d;font-size:20px;margin-bottom:10px;}
+.all_msg{float:right;font-size:20px;color:#34348c}
+.img_source{
+    overflow: hidden;
+    position: absolute;
+    background-color: #000000;
+	z-index:10;
+    color: #FFFFFF;
+    opacity: 0.5;
+	filter:alpha(opacity=50);
+	margin-top:200px;
+    width: 370px;
+    height: 30px;
+	line-height:25px;
+	left:0px;
+}
+.img_source a{
+	color:#ffffff;
+}

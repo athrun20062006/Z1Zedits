@@ -1,0 +1,84 @@
+
+
+<div class="comment">
+	<div class="mcon">
+		{loop $article $key $item}
+		<ul style="position:relative;">
+			<li class="thumb">
+				<a href="{if $placeid}space-place-id-{$placeid}-varticle-v{$item.articleid}.html{else}space-article-id-{$item.articleid}.html{/if}" class="laiyuan">
+					<img src="{$item.thumb}" alt="{$item.thumb_alt}" width="160" height="120" onload="resizeThumb(this,160,120);"/>
+				</a>
+			</li>
+			<li class="txt">
+				<p style="position:absolute; padding:0px; top:117px; left:208px;">
+				{if $item.placeid}
+					{if $item.article_rank>=5}
+				<img src="template/default/images/01_3.png" style="vertical-align:top;"/>{if $do=='place'}<span style="color:#90C683; font-size:16px; font-weight:bold;"> &nbsp;{$item.article_rank}</span>{/if}
+					{elseif $item.article_rank>0}
+				<img src="template/default/images/01_4.png" style="vertical-align:top;"/>{if $do=='place'}<span style="color:#90C683; font-size:16px; font-weight:bold;"> &nbsp;{$item.article_rank}</span>{/if}
+					{elseif $item.userid==$_SGLOBAL['supe_uid']}
+				<a style="color:#708090; font-size:12px; text-decoration:underline;" href="cp-article-{$item.articleid}-{$item.placeid}.html">我要為好去處評分！</a>
+					{/if}
+					{if $do!='place'}
+					<strong style="color:#FF8000; font-size:12px;">
+						攻略涉及好去處&nbsp;:&nbsp;
+						<a style="color:#708090; font-size:12px; text-decoration:underline;" href="space-place-id-{$item.placeid}.html">{if empty($item.placename)}不知名好去處{else}{$item.placename}{/if}</a>
+					</strong>
+					{/if}
+				{/if}
+				</p>
+				<a href="{if $placeid}space-place-id-{$placeid}-varticle-v{$item.articleid}.html{else}space-article-id-{$item.articleid}.html{/if}" class="laiyuan">{$item['title']}</a>
+				<p>
+					作者：{if $item.uinfo['is_star']==2}<img src="image/sstar.gif" class="star"/>{/if}
+					<a href="{$item.user_url}">{$item.uinfo['username']}</a>
+					{$levelUp}發表日期：
+					<font color="#B32D46">{$item.addtime}</font>
+				</p>{$item['content']}
+			</li>
+			<li class="views" style="position:absolute; overflow:visible; float:none; top:0px; right:0px;">
+				{if $item.admin_hot==1}<div class="tj_ico"><img src="image/tuijie.png"/></div>{/if}
+				<div class="click_num">{$item.clicknum}/{$item.commentnum}</div>
+				<div class="clear"></div>
+				<div id="dian_{$item.articleid}" class="art_dian" name="{$item.diannum}">{$item.diannum}</div>
+				<p><img src="template/default/images/{$item.dian_img}.gif" id="img_{$item.articleid}" onclick="dian({$item.articleid})" class="dian" /></p>
+				<div class="clear"></div>
+				{if !is_null($item.price)}<div class="f_r">是次消費：每人平均約HK$ {$item.price}</div>{/if}
+			</li>
+		</ul>
+		{if $key == 1}
+		<style>#ypaAdWrapper-article1 iframe{width:100%}</style><div id='ypaAdWrapper-article1'></div>
+		{elseif $key == 3}
+		<style>#ypaAdWrapper-article2 iframe{width:100%}</style><div id='ypaAdWrapper-article2'></div>
+		{elseif $key == 5}
+		<style>#ypaAdWrapper-article3 iframe{width:100%}</style><div id='ypaAdWrapper-article3'></div>
+		{elseif $key == 7}
+		<style>#ypaAdWrapper-article4 iframe{width:100%}</style><div id='ypaAdWrapper-article4'></div>
+		{/if}	
+		
+		{/loop}
+	</div>
+</div>
+<script>
+	function dian(aid){
+		jQuery.ajax({
+		   type: "POST",
+		   url: "space.php?do=article",
+		   data: "artid="+aid+"&ctype=adclick",
+		   dataType:'json',
+		   success:click_result
+		});	
+	}
+	function click_result (msg) {  
+		if(msg.error <= 0){
+			alert(msg.msg);
+		}else{// fanny 修改攻略掂出错问题 2013-11-22
+			alert(msg.msg);
+			if(msg.error ==1){
+				jQuery('#dian_'+msg.artid).html(msg.dnum);
+				jQuery('#img_'+msg.artid).attr('src','template\/default\/images\/dian2.gif');
+			}
+		}					
+	}		
+	
+</script>
+

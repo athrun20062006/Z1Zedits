@@ -1,0 +1,262 @@
+.yjt{
+	border:2px solid #D0D0D0;
+	border-radius:15px 15px 0 0;
+	border-bottom:0px;
+	height:22px;
+	line-height:22px;
+	overflow:hidden;
+	padding-top:30px;
+	padding-left:20px;
+	font-size:22px;
+}
+.yjm{
+	border-left:2px solid #D0D0D0;
+	border-right:2px solid #D0D0D0;
+	overflow:hidden;
+	padding-left:10px;
+	
+}
+.yjb{
+	border:2px solid #D0D0D0;
+	border-radius:0 0 15px 15px;
+	border-top:0px;
+	height:65px;
+	overflow:hidden;
+}
+.font1{
+	font-size:22px;
+}
+.input_css{
+	border:1px solid #dddddd;
+	height:30px;
+	line-height:30px;
+	width:500px;
+}
+.gl_qr{
+	float:right;
+	clear:both;
+	overflow:hidden;
+	padding-right:60px;
+}
+.btn_bg4{
+	background:url(../images/btn_bg4.gif) no-repeat scroll;
+	width:97px;
+	height:40px;
+	text-align:center;
+	border:0px;
+	margin-right:10px;
+	font-size:20px;
+	cursor:pointer;
+}
+.btn_bg5{
+	background:url(../images/btn_bg5.gif) no-repeat scroll;
+	width:165px;
+	height:40px;
+	text-align:center;
+	border:0px;
+	margin-right:10px;
+	font-size:20px;
+	cursor:pointer;
+}
+.select_css{
+	border:1px solid #dddddd;
+	width:154px;
+	height:25px;
+	line-height:25px;
+}
+.userBox{
+	overflow:hidden;
+	clear:both;
+	background:url(../images/tit_07.gif) repeat-x scroll left bottom;
+	padding-bottom:35px;
+}
+.userimg{
+	float:left;
+	overflow:hidden;
+}
+.userinfo{
+	float:right;
+	width:170px;
+}
+.userinfo p{font-size:18px;}
+.zuisui{
+	/*background:url(../images/attention.gif) no-repeat scroll;*/
+	width:105px;
+	height:23px;
+	float:right;
+}
+.searBox{
+	overflow:hidden;
+	clear:both;
+	background:url(../images/tit_07.gif) repeat-x scroll left bottom;
+	padding-bottom:20px;
+}
+.inputBox{
+	background:url(../images/input_bg.gif) no-repeat scroll;
+	width:298px;
+	height:29px;
+	padding:1px ;
+}
+.sinput{
+	border:0px;
+	height:27px;
+	line-height:27px;
+	padding-left:5px;
+	color:#949494;
+	width:260px;
+	float:left;
+}
+.sbtn{
+	float:right;
+	width:28px;
+	height:29px;
+	background:url(../images/ico_25.gif) no-repeat scroll;
+	border:0px;
+}
+.msgBox{
+	clear:both;
+	overflow:hidden;
+	border:1px solid #7c7c7c;
+	padding:10px 15px;
+}
+.msgUser{
+	background:url(../images/tit_07.gif) repeat-x scroll left bottom;
+	overflow:hidden;
+	clear:both;
+	padding-bottom:10px;
+	
+}
+.msgimg{
+	float:left;
+	overflow:hidden;
+}
+.msgtxt{
+	float:left;
+	padding-left:20px;
+}
+.zh_btn{
+	background:url(../images/zan_btn.gif) no-repeat scroll;
+	width:65px;
+	height:26px;
+	line-height:26px;
+	border:0px;
+	padding-left:30px;
+	color:#2051ae
+}
+.boxcon{
+	clear:both;
+	overflow:hidden;
+	border:1px solid #595959;
+	padding:8px;
+}
+.boxcon dl{padding:3px 0px;font-size:15px;}
+.boxcon dl dt .num{float:right;}
+.boxcon dl dt .cat-ico{vertical-align:middle; margin-right:5px;}
+.boxcon dl ul{padding-left:10px;}
+.boxcon dl dd{ background:url(../images/biao13.gif) no-repeat scroll 0 2px;padding-left:15px;}
+.boxcon dl ul .num{float:right;}
+.boxcon .qk{padding:0px 20px;font-size:17px}
+
+/* 攻略詳細頁 */
+.gli_tit{
+	padding-bottom: 10px;
+	overflow:hidden;	
+}
+.gli_tit a{font-size: 15px;white-space: nowrap;font-weight: bolder;color: #0D5E77;}
+.gli_top{
+	background:linear-gradient(#FFFFFF,#F0F0F0);
+	border:2px solid #D0D0D0;
+	border-radius:15px 15px 0 0;
+	border-bottom:0px;
+	padding-top:5px;
+	padding-left:25px;
+	padding-right:25px;
+	overflow:hidden;
+	clear:both;
+}
+.gli_top h1{color:#ff7c3e;font-size:24px;padding-top:10px}
+.gli_top p
+{
+	padding-top:5px;
+	font-size:14px;
+	color:#2A6182;
+}
+.gli_dian{ background:url(../images/dian1.gif) no-repeat right center;text-align:right;height:44px;line-height:44px;padding-top:5px;padding-right:52px;color:#db363d;font-size:20px;margin-bottom:10px;}
+.gli_con
+{
+	border-left:2px solid #D0D0D0;
+	border-right:2px solid #D0D0D0;
+	padding:5px;
+}
+.gli_view{clear:both;overflow:hidden;padding-top:15px}
+.gli_view ul li{padding:10px 0px 10px 10px; overflow:hidden;}
+.gli_view ul li dd{float:left;width:190px;font-size:14px;}
+.gli_view ul li dd.ddR{width:250px;}
+.jianju{background:url(../images/zan_btn.gif) no-repeat scroll;width:65px;height:26px;line-height:26px;float:right;text-align:center;font-size:14px;}
+.gli_but
+{
+	height:25px;
+	border:2px solid #D0D0D0;
+	border-radius:0 0 15px 15px;
+	border-top:0px;
+}
+
+.gli_tjl{float:left;width:578px;overflow:hidden;}
+.gli_tjr
+{
+	float:right;
+	width:150px;
+}
+.gli_tjl h2{ background:url(../images/tit_05.gif) no-repeat scroll;width:553px;height:45px;line-height:45px;padding-left:24px;color:#ffffff;font-size:25px;}
+.gli_tjl ul li{float:left;width:110px;padding-right:5px;}
+.more{float:right;}
+.gli_msg{background:url(../images/tit_06.gif) no-repeat scroll left top;overflow:hidden;padding-top:10px;}
+.gli_msg ul li{float:left;}
+.gli_mtxt{padding-left:10px;color:#c3c3c3;font-size:13px;width:500px;}
+.gli_mtxt font{color:#d82e49;font-size:22px;}
+.gli_mtxt p{padding-top:10px;color:#000000}
+
+.msgquote{
+	color:#989896;
+	margin: 0.5em 0;
+    overflow: hidden;   
+	font-style: italic;
+	font-size:15px;
+}
+.msgquote .conquote{
+	padding-left: 20px;
+    padding-top: 0.5em;
+}
+
+.gli_action a{color:#C3C3C3;font-size:14px;clear:both;}
+.gli_sort{padding-top:54px;color:#c3c3c3;padding-left:25px}
+.gli_pl{overflow:hidden; background-color:#eff0eb;padding:30px 15px 15px 15px; clear:both;width:708px;}
+.replay_mask {
+    display: none;
+    position: absolute;
+    margin-top: -20px;
+    width: 680px;
+}
+.gli_pl ul li{float:left;}
+.pl{padding-left:15px;overflow:hidden;}
+.pl textarea{width:615px;height:118px; border:1px solid #c1c1c1}
+
+
+.pdian_list{background:url(../images/pads.gif) no-repeat; width:724px;height:170px;padding-top:5px;overflow:hidden}
+.site_cat h2{padding-top:5px;color:#929294;font-size:14px;}
+
+
+/* 掂过该篇文章 样式 */
+.dian_list{background:url(../images/ads.gif) no-repeat;width:724px;height:170px;}
+.dian_userlist{width:428px;overflow:hidden;padding:99px 0 0 6px;float:left;}
+.dian_item{width:57px;height:57px;overflow:hidden;float:left;padding:0 6px;}
+.dian_userlist a img{width:57px;height:57px;overflow:hidden;}
+.dian_item .bigstar {
+    margin-left: -11px;
+    margin-top: -11px;
+    position: absolute;
+}
+.dian_right{width:286px;float:left;}
+.dian_btn{height:115px;padding-left: 52px;}
+.dian_num{font-size:19px;color:#262627;height: 55px;line-height: 38px;}
+.dian_num span{font-size:50px;color:#ec242c;}

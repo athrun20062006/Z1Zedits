@@ -1,0 +1,16 @@
+	
+<!--{eval $st = 'desc'; $scss = '';}-->	
+{if $_GET['ordersc'] == 'desc'}
+<!--{eval $st = 'asc'}-->
+<!--{eval $scss = 'sortdesc' }-->
+{else}
+<!--{eval $st = 'desc'}-->
+<!--{eval $scss = 'sortasc'}-->
+{/if}
+
+<div class="sort">排序：
+	<a href="{$mpurl1}&orderby=addtime&ordersc={if $_GET['orderby'] == 'addtime'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'addtime'} class="{$scss}" {/if}>發表日期</span></a>
+	<a href="{$mpurl1}&orderby=diannum&ordersc={if $_GET['orderby'] == 'diannum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'diannum'} class="{$scss}"{/if}>"掂"數</span></a>
+	<a href="{$mpurl1}&orderby=clicknum&ordersc={if $_GET['orderby'] == 'clicknum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'clicknum'}class="{$scss}"{/if}>人氣</span></a>
+	<a href="{$mpurl1}&orderby=commentnum&ordersc={if $_GET['orderby'] == 'commentnum'}{$st}{else}desc{/if}"><span {if $_GET['orderby'] == 'commentnum'}class="{$scss}"{/if}>留言</span></a>
+</div>

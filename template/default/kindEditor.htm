@@ -1,0 +1,37 @@
+<script charset="utf-8" src="template/default/js/kindeditor.js"></script>
+<script charset="utf-8" src="template/default/js/zh_CN.js"></script>
+<script>
+		
+	KindEditor.ready(function(K) {		
+		K.create('textarea[id="'+kid+'"]', {
+			afterChange : function() {
+				jQuery('textarea[id="'+kid+'"]').val(this.html());
+			},		
+			resizeType : 0,				
+			allowFileManager : true,
+			minWidth:480,
+			showMask:false,
+			allowImageUpload : true,
+			allowFileManager : false,
+			items : [
+				'fontsize', '|','bold','italic', 'underline', 'forecolor','hilitecolor', '|', 'justifyleft', 'justifycenter', 'justifyright',
+				'justifyfull', 'insertorderedlist', 'insertunorderedlist', '|', 'image','multiimage',  '|','link','media','|','emoticons', 'pagebreak','|', 'undo', 'redo']
+		});	
+		if(typeof(kids)!="undefined"){ 
+			K.create('textarea[id="'+kids+'"]', {
+				afterChange : function() {
+					jQuery('textarea[id="'+kids+'"]').val(this.html());
+				},		
+				resizeType : 0,				
+				allowFileManager : true,
+				minWidth:480,
+				showMask:false,
+				allowImageUpload : true,
+				allowFileManager : false,
+				items : [
+					'fontsize', '|','bold','italic', 'underline', 'forecolor','hilitecolor', '|', 'justifyleft', 'justifycenter', 'justifyright',
+					'justifyfull', 'insertorderedlist', 'insertunorderedlist', '|', 'image','multiimage',  '|','link','|','emoticons', 'pagebreak','|', 'undo', 'redo']
+			});	
+		}	
+	});	
+</script>

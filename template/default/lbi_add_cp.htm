@@ -1,0 +1,278 @@
+<div style="left:42%;display:none" class="f_window" id="f_window" >	
+	<div class="popcontent">
+		<div class="som_popup_body">		  
+			
+		</div>
+		<div class="clear"></div>
+		<div class="MT5">
+			<div class="FR">
+			<button class="cancel_btn MR20" onclick="display_none1('f_window_bg');display_none1('f_window');">&nbsp;</button><button class="confirm_btn " onclick="dovalue()">&nbsp;</button>
+			<div id="hidval"></div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>    
+</div>
+
+
+<script>
+	function showchild(atype,jtype,id)
+	{
+		var category = new Object();
+		var child = new Array();
+		var j = 0;
+		jQuery('#'+jtype+'_'+id).find("input[type='checkbox']").each(function(i){
+			if(jQuery(this).attr('checked')){
+				child[j] = jQuery(this).val();
+				j++ ;
+			}
+		})
+		category.type  = jtype;
+		category.atype  = atype;
+		category.id    = id;
+		category.child = child;
+		
+		display_block1('f_window_bg');
+		display_block1('f_window');
+		jQuery('.som_popup_body').html('<img src="image/loading1.gif"/>');
+		
+		jQuery.ajax({
+			type: "POST",
+			cache:false,
+			url: "ajax_info.php",
+			data: "do=showchild&category="+jQuery.toJSON(category),
+			dataType:'json',
+			success: function(res){				
+				res_showchild(res);
+			}
+		});
+	}
+	function res_showchild(res)
+	{		
+		jQuery('.som_popup_body').html(res.content);
+	}
+
+	function pcheckAll(obj,ison)
+	{	
+		if(Number(ison) > 0){ 
+			var id  = jQuery(obj).val();
+			var pid = jQuery(obj).attr('alt');
+			
+			if(jQuery('#top_'+pid).attr('checked')){				
+				jQuery(obj).attr('checked','checked');
+			}else{
+				jQuery('#son_'+id).find('input[type="checkbox"]').each(function(i){					
+					if(jQuery(obj).attr('checked')){
+						jQuery(this).attr('checked','checked');
+					}else{
+						jQuery(this).removeAttr('checked');
+					}
+				})
+			}
+		}else{
+			jQuery('.som_popup_body').find('input[type="checkbox"]').each(function(i){
+				if(jQuery(obj).attr('checked')){
+					jQuery(this).attr('checked','checked');
+				}else{
+					jQuery(this).removeAttr('checked');
+				}				
+			})
+		}
+	}
+	function ischecked(sid,obj)
+	{		
+		if(jQuery('#pson_'+sid).attr('checked')){
+			jQuery(obj).attr('checked','checked');
+		}else{	
+			/* 判断子分类是否全部选中 */
+			var inum = jQuery('#son_'+sid).find('input[type="checkbox"]').size();
+			var j=0;
+			jQuery('#son_'+sid).find('input[type="checkbox"]').each(function(i){
+				if(jQuery(this).attr('checked')){
+					j++;
+				}
+			})
+			if(inum == j){
+				jQuery('#pson_'+sid).attr('checked','checked');
+			}
+		}			
+	}
+	function dovalue()
+	{
+		var vhtml = '';
+		var id = jQuery('#chid').val();
+		var ctype = jQuery('#chid').attr('name');
+		var vt = jQuery('#chid').attr('vt');
+		
+		
+		if(vt == 'art'){
+			var vname = 'article';
+			if(ctype == 'pla'){
+				var iname='startaddress';
+			}else{
+				var iname='site_cat';
+			}
+		}else{
+			var vname = 'place';
+			if(ctype == 'pla'){
+				var iname='placeares';
+			}else{
+				var iname='placecat';
+			}
+		}
+		/**
+		 * 清空原页面的选项
+		 */			
+		if(ctype == 'pla'){
+			jQuery('#pla_'+id).find("input[type='checkbox']").each(function(i){
+				jQuery(this).removeAttr('checked');
+			})
+		}else{
+			jQuery('#cat_'+id).find("input[type='checkbox']").each(function(i){
+				jQuery(this).removeAttr('checked');
+			})
+		}		
+		jQuery('#'+ctype+'_s'+id).html('');
+		
+		jQuery('.som_popup_body').find("input[ctype='catson']").each(function(i){
+			if(jQuery(this).attr('checked')){
+				jQuery('#s'+ctype+'_'+jQuery(this).val()).attr('checked','checked');
+			}
+		})
+		
+		jQuery('.som_popup_body').find("input[ctype='gcatson']").each(function(i){
+			if(jQuery(this).attr('checked')){
+				var pid = jQuery(this).attr('pid'); 
+				if(!jQuery('#pson_'+pid).attr('checked')){				
+					vhtml += '<span><input type="checkbox" value="'+jQuery(this).val()+'" name="'+vname+'['+iname+'][]" checked="checked" class="adresclick">'+jQuery(this).attr('pval')+'</span>'
+					;
+				}
+			}			
+		})
+		
+		if(vhtml.length>0){
+			jQuery('#'+ctype+'_s'+id).html(vhtml);
+		}
+		display_none1('f_window_bg');
+		display_none1('f_window');
+	}
+</script>
+<script type="text/javascript">	
+	function test2(f){
+		var d = document.getElementById('f_window_bg'),wh = getWH(f);
+		d.style.cssText +=";width:"+wh.w+'px;height:'+wh.h+'px'
+	}
+	var getWH = function (){
+		var d = document,doc = d[d.compatMode == "CSS1Compat"?'documentElement':'body'];
+		return function(f){
+			return {
+				w:doc[(f?'client':'scroll')+'Width'],
+				h:f?doc.clientHeight:Math.max(doc.clientHeight,doc.scrollHeight)
+			}
+		}
+	}()
+	function display_block1(div_id){
+		test2();
+		document.getElementById(div_id).style.display='';
+    }
+    function display_none1(div_id){
+      document.getElementById(div_id).style.display='none';
+    }
+</script>
+<style>
+    .f_window_bg{position: absolute;z-index:1100; filter:Alpha(opacity=80);opacity:0.8;		background-color:#000000;top:0px;left:0px;width: 100%;height:100%;}
+    .f_window{ width:698px; margin-left:-250px; position:fixed; 		_position:absolute;	z-index:1500; top:45px;_top:expression( eval((document.documentElement.scrollTop)+150)); 	overflow:hidden; height:620px;	}
+    html {_background-image: url(about:blank);_background-attachment: fixed;}
+	
+	
+	.popcontent{
+		background:url(../../image/advancebg.gif) no-repeat scroll;
+		width:630px;
+		height:620px;
+		padding-top:70px;
+		padding-left:16px;
+		padding-right:53px;
+	}
+	
+	.som_popup_body{
+		height:430px;
+		width:630px;
+		overflow:hidden;
+		clear:both;
+	}
+	.poptitle{
+		clear: both;
+		color: #FFFFFF;
+		float: left;
+		font-size: 22px;
+		font-weight: 600;
+		padding-left: 22px;
+		text-align: center;
+		width: 120px;
+		padding-bottom:45px;
+	}
+	.som_popup_content{
+		height:355px;
+		overflow:auto;	
+		color:#644F40;	
+		padding:0px 15px 0px 10px;
+	}
+	
+	.som_popup_content dl{
+		background:url(../../image/advance_line.gif) repeat-x left bottom scroll;
+		padding-bottom:10px;
+	}
+	
+	.som_popup_content dl dt{
+		margin:10px 0px 0px;
+		padding:8px 0px 0px;
+		color:#412920;
+		background:url(../../image/advancetit.gif) no-repeat scroll center;
+		height:25px;		
+		overflow:hidden;
+	}
+	.som_popup_content dl dt input{
+		height: 13px;  
+		line-height: 13px;  
+		vertical-align:middle; 
+		
+	}
+	.som_popup_content dl dd{
+		padding-left:30px;
+	}
+	.som_popup_content dl dd span{
+		float:left;
+		padding-top:10px;
+		width:100px;
+		color:#e86432;
+	}
+	.som_popup_content dl dd span input{
+		height: 13px;  
+		line-height: 13px;  
+		vertical-align:middle; 
+	}
+	
+	.MT5{padding-top:5px; overflow:hidden}
+	
+	.FR{float:right}
+	
+	.cancel_btn{
+		height:39px;
+		width:168px;	
+		background:url(../../image/btn.gif) no-repeat scroll;			
+		text-align:center;
+		border:0px;
+		cursor:pointer	
+	}
+	.confirm_btn{
+		height:39px;		
+		width:168px;
+		background:url(../../image/btn.gif) no-repeat -187px 0px scroll;
+		text-align:center;	
+		border:0px;	
+		
+		cursor:pointer	
+	}
+	
+	.MR20{margin-right:20px;}
+</style>

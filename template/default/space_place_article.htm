@@ -1,0 +1,219 @@
+		<!--#攻略信息-->
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpinfobotad']}-->	
+		<div id="ad_lpinfobotad">
+			<!--{ad($is_mobile,'lpinfobotad')}-->
+		</div>
+		<div class="blank10"></div>
+			<!--{/if}-->
+			<!--{if $vid > 0}-->
+		<script charset="utf-8" src="template/default/js/h_function.js"></script>
+		<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+		<link href="js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" type="text/css" />
+		<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+		<div class="gli_tit" style="text-align:center">
+			<a href="space-place-id-{$placeid}-varticle.html" style="width:465px;">返回搜索結果</a>
+		</div>
+		<div class="clear"></div>
+		<!--#攻略详细内容 start-->
+		<div class="gli_top">
+			<div class="f_r" style="width:120px;text-align:right;">
+				<div id="dian_{$articleinfo.articleid}" class="gli_dian"  onclick="dian({$articleinfo.articleid})" style="cursor:pointer; background:url(template/default/images/{$articleinfo.dian_img}.gif) no-repeat scroll right center transparent">{$articleinfo.diannum}</div>
+				<div class="clear"></div>
+				<div id="coll_div">
+				{if $articleinfo.is_collect}
+				<a onclick="collectarticle({$articleinfo.articleid},'article',1,'coll_div')" href="javascript:;"><img src="image/nbtn_colles.gif"></a>
+				{else}
+				<a onclick="collectarticle({$articleinfo.articleid},'article',0,'coll_div')" href="javascript:;"><img src="image/btn_colles.gif"></a>
+				{/if}
+				</div>
+				<div class="blank5"></div>
+			</div>
+			<div class="f_l" style="width:480px;padding-bottom:6px;">
+				<h1>
+				{if $articleinfo.article_rank>=5}
+					<img src="template/default/images/01_1.png"/><strong style="color: #51CCC7;font-size: 35px;">$articleinfo.article_rank</strong>
+				{elseif $articleinfo.article_rank>0}
+					<img src="template/default/images/01_2.png"/><strong style="color: #51CCC7;font-size: 35px;">$articleinfo.article_rank</strong>
+				{/if}
+				{$articleinfo.title}
+				</h1>
+				<p>由 {if $articleinfo.user_star==2}<img src="image/sstar.gif" class="star"/> {/if}<a href="space-{$articleinfo.userid}.html" style="color:#000000">{$articleinfo.username}</a> 於 {$articleinfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$articleinfo.clicknum}</p>
+				<!--#分類及地區信息-->
+				<div class="site_cat"><h2>分類：{$articleinfo.site_category} {if $articleinfo.startaddress}；地區：{$articleinfo.startaddress}{/if}</h2></div>
+			</div>
+			{if $articleinfo.admin_hot==1}
+			<img src="template/default/images/tuijie1.gif" class="f_l"/>
+			{/if}
+		</div>
+		<div class="gli_con">
+			<div class="blank20"></div>
+				<div class="fb-like" data-href="http://www.seewide.com/space-place-id-{$placeid}-varticle-v{$articleinfo.articleid}.html" data-width="728" data-layout="standard" data-action="like" data-show-faces="false" data-share="false"></div>
+			<div class="blank20"></div>
+			<div id="shop-desc" style="overflow:hidden;clear:both">
+			{$articleinfo.content}
+			</div>
+			<div class="clear"></div>
+			<div class="gli_view">
+				<div class="f_r" style="width:200px">
+					<ul>
+						<li><a id="a_report" href="javascript:;" onclick="doreport('report','raidersid','{$articleinfo.articleid}')" class="jianju">檢舉</a><div class="clear"></div></li>
+						<li>&nbsp;</li>
+					</ul>
+				</div>
+				<div class="f_l" style="width:500px;">
+					<ul>
+						<li class="clearfix">
+							<dd>攻略日期：{if !empty($articleinfo.starttime)}{$articleinfo.starttime}{else}N/A{/if}</dd><dd class="ddR">攻略地點：{if !empty($articleinfo.startaddress)}{$articleinfo.startaddress}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							<dd>攻略時間：{if !empty($articleinfo.endtime)}{$articleinfo.endtime}{else}N/A{/if}</dd><dd class="ddR">是次消費：每人平均約HK$ {if !empty($articleinfo.price)}{$articleinfo.price}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							前往方法：{if !empty($articleinfo.description)}{$articleinfo.description}{else}N/A{/if}
+						</li>
+						<li class="clearfix" style="padding-bottom:0px">
+							<!--<iframe src="http://www.facebook.com/plugins/like.php?href=  echo urlencode(WWWURL.'space-article-id-'.$vid.".html"); &amp;layout=box_count&amp;show_faces=false&amp;width=50&amp;action=recommend&amp;font=arial&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:65px;" allowTransparency="true"></iframe>-->
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="gli_but"></div>
+		<div class="blank20"></div>
+		<!--#攻略详细内容 end-->
+		<div class="dian_list">
+			<div class="dian_userlist">
+				{loop $dianlist $item}
+					<a href="space-{$item[userid]}.html"><!--{avatar($item[userid],small)}--></a>
+				{/loop}
+			</div>
+			<div class="dian_right">
+				<div class="dian_btn">
+					<img src="image/{$articleinfo.bdian_img}.gif" onclick="dian({$articleinfo.articleid})" style="cursor:pointer;"/>
+					<img src="template/default/images/icon_01.gif" />
+				</div>
+				<div class="dian_num">共<span>{$articleinfo.diannum}</span>人比"掂"</div>
+			</div>
+		</div>
+		<div class="blank20"></div>
+		<!--#评论-->
+		<div id="artcomment"></div>
+		<script>
+			jQuery(document).ready(function(){
+			  ajaxget('ajax_info.php?do=artcomment&artid='+'{$articleinfo.articleid}&page=0', 'artcomment', 'artcomment');
+			});
+		</script>
+		<!--{template lbi_report}-->
+		<!--lp 评论 begin-->
+		<div class="gli_pl">
+			<!--{template space_pinglun}-->
+			<form action="comment.php" method="post">
+				<div class="acBox">
+				<div class="acLeft"><!--{if $space['is_star'] == 2}--><img class="bigstar" src="image/bstar.gif"><!--{/if}--><a href="space-{$_SGLOBAL['supe_uid']}.html"><img src="{$yourtoon}" onerror='this.src="/ucenter/images/noavatar_middle.gif";' style="max-width:72px;"></a></div>
+					<div class="acRight">
+						<textarea name="comment[content]" id="ccontent" maxlength="150" ></textarea>
+						<p style="color:#B7B7B7">最多能輸入150字</p>
+						<div class="blank5"></div>
+					{if $back_url}<input type="hidden" name="back_url" value="{$back_url}"/>{/if}
+						<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+						<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+						<input type="hidden" name="comment[type]" value="1" />
+						<input type="hidden" name="comment[articleid]" value="{$articleinfo.articleid}" />
+						<input type="hidden" name="back_url" value="space-place-id-{$placeid}-varticle-v{$articleinfo.articleid}.html" />
+						<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="留言"/>
+						<div class="blank10"></div>
+						<div class="facebox1" id="face_list"></div>
+					</div>
+				</div>
+			</form>
+			<div class="clear"></div>
+		</div>
+		<!--lp 评论 end-->
+		<script type="text/javascript" src="js/shop.js"></script>
+		<script>
+			var articleid = '{$articleinfo.articleid}';
+			var username = '{$articleinfo.username}';
+			/** fanny  修改点击景点攻略掂出错问题 2013-11-22 */
+			function check(t1) {
+				var regC = /[^ -~]+/g;
+				var regE = /\D+/g;
+				var str = t1.value;
+				if (regC.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+				if(regE.test(str)){
+					t1.value = t1.value.substr(0,150);
+				}
+			} 
+			/** 这里的掂是用在详细表页 */
+			function dian(aid){
+				jQuery.ajax({
+				   type: "POST",
+				   url: "space.php?do=article",
+				   data: "artid="+aid+"&pid="+'{$placeid}'+"&ctype=adclick",
+				   dataType:'json',
+				   success:click_result
+				});	
+			}
+			function click_result (msg) {  
+				if(msg.error <= 0){
+					alert(msg.msg);
+				}else{
+					alert(msg.msg);
+					if(msg.error ==1){
+						location.href="space-place-id-"+msg.pid+"-varticle-v"+msg.artid+".html";
+					}
+				}
+			}//fanny 添加表情图片信息 2013-11-25
+			jQuery(document).ready(function(){
+				document.getElementById("face_list").innerHTML ="";
+				var faceul = document.createElement("ul");
+				for(i=1; i<21; i++) {
+					getStatusFace(i, faceul); 
+				}
+				document.getElementById('face_list').appendChild(faceul);
+			});//获取表情
+			function getStatusFace(i, faceul) {
+				var faceli = document.createElement("li");
+				faceli.innerHTML = '<img src="image/face/'+i+'.gif" style="cursor:pointer;" onclick="finsertFace('+i+', \'ccontent\')"/>';
+				faceul.appendChild(faceli);
+			}
+		</script>
+		<!--#攻略詳情 end-->
+			<!--{else}-->
+		<div class="place_article">
+			<div class="pa_right" style="width:490px;">
+				<div class="pagebar" id="pager">
+					{if $multi}{$multi}{else}&nbsp;{/if}
+				</div>
+				<div class="blank15"></div>
+				<div class="sort">排序：
+				<!--{loop $article_sort $key $asort}-->
+					<a href="{$mpurl1}&orderby={$key}&ordersc={if $_GET['orderby'] == $key && $_GET['ordersc']== 'desc'}asc{else}desc{/if}"><span class="{if $_GET['orderby'] == $key && $_GET['ordersc'] == 'desc'}sortdesc{elseif $_GET['orderby'] == $key && $_GET['ordersc'] == 'asc' }sortasc{/if}">{$asort}</span></a>
+				<!--{/loop}-->
+				</div>
+			</div>
+			<div class="pa_left">
+				<h4>探險家攻略</h4>
+				<p>共{$acount}篇攻略，正顯示第{$num_start}-{$num_end}篇攻略</p>
+			</div>
+		</div>
+		<!--#攻略詳情 start-->
+		<div class="blank10"></div>
+		<!--{template lbi_article_main}-->
+		<div class="comment">
+			<div class="mcon">
+				<div class="blank10"></div>
+				{if $multi}
+				<div class="place_article">
+					<div class="gl_page">
+						<div class="pagebar" id="pager">
+							{$multi}
+						</div>
+					</div>
+				</div>
+				{/if}
+			</div>
+		</div>
+			<!--{/if}-->

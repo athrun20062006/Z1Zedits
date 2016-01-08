@@ -1,0 +1,328 @@
+<!--{if empty($_SGLOBAL['inajax'])}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head><!--Facebook settings START-->
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:url" content="http://{$_SERVER[HTTP_HOST]}{$_SERVER[REQUEST_URI]}"/>
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="SeeWide"/>
+<!--以下由對應PHP檔設定-->
+<meta property="og:title" content="{$fb_title}" />
+<meta property="og:description" content="{$fb_content}" />
+<meta property="og:image" content="{$fb_image}" />
+<!--Facebook settings END-->
+<meta name="keywords" content="<!--{if !empty($placeinfo.placekeywords)}-->$placeinfo.placename, $placeinfo.placekeywords<!--{else}-->seewide, 玩樂, 遊玩, 飲食, 消閒, 好去處, 好去處, 網誌, play, entertainment, food, restaurant, blog, article<!--{/if}-->" />
+<meta name="description" content="<!--{if !empty($placeinfo.placedesc)}-->$placeinfo.placedesc<!--{else}-->SeeWide致力打造全港玩樂攻略指南，聚集全港探險家，一同搜羅及分享精彩的玩 樂、消閒、飲食、生活等情報，務求讓大家能看多一點、闊一點！ 這也正是 SeeWide名字的由來！<!--{/if}-->" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+
+<title><!--{if $page_title}-->{$page_title}<!--{/if}-->$_SCONFIG[sitename]</title>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script language="/javascript" src="/template/default/js/jquery-1.js" type="text/javascript"></script>
+<script type="text/javascript" src="template/default/js/jquery-ui.js"charset="utf-8"></script>
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/loader.js"></script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "632ea38d-46c0-466f-a98d-09a8b0010d25"});</script>
+<style type="text/css">
+@import url(template/$_SCONFIG[template]/css/style1.css);
+@import url(template/$_SCONFIG[template]/css/default.css);
+<!--{if $_TPL['css']}-->
+@import url(template/$_SCONFIG[template]/{$_TPL[css]}.css);
+<!--{/if}-->
+	.ui-corner-all{
+		z-index: 99999999999999;
+	}
+#shareBar
+{
+	display:none;
+	position:absolute;
+	top:5px;
+	right:0px;
+	width:285px;
+	background-color:#185588;
+}
+.fb_iframe_widget
+{
+	margin:0px;
+}
+</style>
+<script type="text/javascript">
+	//记录导航条原来在页面上的位置
+	var naviga_offsetTop = 0;
+	//使导航条，悬停在顶部
+	function naviga_stay_top(){
+		//获取滚动距离
+		var scrollTop = jQuery(document).scrollTop();
+		//alert(scrollTop);
+			//如果向下滚动的距离大于原来导航栏离顶部的距离
+			//直接将导航栏固定到可视区顶部
+		if( scrollTop > naviga_offsetTop ){
+			jQuery("#search").css({"top":"0px","position":"fixed","z-index":"9999999999","width":"100%"});
+			jQuery("#logodiv").show();
+			jQuery("#shareBar").show();
+			jQuery(".sea_l").css({"margin-left":"170px"});
+		} else {
+			//如果向下滚动的距离小原来导航栏离顶部的距离，则重新计算导航栏的位置
+			jQuery("#search").css({"position":"","width":""});
+			jQuery("#logodiv").hide();
+			jQuery("#shareBar").hide();
+			jQuery(".sea_l").css({"margin-left":""});
+		}
+	}
+	function onload_function()
+	{
+		//记录初始状态导航栏的高度
+		//naviga_offsetTop = jQuery(".search").attr("offsetTop");
+		naviga_offsetTop = document.getElementById("search").offsetTop;
+		//绑定滚动和鼠标事件
+		jQuery(window).bind("scroll", naviga_stay_top);
+		jQuery(window).bind("mousewheel",naviga_stay_top);
+		jQuery(document).bind("scroll", naviga_stay_top);
+		jQuery(document).bind("mousewheel",naviga_stay_top);
+	}
+	jQuery(function()
+	{
+		onload_function();
+	})
+</script>
+</head>
+<body class="index_css" >
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-1']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="block_main clearfix">
+	<div class="bybg">
+    <div class="ttmbybg">
+		<div class="bybg_left">
+		<div class="midlogo">
+		<a href="./" style="float:left;padding-left:2px"><div class="logo"></div></a>
+		</div>
+		</div>
+		<div class="bybg_right">
+		<div class="topNav">
+		  <!--{if $_SGLOBAL[supe_uid]}-->
+			<a href="space.php?do=notice">
+				<div class="notify" id="membernotemenu" onmouseover="showMenu(this.id)">
+				{if $_SGLOBAL[member][allnotenum]}({$_SGLOBAL[member][allnotenum]}){/if}
+				</div>
+			</a>
+					<a href="space.php?do=home&act=share" class="ftopmenu">{$_SN[$_SGLOBAL[supe_uid]]}</a>
+			<!--{if empty($_SCONFIG['closeinvite'])}-->
+			<a href="cp-invite.html" class="ftopmenu">邀請</a>
+			<!--{/if}-->
+			<a class="ftopmenu" href="cp-common-logout-{$_SGLOBAL[uhash]}.html">退出</a>
+		  <!--{else}-->
+			<a class="ftopmenu" href="do-{$_SCONFIG[register_action]}.html">成為探險家</a>
+			<a class="ftopmenu" href="do-{$_SCONFIG[login_action]}.html">探險家登入</a>
+		  <!--{/if}-->
+		</div>
+		<div style="clear:both"></div>
+		<div class="midNav">
+			<div class="f_r midad">
+			 <!--{if $_SGLOBAL['ad'][$is_mobile]['header']}-->
+			 	<div id="ad_header1">
+					<!--{ad($is_mobile,'header')}-->
+				</div>
+			  <!--{/if}-->
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="mainNav">
+			<ul>
+				<li><a href="space.php?do=place" {if $do=='place'}class="cur"{/if}>香港好去處</a></li>
+				<li><a href="space.php?do=place&favorable[0]=1&favorable[1]=0">商店優惠</a></li>
+				<li><a href="space.php?do=article">探險家攻略</a></li>
+				<li><a href="space-top.html">探險家排行榜</a></li>
+				<li><a href="space-help.html">新手指南</a></li>	
+				<li><a href="do-contact.html">聯絡我們</a></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+		</div>
+        </div>
+	</div>
+	<div class="search" id="search">
+    <div class="ttmsearch">
+			<div class="sea_r">
+				<div id="shareBar">
+					<span class='st_fblike_large' displayText='Like'></span>
+					<span class='st_facebook_large' displayText='Facebook'></span>
+					<span class='st_twitter_large' displayText=' G +'></span>
+					<span class='st_sina_large' displayText=' G +'></span>
+					<span class='st_googleplus_large' displayText=' G +'></span>
+				</div>
+				<a href="cp-check.html"><img id="newPlace" src="/template/default/images/06.png" border='0'/></a>
+				<a href="cp-article.html"><img id="newArticle" src="/template/default/images/07.png" border='0'/></a>
+			</div>
+			<div id="logodiv" style="width:206px; height:95px; position:absolute; left:0px; display:none;"><img src="/template/default/images/ttmlogo.png" border='0'/></div>
+            <div class="sea_l">
+				<form action="space.php" id="form1">
+					<input type="hidden" id="show_select" name="do" value="place" />
+			   		<span style="float: left;padding-right: 10px;color: #ffffff;padding-top: 3px;font-size: 16px;font-weight: bolder;">我想搵</span>				  
+					<div id="ui-select-serach" class="ui-select site-search-select">
+						<a class="ui-select-btn" href="javascript:void(0)">點擊</a>
+						<a class="show">
+							<!--{if $do=='article'}-->
+							攻略
+							<!--{else}-->
+							好去處
+							<!--{/if}-->
+						</a>
+						<div class="ui-select-bd" style="display:None">
+							<ul>
+								<li class="item">
+									<a id="article" name="攻略" addclick=true >攻略</a>
+								</li>
+								<li class="item {if $nlist.active}selected{/if}" >
+									<a id="place" name="好去處" addclick=true >好去處</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div style="border: 1px solid #cccccc;height: 26px;line-height: 26px;width: 190px;_width: 176px;float: left;background-color: #ffffff; border-left:none;">
+						 <span style="float:left;margin-left:3px; height: 16px;width: 19px;margin-top:3px;"><img src="/template/default/images/03.png" border='0'/></span>
+                        <input type="text" value="{$filter[keyword]}" placeholder="  好去處, 景點, 關鍵字..." style="border:none;outline:medium; float:left; width: 140px; height:22px;line-height:22px;" onkeydown="enter()" name="keyword" id="keyword" />
+					</div>
+					<div style="border: 1px solid #cccccc;height: 26px;line-height: 26px;width: 190px;_width: 176px;float: left;background-color: #ffffff; border-left:none;">
+						<span style="float:left;margin-left:3px; height: 16px;width: 19px;margin-top:3px;"><img src="/template/default/images/02.png" border='0'/></span>
+                        <input type="text" value="{$filter[address]}" style="border:none;outline:medium; float:left; width: 140px; height:22px;line-height:22px;"  placeholder=" 地址,地區..." name="address" id="address" />
+					</div>
+					<input type="submit" name="dosubmit" value="" class="btn_bg3"/>
+				</form>
+				<script>
+					var citystrs2 = "{$citystrs2}".toString().split(",");
+					var citystrs1 = "{$citystrs1}".toString().split(",");
+					function autocompleteAddress(citystrs){
+						if(citystrs){
+							jQuery( "#address" ).autocomplete({
+						        source: citystrs,
+						        select: function( event, ui ) {
+						        	document.getElementById("address").value = ui.item.value;
+						        	jQuery("#form1").submit();
+						        }
+					        });
+						}
+					}
+					function enter(){
+						if(event.keyCode==13)
+					    {
+					         var placeName = jQuery("#keyword").val();
+					         if(placeName != ""){
+					         	jQuery( ".ui-corner-all" ).hide();
+					         	jQuery("#form1").submit();
+					         }
+					    }
+					}
+					jQuery(document).ready(function(){
+						var placearr = {$placemsg};
+						var strs=placearr["placearr"].toString().split(",");
+						jQuery( ".selector" ).autocomplete({ autoFocus: true });
+						if(strs){
+							jQuery( "#keyword" ).autocomplete({
+						        source: strs,
+						        select: function( event, ui ) {
+						        	document.getElementById("keyword").value = ui.item.value;
+						        	jQuery("#form1").submit();
+						        }
+					        });
+						}
+						autocompleteAddress(citystrs2);
+					   	var cval = jQuery(".show").text();
+					   	cval = cval.replace(/(^\s*)|(\s*$)/g, "");
+					   	jQuery("#categorys").empty();
+					   	jQuery("#sareas").empty();
+					   	if(cval == '好去處'){ 
+							$('#categorys').append("<option value='0'>探險分類</option>"); 
+							{loop $pcategory_list $item}
+							$('#categorys').append("<option value='{$item.catid}' >{$item.lv_str}{$item.catname}</option>");
+							{/loop}
+							/** 地区 */
+							$('#sareas').append("<option value='0'>選擇地區</option>");
+							{loop $city_array2 $key $item}
+								$('#sareas').append("<option value='{$key}'  >{$item.lv_str}{$item.name}</option>");
+							{/loop}
+					   }else{
+							/** 分类 */
+							$('#categorys').append("<option value='0'>探險分類</option>"); 
+							{loop $category_list $item}
+							$('#categorys').append("<option value='{$item.catid}' >{$item.lv_str}{$item.catname}</option>");
+							{/loop}
+							/** 地区 */
+							$('#sareas').append("<option value='0'>選擇地區</option>");
+							{loop $city_array1 $key $item}
+								$('#sareas').append("<option value='{$key}'  >{$item.lv_str}{$item.name}</option>");
+							{/loop}
+					   }
+					});
+					jQuery('a[addclick=true]').click(function(){
+						jQuery('#show_select').val(this.id);
+						jQuery(".ui-select-bd").css('display','none');	
+						jQuery(".show").text(this.name);
+						jQuery("#categorys").empty();
+						jQuery("#sareas").empty();
+						if(this.id == 'article'){
+							jQuery( "#keyword" ).autocomplete( "disable" );
+							autocompleteAddress(citystrs1);
+							/** 分类 */
+							$('#categorys').append("<option value='0'>探險分類</option>"); 
+							{loop $category_list $item}
+							$('#categorys').append("<option value='{$item.catid}' >{$item.lv_str}{$item.catname}</option>");
+							{/loop}
+							/** 地区 */
+							$('#sareas').append("<option value='0'>選擇地區</option>");
+							{loop $city_array1 $key $item}
+								$('#sareas').append("<option value='{$key}'  >{$item.lv_str}{$item.name}</option>");
+							{/loop}
+						}
+						if(this.id == 'place'){
+							jQuery( "#keyword" ).autocomplete( "enable" );
+							autocompleteAddress(citystrs2);
+							$('#categorys').append("<option value='0'>探險分類</option>");
+							{loop $pcategory_list $item}
+							$('#categorys').append("<option value='{$item.catid}' >{$item.lv_str}{$item.catname}</option>");
+							{/loop}
+							/** 地区 */
+							$('#sareas').append("<option value='0'>選擇地區</option>");
+							{loop $city_array2 $key $item}
+								$('#sareas').append("<option value='{$key}'  >{$item.lv_str}{$item.name}</option>");
+							{/loop}
+						}
+					});
+					$("#ui-select-serach").mouseover(function(){
+						// $(".ui-select-bd").fadeIn("slow");
+						$(".ui-select-bd").css('display','block');
+					});
+					$("#ui-select-serach").mouseout(function(){
+						// $(".ui-select-bd").fadeOut("slow");
+						$(".ui-select-bd").css('display','none');
+					});
+				</script>
+			</div>
+            </div>
+		</div>
+</div>
+<div class="blank15"></div>
+<script language="javascript" type="text/javascript" src="source/script_cookie.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_common.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_menu.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_ajax.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_face.js"></script>
+<script language="javascript" type="text/javascript" src="source/script_manage.js"></script>
+<!-- Adsfactor START-->
+<script language='JavaScript' type='text/javascript'>randomstr = new String (Math.random());randomstr = randomstr.substring(1,8);document.write ("<" + "script language='JavaScript' type='text/javascript' src='" + "http://servedby.adsfactor.net/adj.php?ts=" + randomstr + "&amp;sid=811632165927" + "'><" + "/script>");</script><noscript><a href='http://servedby.adsfactor.net/adc.php?sid=811632165927' ><img src='http://servedby.adsfactor.net/adv.php?sid=811632165927' border='0'></a></noscript>
+<!-- Adsfactor END-->
+<!--{/if}-->

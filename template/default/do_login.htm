@@ -1,0 +1,344 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template header}-->
+<style>
+.logoBox{
+	overflow:hidden;
+	clear:both;
+	padding-left:25px;
+}
+.logor{
+	float:right;
+	width:489px;
+}
+.logol
+{
+	width:216px;
+	float:left;
+}
+.logo_tit{
+	background:linear-gradient(#F0F0F0,#E0E0E0);
+	border:1px solid #C0C0C0;
+	height:32px;
+	line-height:32px;
+	text-align:center;
+	color:#606060;
+	font-size:16px;
+	border-radius:10px 10px 0 0;
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.logo_con{
+	border:1px solid #C0C0C0;
+	border-radius:0 0 10px 10px;
+	overflow:hidden;
+	clear:both;
+	border-top:0px;
+	padding:10px;
+}
+.input_logo
+{
+	width:96%;
+	height:27px;
+	border:1px solid #2A6182;
+	margin-left:-1px;
+}
+.logo_btn
+{
+	overflow:hidden;
+	text-align:center;
+}
+.logo_action
+{
+	padding-bottom:10px;
+	border-bottom:1px solid #C0C0C0;
+	margin-bottom:10px;
+}
+.logo_action p
+{
+	font-size:15px;
+	padding:10px 0;
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.lbtn
+{
+	border:1px solid #C0C0C0;
+	background:linear-gradient(#F0F0F0,#E0E0E0);
+	width:62%;
+	height:31px;
+	color:#2A6182;
+	border-radius:5px;
+	font-size:18px;
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+.logo_msg
+{
+	padding:15px 0 10px 0;
+	overflow:hidden;
+	clear:both;
+	font-size:14px;
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+}
+#failbook
+{
+	background-image:url(/image/FBlogout.png);
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	border-radius:4px;
+    width:192px;
+    height:38px;
+    line-height:38px;
+    text-align:center;
+    color:#FFFFFF;
+	margin:10px auto;
+	cursor:pointer;
+}
+#plund
+{
+	background:linear-gradient(#008080,#2A6182);
+	font-family: 微软雅黑, 微軟正黑體, Gadget, Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	display:block;
+	border-radius:4px;
+	font-size:16px;
+    width:100%;
+    height:30px;
+    line-height:30px;
+    text-align:center;
+    color:#FFFFFF;
+}
+</style>
+<script>
+  function checkLoginState()
+  {
+	FB.login(function(response) {
+		stagger(response);
+	},{scope:'public_profile,email,user_friends',return_scopes:true,auth_type:'rerequest'});
+  }//PERMISSION user_friends UNLOCKS PROPERTY friends
+  function stagger(response) {
+    if (response.status==='connected') {
+		console.log(JSON.stringify(response.authResponse));
+      fbLog();
+    } else if (response.status==='not_authorized') {
+      document.getElementById('status').innerHTML='您尚未允許SeeWide使用您的Facebook資料';
+    } else {
+      document.getElementById('status').innerHTML='您尚未登入Facebook';
+    }
+  }
+  function fbLog(){
+    FB.api('/me/picture',{fields:'is_silhouette,url'},function(response){
+		console.log(JSON.stringify(response));
+		var FBpic='';
+		if(!response.data.is_silhouette)
+		{
+			FBpic=response.data.url.replace(/&/g,"%26");
+		}
+		FB.api('/me',{fields:'name,email,friends'},function(ponse){
+			var FBfriends=ponse.friends.data;
+			var FBid="FB_"+ponse.id;
+			console.log(JSON.stringify(ponse));
+			jQuery.ajax({
+				type:"post",
+				url: 'mobile/index.php?act=login_fb',
+				data:'dosubmit=1&cookietime=315360000&password=facebook&username='+FBid+"&facemail="+ponse.email+"&friends="+JSON.stringify(FBfriends)+"&avata="+FBpic,
+				dataType:'html',
+				beforeSend:function()
+				{
+					document.getElementById('status').innerHTML+='<br><br>正在使用您的Facebook資料登入SeeWide';
+				},
+				success:function(msg)
+				{
+					var rasp=JSON.parse(msg);
+					if(rasp.result==1)
+					{
+						alert('成功登錄，歡迎回來SeeWide！');
+						location.href="index.php";
+					}
+					else
+					{
+						document.getElementById('status').innerHTML+='<br><br>登入失敗';
+						fbRegi();
+					}
+				},
+				error:function(XMLHttpRequest, textStatus, errorThrown)
+				{//请求出错处理
+					alert(XMLHttpRequest.status);
+					alert(XMLHttpRequest.readyState);
+					alert(textStatus);
+					alert(errorThrown);//*/
+				}
+			});
+		});
+	});
+  }
+  function fbRegi() {
+    FB.api('/me',{fields:'name,email,friends'},function(repo){
+		var FBmail=repo.id+"@facebook.com";
+		var FBname=repo.name;
+		var FBid="FB_"+repo.id;
+		var FBfriends=repo.friends.data;
+		FBname=FBname.replace(/\s/ig,"");
+		jQuery.ajax({
+			type:"post",
+			url: 'mobile/index.php?act=register_fb',
+			data:'dosubmit=1&umessages=1&password=facebook&email='+FBmail+'&username='+FBid+'&facename='+FBname+"&facemail="+repo.email+"&friends="+JSON.stringify(FBfriends),
+			dataType:'html',
+			beforeSend:function()
+			{
+				document.getElementById('status').innerHTML+='<br><br>正在使用您的Facebook資料登記SeeWide帳號';
+			},
+			success:function(msg)
+			{
+				var gasp=JSON.parse(msg);
+				var ugh="";
+				switch(gasp)
+				{
+			case 1:ugh='註冊成功';
+			break;
+			case -1:ugh='註冊失敗<br><br>原因：用戶名包含非法字符';
+			break;
+			case -2:ugh='註冊失敗<br><br>原因：用戶名包含非法字串';
+			break;
+			case -3:ugh='註冊失敗<br><br>原因：該Facebook用戶名已經被註冊';
+			break;
+			case -4:ugh='註冊失敗<br><br>原因：該電郵地址格式出錯';
+			break;
+			case -5:ugh='註冊失敗<br><br>原因：該電郵地址包含非法字串';
+			break;
+			case -6:ugh='註冊失敗<br><br>原因：該電郵地址已經被註冊';
+			break;
+			case -7:ugh='註冊失敗<br><br>原因：系統未找到所需文件';
+			break;
+			case -8:ugh='註冊失敗<br><br>原因：該IP在1小時前已註冊賬號';
+			break;
+			case -9:ugh='註冊失敗<br><br>原因：Facebook用戶名字太長（上限25個）';
+			break;
+			default:ugh='註冊失敗<br><br>原因不明';
+				}
+				document.getElementById('status').innerHTML+='<br><br>'+ugh;
+				if(gasp==1)
+				{
+					fbLog();
+				}
+            },
+			error:function(XMLHttpRequest, textStatus, errorThrown)
+			{//请求出错处理
+				alert(XMLHttpRequest.status);
+				alert(XMLHttpRequest.readyState);
+				alert(textStatus);
+				alert(errorThrown);//*/
+			}
+        });
+    });
+  }
+</script>
+<div class="mainbox clearfix">
+	<div class="AreaL">
+		<div class="logoBox">
+			<div class="logor">
+				<!--{if $_SGLOBAL['ad'][$is_mobile]['loginiad']}-->
+				<!--{ad($is_mobile,'loginiad')}-->
+				<!--{/if}-->
+			</div>
+			<div class="logol">
+			  <form id="loginform" name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" class="c_form" style="padding:0px">
+				<p class="logo_tit">探險家登入</p>
+				<div class="logo_con">
+					<div class="logo_action">
+						<!--{if $invitearr}-->
+						<p>好友邀請：</p>
+						<a href="space.php?$url_plus" target="_blank"><!--{avatar($invitearr[uid],small)}--></a>
+						<a href="space.php?$url_plus" target="_blank">{$_SN[$invitearr[uid]]}</a>
+						<div class="blank25"></div>
+						<!--{/if}-->
+						<!--{if $_SCONFIG['seccode_login']}-->
+						<!--{if $_SGLOBAL['input_seccode']}-->
+						<p>請通過下面的驗證後，再提交登錄</p>
+						<div class="blank25"></div>
+						<!--{/if}-->
+						<!--{if $_SCONFIG['questionmode']}-->
+						<p>請先回答問題</p>
+						<p><!--{eval question();}--></p>
+						<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"<!--{if empty($_SGLOBAL['input_seccode'])}--> onBlur="checkSeccode()"<!--{/if}--> />&nbsp;<span id="checkseccode">&nbsp;</span>
+						<!--{else}-->
+						<p>驗證碼：</p>
+						<script>seccode();</script>
+						<p>請輸入上面的4位字母或數字，看不清可<a href="javascript:updateseccode()">更換一張</a></p>
+						<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"<!--{if empty($_SGLOBAL['input_seccode'])}--> onBlur="checkSeccode()"<!--{/if}--> />&nbsp;<span id="checkseccode">&nbsp;</span>
+						<div class="blank25"></div>	
+						<!--{/if}-->
+						<!--{/if}-->
+						<div style="text-align:center; {if $_SGLOBAL['input_seccode']}display:none;{/if};">
+							<p style="text-align:left;">Email/用戶名：</p>
+							<input type="text" name="username" id="username" class="input_logo" value="$membername" tabindex="2" />
+							<p style="text-align:left;">密碼：</p>
+							<input type="password" name="password" id="password" class="input_logo" tabindex="3" value="$password" />
+						</div>
+						<p>
+							<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck ><font color="#000000;" style="font-size:13px" for="cookietime">保持登入</font><a class="f_r" style="color:#2A6182; font-size:12px;" href="do.php?ac=lostpasswd">忘記密碼？</a>
+						</p>
+						<div class="logo_btn">
+							<input type="hidden" name="refer" value="$refer" />
+							<input type="submit" id="loginsubmit" class="lbtn" name="loginsubmit" value="登入" tabindex="5" />
+						</div>
+					</div>
+<div id="testing"></div>
+<div id="probing"></div>
+<div id="status"></div>
+					<div id="failbook" onclick="checkLoginState()"><span style="font-size:16px; position:relative; left:18px;">Facebook登入</span></div>
+					<div class="logo_msg">
+						發揮你的探險精神，馬上成為SeeWide探險家！
+					</div>
+					<div style="width:100%;"><a id="plund" href="do.php?ac=$_SCONFIG[register_action]">免費註冊</a></div>
+				</div>
+				<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			  </form>
+			</div>
+		</div>
+		<div class="blank10"></div>
+		<div class="adsBox">
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+			<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+			<div class="blank10"></div>
+			<!--{/if}-->
+		</div>
+	</div>
+	<!--{template lbi_login_right}-->
+</div>
+<script type="text/javascript">
+	var lastSecCode = '';
+	function checkSeccode() {
+		var seccodeVerify = $('seccode').value;
+		if(seccodeVerify == lastSecCode) {
+			return;
+		} else {
+			lastSecCode = seccodeVerify;
+		}
+		ajaxresponse('checkseccode', 'op=checkseccode&seccode=' + (is_ie && document.charset == 'utf-8' ? encodeURIComponent(seccodeVerify) : seccodeVerify));
+	}
+	function ajaxresponse(objname, data) {
+		var x = new Ajax('XML', objname);
+		x.get('do.php?ac=$_SCONFIG[register_action]&' + data, function(s){
+			var obj = $(objname);
+			s = trim(s);
+			if(s.indexOf('succeed') > -1) {
+				obj.style.display = '';
+				obj.innerHTML = '<img src="image/check_right.gif" width="13" height="13">';
+				obj.className = "warning";
+			} else {
+				warning(obj, s);
+			}
+		});
+	}
+	function warning(obj, msg) {
+		if((ton = obj.id.substr(5, obj.id.length)) != 'password2') {
+			$(ton).select();
+		}
+		obj.style.display = '';
+		obj.innerHTML = '<img src="image/check_error.gif" width="13" height="13"> &nbsp; ' + msg;
+		obj.className = "warning";
+	}
+</script>
+<!--{if $_SGLOBAL['input_seccode']}-->
+<script>
+$('seccode').style.background = '#FFFFCC';
+$('seccode').focus();
+</script>
+<!--{/if}-->
+<!--{template footer}-->

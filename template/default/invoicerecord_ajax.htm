@@ -1,0 +1,35 @@
+{if $invoice}
+<h2 class="exchange_record">回贈金兌換記錄</h2>
+<div class="exchangeBox">
+	<div class="exchange_tit  invoice">
+		<table border="0" width="100%" cellpadding="0" cellspacing="0">
+			<tr align="center">
+				<td width="16%">申請日期</td>
+				<td width="14%">消費商戶</td>
+				<td width="10%">消費日期</td>
+				<td width="15%">消費金額</td>				
+				<td width="10%">單據編號</td>
+				<td width="10%">情況</td>
+				<td width="10%">回贈率%</td>
+				<td width="15%">回贈好幣</td>
+			</tr>
+		</table>
+	</div>
+	<div class="exchange_con invoice">
+		<table border="0" width="100%" cellpadding="0" cellspacing="6">
+		{loop $invoice $log}
+		<tr align="center">
+			<td width="16%">{$log.addtime}</td>
+			<td width="14%">{$log.sshop}</td>				
+			<td width="10%">{$log.stime}</td>
+			<td width="15%">{$log.sprice}</td>				
+			<td width="10%">{$log.sinvoice}</td>
+			<td width="10%">{$log.sstatus}</td>
+			<td width="10%">{$log.srebate}</td>
+			<td width="15%" align="left">{if $log.saleimg}<div class="hbi">{$log.smoney}</div><a target="_brank" href="../upload/saleimg/{$log.saleimg}" title="單據圖像" class="hbimg"><img width="16" height="16" border="0" alt="" src="image/img/picflag.gif" style="vertical-align:top"></a>{else}{$log.smoney}{/if}</td>			
+		</tr>
+		{/loop}
+		</table>
+	</div>	
+</div>
+{/if}

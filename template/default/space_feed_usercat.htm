@@ -1,0 +1,86 @@
+		<div class="shareBox">
+			<div class="sortBox clearfix">
+				<div class="share_tab"><font color="#e31a3e">個人分類信息</font></div>
+			</div>
+			<div class="comment">
+				<table cellspacing="0" cellpadding="0" class="formtable">
+					<tbody>
+						<tr>
+							<th align="center" width="30%">標題</th>
+							<th width="20%">攻略數</th>
+							<th width="">排序</th>
+							<th width="30%">添加時間</th>
+							<th>操作</th>
+						</tr>
+					  {if $ucatlist}	
+					   {loop $ucatlist $ucl}
+                        <tr>
+							<td align="center">
+								{$ucl.catname}
+							</td>							
+							<td>{$ucl.art_count}</td>
+							<td>{$ucl.sort}</td>
+							<td><!--{date('Y-m-d H:i:s',$ucl[addtime])}--></td>
+							<td>
+								<a class="edit" href="space.php?do=home&act=ucat&dosubmit=showedit&ucatid={$ucl.ucatid}" style="cursor:pointer;">編輯</a>&nbsp;
+								<a onclick="if(confirm('你確定要刪除該條數據嗎？')){return true;}return false;" href="space.php?do=home&act=ucat&dosubmit=del&ids={$ucl.ucatid}">刪除</a>
+							</td>
+						</tr>
+						{if $ucl[son]}
+						{loop $ucl[son] $us}
+						<tr>
+							<td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$us.catname}</td>							
+							<td>{$us.art_count}</td>
+							<td>{$us.sort}</td>
+							<td><!--{date('Y-m-d H:i:s',$us[addtime])}--></td>
+							<td>
+								<a class="edit" href="space.php?do=home&act=ucat&dosubmit=showedit&ucatid={$us.ucatid}" style="cursor:pointer;">編輯</a>&nbsp;
+								<a onclick="if(confirm('你確定要刪除該條數據嗎？')){return true;}return false;" href="space.php?do=home&act=ucat&dosubmit=del&ids={$us.ucatid}">刪除</a>
+							</td>
+						</tr>
+						{/loop}
+						{/if}
+					    {/loop} 	
+					  {else}
+						<tr>
+							<td colspan="4" align="center">暫無數據</td>
+						</tr>
+					  {/if}	
+					</tbody>
+				</table>
+					{if $ucatselect}
+				<div class="editcat" id="editcat">
+					<h2 style="padding:10px 0px">分類修改</h2>
+					<form action="space.php?do=home" method="post">
+						<input type="hidden" name="act" value="ucat"/>
+						<input type="hidden" name="catid" value="{$catid}"/>
+						<input type="hidden" name="dosubmit" value="edit"/>
+						<table cellspacing="0" cellpadding="5" width="70%">
+							<tr>
+								<td width="20%">分類層級：</td>
+								<td>
+									<select name="parentid">
+										<option value="0">最頂分類</option>
+										{loop $ucatselect $key $ucs}
+										<option value="{$key}" {if $ucat_info[parentid] == $key }selected{/if}>{$ucs.catname}</option>
+										{/loop}
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>分類名稱：</td>
+								<td><input type="text" name="catname" value="{$ucat_info.catname}"/></td>
+							</tr>
+							<tr>
+								<td>排 &nbsp;&nbsp;&nbsp;序：</td>
+								<td><input type="text" name="sort" value="{$ucat_info.sort}"/></td>
+							</tr>
+							<tr>
+								<td colspan="2"><input type="submit" value="確定"/></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+					{/if}
+			</div>
+		</div>

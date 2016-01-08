@@ -1,0 +1,88 @@
+			<script charset="utf-8" src="My97/WdatePicker.js"></script>
+			<!--#回赠金-->
+		<form action="space.php?do=home&act=invoice" method="post" name="invoiceForm" id="invoiceForm" onsubmit="return checkinvoice()" enctype="multipart/form-data">
+			<div class="gift_view">
+				<table width="100%" border="0"  cellpadding="2" cellspacing="15">
+					<tr>
+						<td width="11%" class="thsalse">消費商戶：</td>
+						<td><input type="text" name="sshop" size="45" /></td>
+					</tr>
+					<tr>
+						<td class="thsalse">消費日期：</td>
+						<td><input type="text" name="stime" size="45" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly/> (YYYY-mm-dd.etc.2013-02-21)</td>
+					</tr>
+					<tr>
+						<td class="thsalse">消費金額：</td>
+						<td><input type="text" name="sprice" size="45" /> (HK$)</td>
+					</tr>
+					<tr>
+						<td class="thsalse">單據編號：</td>
+						<td><input type="text" name="sinvoice" size="45" /></td>
+					</tr>
+					<tr>
+						<td class="thsalse">單據圖像：</td>
+						<td><input type="file" size="45" name="saleimg"></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<input type="hidden" name="doinvoiceSubmit" value="doinvoice"/>
+							<input type="submit" name="" value="確認提交"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="blank20"></div>
+		</form>
+			<script>
+				function checkinvoice()
+				{
+					var frm = document.forms['invoiceForm'];
+					var sshop = frm.elements['sshop'].value;
+					var stime = frm.elements['stime'].value;
+					var sprice = frm.elements['sprice'].value;
+					var sinvoice = frm.elements['sinvoice'].value;
+					var msg = '';
+					if(sshop == '' || sshop.length <= 0)
+					{
+						msg += '- 請輸入消費商戶\n';
+					}
+					if(stime == '' || stime.length <= 0){
+						msg += '- 請輸入消費日期\n';
+					}
+					if(sprice == '' || sprice.length <= 0){
+						msg += '- 請輸入消費金額\n';
+					}else{
+						if(isNaN(sprice)){
+							msg += '- 請正確輸入消費金額\n';
+						}
+					}
+					if(sinvoice == '' || sinvoice.length <= 0){
+						msg += '- 請輸入消費單據號\n';
+					}else{
+						if(isNaN(sinvoice)){
+							msg += '- 請正確輸入消費單據號\n';
+						}
+					}
+					if(msg.length > 0){
+						alert(msg);
+						return false;
+					}else{
+						return true;
+					}
+				}
+			</script>
+			<!--#回赠金记录信息 2014.01.08 start-->
+		<div id="invoicerecord"></div>
+			<script>
+				jQuery(document).ready(function(){
+				  ajaxget('ajax_info.php?do=invoicerecord', 'invoicerecord', 'invoicerecord');
+				});			
+			</script>
+			<!--#回赠金记录信息 2014.01.08 end-->
+			<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+		<div class="blank10"></div>   
+		<div id="ad_lpagebotad">
+				<!--{ad($is_mobile,'lpagebotad')}-->
+		</div>
+			<!--{/if}-->

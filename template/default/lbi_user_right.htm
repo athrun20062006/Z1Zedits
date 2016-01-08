@@ -1,0 +1,250 @@
+<style>
+.soManyCats
+{
+	display:none;
+}
+.soMuchTime
+{
+	display:none;
+}
+.catInflation
+{
+	color:#C0C0C0;
+	text-align:center;
+}
+</style>
+<div class="AreaR"><!--appears in individual user pages only-->
+	<!--{if $_SGLOBAL['ad'][$is_mobile]['rpage01']}-->	
+	<div id="ad_rpage01"><!--{ad($is_mobile,'rpage01')}--></div>
+	<!--{/if}-->
+	<div class="blank10"></div>
+	<div class="userBox">
+		<div class="userinfo" onclick="location.href='space.php?uid={$h_userinfo[uid]}'">
+			<div class="u_name">{$h_userinfo.username}</div>
+			<div class="u_level">{$_SGLOBAL[grouptitle][$h_userinfo[groupid]][grouptitle]}{if $_SGLOBAL[grouptitle][$h_userinfo[groupid]][icon]}<img src="{$_SGLOBAL[grouptitle][$h_userinfo[groupid]][icon]}"/> {/if}</div>
+			<div class="u_desc">簡介：<a title="{$h_userinfo.ouser_desc}">{$h_userinfo.user_desc}</a></div>
+		</div>
+		<div class="userimg"><img src="{$h_userinfo.avatarmedium}" onerror='this.src="/ucenter/images/noavatar_middle.gif";'></div>
+		<div class="clear"></div>
+	</div>
+	<div class="blank25"></div>
+	{if $h_userinfo.facebook_url}
+	<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/zh_HK/all.js#xfbml=1";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+	<div class="fb-like-box" data-href="http://www.facebook.com/{$h_userinfo.facebook_url}" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
+	<div class="blank25"></div>
+	{/if}
+	<div class="searBox">
+		<form action="space.php" method="GET" id="article_form">
+			<input type="hidden" name="uid" value="{$h_userinfo.uid}"/>
+			<div class="inputBox">
+				<input type="text" name="title" value="關鍵字輸入" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';" class="sinput"/><input name="" value="提交" type="submit" class="sbtn" style="text-indent:-100px;" />
+			</div>
+		</form>
+	</div>
+	<div class="blank25"></div>
+	<div class="msgBox" style="padding:0px;"></div>
+	<div class="blank10"></div>
+		<!--#探險攻略-->
+	<div class="box">
+		<img src="template/default/images/tit_01.gif"/>
+		<div class="boxcon" id="cate">
+		<!--{eval $soBig=0;}-->
+			{loop $usercats $key $items}
+			<!--{eval $soBig++;}-->
+			<dl class="{if $soBig>2}soManyCats{/if}">
+				<dt class="tab_first">
+					<div class="num">{$items.atriclenum}</div>
+					<img src="image/btn_unfold.gif" class="cat-ico" id="{$key}" name="ucat"><a href="space-{$items.userid}-u{$items.ucatid}.html">{$items.catname}</a>
+					<div class="clear"></div>
+				</dt>		
+				<ul id="ucat_s{$key}" class="tab_two">
+					{loop $items.child $childitem}
+					<dd><div class="num">{$childitem.atriclenum}</div><a href="space-{$childitem.userid}-u{$childitem.ucatid}.html">{$childitem.catname}</a></dd>
+					{/loop}
+				</ul>	
+				<div class="clear"></div>	
+			</dl>
+			{/loop}{if $soBig>2}
+			<div class="catInflation"><span onclick="whereRtheCats(this)">顯示更多</span></div>
+			{/if}
+		</div>
+	</div>		
+	<div class="blank10"></div>
+	<!--探險日記-->
+	<div class="box">
+		<img src="template/default/images/tit_02.gif"/>
+		<div class="boxcon" id="datelist">
+		<!--{eval $soLong=0;}-->
+			{loop $datelist $key $item}
+			<!--{eval $soLong++;}-->
+			<dl class="{if $soLong>2}soMuchTime{/if}">
+				<dt class="tab_first">
+					<div class="num">{$item.num}</div>
+					<img src="image/btn_fold.gif" class="cat-ico" id="{$key}" name="date"><a href="space-{$item.userid}-t{$key}.html">{$item.name}</a>
+					<div class="clear"></div>		
+				</dt>										
+				<ul id="date_s{$key}" class="tab_two" style="display:none">
+					{loop $item.child $childkey $childitem}
+					<dd style="padding-right:0px"><div class="num">{$childitem.num}</div><a href="space-{$item.userid}-t{$key}{$childkey}.html">{$childitem.name}</a></dd>
+					{/loop}
+				</ul>	
+				<div class="clear"></div>			
+			</dl>
+			{/loop}{if $soLong>2}
+			<div class="catInflation"><span onclick="whhatTimeIsIt(this)">顯示更多</span></div>
+			{/if}
+		</div>
+	</div>
+	<script>
+		jQuery(".cat-ico").click(function(){
+			var cid = jQuery(this).attr('id');
+			var cname = jQuery(this).attr('name');
+			
+			if(jQuery('#'+cname+'_s'+cid).is(':visible')){
+				jQuery('#'+cname+'_s'+cid).hide();
+				jQuery(this).attr('src', "image/btn_fold.gif");
+			}else{
+				jQuery('#'+cname+'_s'+cid).show();
+				jQuery(this).attr('src', "image/btn_unfold.gif");
+			}		
+		})
+var showButton=new RegExp(/(.*)(\u986f\u793a\u66f4\u591a)(.*)/i);//unicode for:"顯示更多"
+var hideButton=new RegExp(/(.*)(\u6536\u8d77\u8cc7\u6599)(.*)/i);//unicode for:"收起資料"
+function whereRtheCats(iob)
+{
+	var hiddenCats=iob.parentNode.parentNode.getElementsByClassName("soManyCats");
+	if(showButton.test(iob.innerHTML))
+	{
+		for(var i=0;i<hiddenCats.length;i++)
+		{
+			hiddenCats[i].style.display="block";
+		}
+		iob.innerHTML="\u6536\u8d77\u8cc7\u6599";
+	}
+	else if(hideButton.test(iob.innerHTML))
+	{
+		for(var i=0;i<hiddenCats.length;i++)
+		{
+			hiddenCats[i].style.display="none";
+		}
+		iob.innerHTML="\u986f\u793a\u66f4\u591a";
+	}
+}
+function whhatTimeIsIt(iob)
+{
+	var hiddenTimes=iob.parentNode.parentNode.getElementsByClassName("soMuchTime");
+	if(showButton.test(iob.innerHTML))
+	{
+		for(var i=0;i<hiddenTimes.length;i++)
+		{
+			hiddenTimes[i].style.display="block";
+		}
+		iob.innerHTML="\u6536\u8d77\u8cc7\u6599";
+	}
+	else if(hideButton.test(iob.innerHTML))
+	{
+		for(var i=0;i<hiddenTimes.length;i++)
+		{
+			hiddenTimes[i].style.display="none";
+		}
+		iob.innerHTML="\u986f\u793a\u66f4\u591a";
+	}
+}
+	</script>
+	<div class="blank10"></div>
+	<!--探險情況-->
+	<div class="box">
+		<img src="template/default/images/tit_03.gif"/>
+		<div class="boxcon">
+			<div class="qk">
+				<p>累積瀏覽 {$h_userinfo.totalclick}</p>
+			<!--<p>累積人次 {$h_userinfo.totalhuman}</p>
+				<p>今日人次 {$h_userinfo.todayhuman}</p>-->
+				<p>全部攻略 {$h_userinfo.totalarticle}</p>
+				<p>全部回應 {$h_userinfo.replaycomment}</p>
+			</div>
+		</div>
+	</div>
+	<div class="blank10"></div>
+	<div class="fotBox" id="fotBox">
+		<div id="fot_scroll" >
+			 <!--{if $_SGLOBAL['ad'][$is_mobile]['rpage02']}-->	
+			<div id="ad_rpage02">
+				<!--{ad($is_mobile,'rpage02')}-->
+			</div>
+			<div class="blank10"></div>
+			<!--{/if}-->
+			<div class="top_cont">
+				<div class="top_tit">
+					<a class="tt" onclick="showview(3,1,'topcon')" style="width:100px">Top 10(本月)</a><a style="width:100px" class="tt" onclick="showview(3,2,'topcon')">Top 10(總計)</a><a onclick="showview(3,3,'topcon')" style="width:67px">最新</a>
+				</div>
+				<div class="blank5"></div>
+				<div class="top_main top10 clearfix">
+					<div id="topcon_1">
+						{loop $top10.month $key $item}
+						<ul class="clearfix"><li class="topsort">{$key}</li><li><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 35, 1, 0))}--></a></li></ul>
+						{/loop}
+						<div class="clear"></div>						
+					</div>
+					<div id="topcon_2" style="display:none">
+						{loop $top10.total $key $item}
+						<ul class="clearfix"><li class="topsort">{$key}</li><li><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 35, 1, 0))}--></a></li></ul>
+						{/loop}
+						<div class="clear"></div>
+					</div>
+					<div id="topcon_3" style="display:none">
+						{loop $top10.new $key $item}
+						<ul class="clearfix"><li class="topsort">{$key}</li><li><a href="space-article-id-{$item.articleid}.html"><!--{eval echo nl2br(getstr($item[title], 35, 1, 0))}--></a></li></ul>
+						{/loop}
+						<div class="clear"></div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+.fotBox{ width:300px;overflow:hidden;}
+.fotBoxr{ position:static;}
+.fot_scroll{width:300px;position:fixed;_position:absolute;z-index:1000;top:0px;_top:expression( eval((document.documentElement.scrollTop)));}
+.relative{position:static;}
+html {_background-image: url(about:blank);_background-attachment: fixed;}
+</style>
+<script>
+   window.onscroll=function(){
+  	var c = $("#fotBox").offset().top;
+	var f = $("#fot_num").offset().top - c;	
+	$("#fotBox").height(f);
+	var e = $("#fot_scroll").parent().offset().top - parseFloat($("#fot_scroll").css("marginTop").replace(/auto/, 0));
+	var h = $(this).scrollTop();
+	var b = document.getElementById("fotBox").offsetHeight;	
+	var x = document.getElementById("fot_scroll").offsetHeight;	
+	var a = c + f - h ;	
+	
+	var g = document.getElementById("fot_scroll").offsetHeight; 
+	if (a > g) {
+		$("#fot_scroll").css('margin-top',0);
+		$("#fot_scroll").removeClass("relative");
+		$("#fotBox").removeClass('fotBoxr');
+		if (h >= e) {
+			$("#fot_scroll").addClass("fot_scroll")
+		} else {
+			$("#fot_scroll").removeClass("fot_scroll")
+		}
+		
+	} else {
+		$("#fot_scroll").removeClass("fot_scroll");
+		$("#fot_scroll").addClass("relative");
+		$("#fotBox").addClass('fotBoxr');
+		$("#fot_scroll").css('margin-top',b-x);
+	}
+  }
+</script>

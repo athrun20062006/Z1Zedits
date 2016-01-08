@@ -1,0 +1,85 @@
+			<script charset="utf-8" src="js/resizeThumbs.js"></script>
+			<!--#搜索 start-->
+		<div class="searchBox">
+			<form action="space.php">
+				<select name="placeares" >
+					<option value="">選擇地區</option>
+					{loop $city_array2 $key $item}
+					<option value="{$key}" {if $acity==$key} selected {/if} >{$item.lv_str}{$item.name}</option>
+					{/loop}
+				</select>
+				<select name="placecat">
+					<option value="">探險分類</option>
+					{loop $pcategory_list $item}
+					<option value="{$item.catid}" {if $placecat == $item.catid} selected {/if}>{$item.lv_str}{$item.catname}</option>
+					{/loop}
+				</select>
+				<input type="text" name="title" class="input_search" value="{if !empty($_GET['title'])}$_GET['title']{else}關鍵字輸入{/if}" onfocus="this.value=='關鍵字輸入'?this.value='':'';" onblur="this.value==''?this.value='關鍵字輸入':'';"/>
+				<input type="hidden" name="do" value="home"/>
+				<input type="hidden" name="act" value="comment"/>
+				<input type="submit" value="" class="btn_bg3"/>
+			</form>
+		</div>
+			<!--#搜索 end-->
+		<div class="blank15"></div>
+		<div class="shareBox">
+				<!--#排序 start-->
+				<!--{eval $st = 'desc'; $scss = '';}-->	
+				{if $_GET['ordersc'] == 'desc'}
+				<!--{eval $st = 'asc'}-->
+				<!--{eval $scss = 'sortdesc' }-->
+				{else}
+				<!--{eval $st = 'desc'}-->
+				<!--{eval $scss = 'sortasc'}-->
+				{/if}
+				<!--#排序 end-->
+			<div class="comment">
+				<div class="mcon">
+						{loop $placecomment $place}
+					<ul>
+						<li class="thumb"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html"><img src="{$place.pcomment_img}"  onload="resizeThumb(this,165,108);"></a></li><li class="txt"><a href="space-pcominfo-{$place.place_id}-{$place.pcomment_id}.html">{$place.pcomment_title}</a>{if $place.is_draft == 1} <span id="cact_{$place.pcomment_id}">[草稿 <a href="javascript:;" onclick="if(!confirm('確認要發佈嗎？')){return false;}{ cputoutcom({$place.pcomment_id}) }" style="font-size:12px">确认发布</a> <a href="space-pcomment-{$place.place_id}-{$place.pcomment_id}.html" style="font-size:12px">編輯</a>]</span> {/if}  &nbsp;<!--<a class="action_css" onclick="if(confirm('你確定要刪除該條數據嗎？')){return true;}return false;"  href="space-home-comment-del-{$place.pcomment_id}.html">刪除</a>--><p>作者：<a href="space-{$place.user_id}.html">{$place.user_name}</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;發表日期：<font color="#B32D46">{$place.addtime}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店家/好去處：<a href="space-place-id-{$place.place_id}.html" target="_blank" style="color:#000000;font-size:12px;font-weight:500"><font>{$place.placename}</font></a></p>{$place.content}</li>
+						<li class="views">
+							  {if $place.admin_hot}<div class="tj_ico"><img src="image/tuijie.png"></div>{/if}
+							<div class="click_num">{$place.click_count}/{$place.diannum}</div>							
+							<p><img src="template/default/images/view_zheng{$place.pcomment_type}.gif"></p>
+						</li>
+						<div class="clear"></div>
+						<div class="f_r">是次消費：每人平均約HK$ {if !empty($place.pcomment_consume) }{$place.pcomment_consume}{else}N/A{/if}</div>
+					</ul>
+					<div class="clear"></div>
+					  {/loop}
+						<!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->
+					<div class="blank5"></div>
+					<div id="ad_lpagebotad">
+							<!--{ad($is_mobile,'lpagebotad')}-->
+					</div>
+						<!--{/if}-->
+					<div class="blank5"></div>
+					   {if $multi}
+					<div class="pagebar" id="pager">
+						<div class="page">
+								{$multi}
+						</div>
+					</div>
+						{/if}
+				</div>
+			</div>
+		</div>
+			<script>
+				//确认发布景点评论信息
+				function cputoutcom(comid)
+				{
+					jQuery.ajax({
+					   type: "get",
+					   url: "ajax_info.php",
+					   data: "do=putoutcom&comid="+comid,
+					   dataType:'json',
+					   success:cputout_com
+					  
+					});
+				}
+				function cputout_com(msg)
+				{  
+					jQuery("#cact_"+(msg.cid)).html('');
+				} 
+			</script>

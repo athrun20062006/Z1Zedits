@@ -1,0 +1,140 @@
+<!--{template header}-->
+<script src='https://s.yimg.com/uv/dm/scripts/syndication.js'></script>
+
+<link href="template/default/css/gongl.css" rel="stylesheet" type="text/css" />
+<script charset="utf-8" src="template/default/js/h_function.js"></script>
+<script charset="utf-8" src="js/resizeThumbs.js"></script>
+<script charset="utf-8" src="js/pre_next.js"></script>
+<div class="mainbox clearfix" style="width:1055px;">
+	<!--{template lbi_article_left}-->
+	<div class="AreaL">
+		<div class="gll_header">
+			<a href="cp-article.html" class="adbtn1">發表新攻略</a>
+			<a href="javascript:;" class="adbtn">探險家攻略</a>
+		</div>	
+		<div class="blank15"></div>
+			<!--#快捷键-->
+			<!--{template lbi_shortcuts}-->
+			<!--搜索條件展示區-->
+			<!--{template lbi_search_top}-->
+		<div class="blank25"></div>				
+		<div class="com_b">
+			<div class="sort">排序：
+			<!--{loop $article_sort $key $asort}-->
+				<a href="space.php?{$order_url}&order={$key}&sort={if $order == $key && $sort == 'desc'}asc{else}desc{/if}"><span class="{if $order == $key && $sort == 'desc'}sortdesc{elseif $order == $key && $sort == 'asc' }sortasc{/if}">{$asort}</span></a>
+			<!--{/loop}-->                   
+			</div>				
+			{if $page_filter}<h6 id="1" {if empty($tag)}class="h2bg"{/if} onclick="location.href='space.php?{$tag_url}'">搜索結果</h6>{/if}
+				{loop $tag_article_list $key $item}
+			<h6 id="1" {if $tag==$key}class="h2bg"{/if} onclick="location.href='space.php?{$tag_url}&tag={$key}'">{$item}</h6>
+				{/loop}	
+		</div>
+		<div class="blank20"></div>
+			<!--{template lbi_article_main}-->
+		<div class="comment">			      
+			  <!--{if $_SGLOBAL['ad'][$is_mobile]['lpagebotad']}-->	
+		   	<div class="blank10"></div>   
+			<div id="ad_lpagebotad"><!--{ad($is_mobile,'lpagebotad')}--></div>
+			  <!--{/if}-->	
+			<div class="blank5"></div>
+			{if $multi}<div class="pagebar" id="pager">{$multi}</div>{/if}
+		</div>
+	</div>
+		<!--{template lbi_article_right}-->
+</div>
+    <script>
+		/** 标签切换 */
+		jQuery(".com_b > h2").each(function(i){
+			jQuery(this).click(function(){
+				jQuery(".h2bg").each(function(index, domEle){
+					$(domEle).removeClass('h2bg');  
+				});
+				jQuery(".mcon").each(function(dx,mc){
+					$(mc).css('display','none');
+				})
+				jQuery(this).addClass('h2bg');
+				var cid = (this.id);				
+				jQuery('#con_'+cid).css('display','block');
+			})			
+		});
+		/** 删除搜索时选择的搜索条件 */
+        jQuery(".delSea").live('click',function(){
+            var id=jQuery(this).attr('id');
+            var type=jQuery(this).attr('type');
+            if(type=='keyword'){
+                jQuery("#"+type).val('');
+            }else{
+                jQuery("#"+type+"_"+id).attr('checked',false);
+            }
+            jQuery("#article_form").submit();
+        });
+
+		jQuery(".laiyuan").live('click',function(){			
+			loacl_cuanji();		
+		})
+	</script>
+	
+<script>
+var loadnative=0,sectionCode=sectionCode||[];
+function getkeywords(key)
+{var match = window.location.href.match('[?&]' + key + '=([^&]+)');
+if (match == undefined) {return '';} else {return match ? match[1]:null;}}
+if(document.querySelector('.sinfo span')!==null){unikeyword=$('.sinfo span')[0].innerText;}else if(getkeywords('keyword')!==''){var unikeyword=decodeURIComponent(getkeywords('keyword'));}else if(document.querySelector('#leftSearchUnplug h1')!==null){var unikeyword=document.querySelector('#leftSearchUnplug h1').innerText.split(', ')[0];}else{unikeyword='';}
+function checkypa(errObj,slotInfo){document.getElementById(slotInfo.ypaAdDivId).outerHTML='<div class="gemini-ad-'+slotInfo.secCode+'"></div>';if(loadnative==0){sectionCode.push(slotInfo.secCode);(function(){var script=document.createElement("script");script.async=true;script.src="https://s.yimg.com/av/gemini/ga/gemini.js";document.body.appendChild(script);})();loadnative++;}}
+</script>
+	
+	
+<script type='text/javascript'>
+window.ypaAds.insertMultiAd({
+    ypaAdConfig   : '00000033e',
+    ypaAdTypeTag  : '',
+    ypaPubParams:{query:unikeyword},
+    ypaAdSlotInfo : [ 
+        {
+            ypaAdSlotId : 'article1',
+            ypaAdDivId  : 'ypaAdWrapper-article1',
+            ypaAdWidth  : '738',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : 'a00c7d81-18b7-482f-a783-5438b539d8fb'
+        },
+        {
+            ypaAdSlotId : 'article2',
+            ypaAdDivId  : 'ypaAdWrapper-article2',
+            ypaAdWidth  : '738',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : 'a00c7d81-18b7-482f-a783-5438b539d8fb'
+        },
+        {
+            ypaAdSlotId : 'article3',
+            ypaAdDivId  : 'ypaAdWrapper-article3',
+            ypaAdWidth  : '738',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : 'a00c7d81-18b7-482f-a783-5438b539d8fb'
+        },
+        {
+            ypaAdSlotId : 'article4',
+            ypaAdDivId  : 'ypaAdWrapper-article4',
+            ypaAdWidth  : '738',
+            ypaAdHeight : '1',
+            ypaOnNoAd   : checkypa,
+            secCode     : 'a00c7d81-18b7-482f-a783-5438b539d8fb'
+        }
+    ]   
+}); </script>	
+	
+<!--{template footer}-->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45161133-5']);
+  _gaq.push(['_setDomainName', '.seewide.com']);  
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

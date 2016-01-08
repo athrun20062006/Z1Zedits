@@ -1,0 +1,169 @@
+<!--{template header}-->
+<script charset="utf-8" src="/js/resizeThumbs.js"></script>
+<link href="template/default/css/add_gongl.css" rel="stylesheet" type="text/css" />
+<LINK rel=stylesheet type=text/css href="template/default/css/lrtk.css">
+<script charset="utf-8" src="template/default/js/h_function.js"></script>
+<div class="mainbox clearfix">
+	<div class="AreaL">			
+		
+		<!--#攻略详细内容 start-->
+		<div class="gli_top">
+			<div class="f_r" style="width:120px;">
+				<div id="dian_{$articleinfo.articleid}" class="gli_dian"  onclick="" style="cursor:pointer; background:url(template/default/images/{$articleinfo.dian_img}.gif) no-repeat scroll right center transparent">{$articleinfo.diannum}</div>
+
+			</div>
+			<div class="f_l" style="width:480px;padding-bottom:6px;">
+				<h1>{$articleinfo.title}</h1>
+				<p>由 <a href="space.php?uid={$articleinfo.userid}" style="color:#C3C2C7">{$articleinfo.username}</a> 於 {$articleinfo.addtime} 發表 &nbsp;|&nbsp; 累積瀏覽 {$articleinfo.clicknum}</p>
+				<!--#分類及地區信息-->
+				<div class="site_cat">分類：{$articleinfo.site_category} {$articleinfo.startaddress}</div>
+			</div>
+			
+
+			
+			
+		</div>
+		<div class="gli_con">
+			<div class="blank20"></div>
+			
+			{$articleinfo.content}
+			<div class="clear"></div>
+			<div class="gli_view">
+				<div class="f_r" style="width:200px">
+					<ul>
+						<li><a id="a_report" href="cp.php?ac=common&op=report&idtype=raidersid&id={$articleinfo.articleid}"  onclick="ajaxmenu(event, this.id, 1)" class="jianju">檢舉</a><div class="clear"></div></li>
+						<li>&nbsp;</li>						
+					</ul>
+				</div>
+				<div class="f_l" style="width:500px;">
+					<ul>
+						<li class="clearfix">
+							<dd>攻略日期：{if !empty($articleinfo.starttime)}{$articleinfo.starttime}{else}N/A{/if}</dd><dd class="ddR">攻略地點：{if !empty($articleinfo.startaddress)}{$articleinfo.startaddress}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							<dd>攻略時間：{if !empty($articleinfo.endtime)}{$articleinfo.endtime}{else}N/A{/if}</dd><dd class="ddR">是次消費：每人平均約HK$ {if !empty($articleinfo.price) && $articleinfo.price != 9999}{$articleinfo.price}{else}N/A{/if}</dd>
+						</li>
+						<li class="clearfix">
+							前往方法：{if !empty($articleinfo.description)}{$articleinfo.description}{else}N/A{/if}
+						</li>
+
+					</ul>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<div class="gli_view"><div class="share_msg"><!--{template lbi_share_view_article}--></div></div>
+			<div class="clear"></div>
+		</div>
+		<div class="gli_but"></div>
+		<div class="blank20"></div>
+		<!--#攻略详细内容 end-->
+		
+		<div class="dian_list">
+			<div class="dian_userlist">
+				{loop $dianlist $item}
+					<a href="space-{$item[userid]}.html"><!--{avatar($item[userid],small)}--></a>
+				{/loop}
+			</div>
+			<div class="dian_right">
+				<div class="dian_btn">
+					<img src="template/default/images/icon_dian.gif" onclick="dian({$articleinfo.articleid})" style="cursor:pointer;"/>
+					<img src="template/default/images/icon_01.gif" />
+				</div>
+				<div class="dian_num">共<span>{$articleinfo.diannum}</span>人比"掂"</div>
+			</div>
+		</div>
+		<div class="blank20"></div>
+		<!--推薦信息-->
+		<div class="gli_tjl">
+		  {if $userlist }
+			<h2>探險家推薦</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $userlist $item}
+				<li>
+					<div class="article_thumb"><a href="space.php?do=article&id={$item.articleid}"><img src="{$item.thumb}" width="109" height="72" onload="resizeThumb(this,109,72);"/></a>
+					</div>
+				<p><a href="space.php?do=article&id={$item.articleid}">{$item.title}</a></p>
+				</li>
+				{/loop}
+			</ul>
+			<div class="blank10"></div>
+			<div class="more"><a href="space.php?uid={$articleinfo.userid}&intro=1">顯示更多.......</a></div>
+			<div class="blank10"></div>
+		  {/if}	
+		  {if $hot_article}
+			<h2>會員推薦</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $hot_article $item}
+				<li>
+					<div class="article_thumb">
+					<a href="space.php?do=article&id={$item.articleid}"><img src="{$item.thumb}" width="109" height="72" onload="resizeThumb(this,109,72);"/></a>
+					</div>
+					<p><a href="space.php?do=article&id={$item.articleid}">{$item.title}</a></p></li>
+				{/loop}
+			</ul>
+			<div class="blank10"></div>
+			<div class="more"><a href="space.php?do=article&order=diannum">顯示更多.......</a></div>
+			<div class="blank10"></div>
+		  {/if}	
+		  {if $base_article }
+			<h2>香港特搜 精選</h2>
+			<div class="blank10"></div>
+			<ul class="clearfix">
+				{loop $base_article $item}
+				<li>
+				<div class="article_thumb">
+				<a href="space.php?do=article&id={$item.articleid}"><img src="{$item.thumb}" width="109" height="72" onload="resizeThumb(this,109,72);"/></a>
+				</div>
+				<p><a href="space.php?do=article&id={$item.articleid}">{$item.title}</a></p></li>
+				{/loop}
+			</ul>
+			<div class="blank10"></div>
+			<div class="more"><a href="space.php?do=article&{$search}order=admin_hot">顯示更多.......</a></div>
+		   {/if}	
+			<div class="blank10"></div>
+		
+		</div>
+		<div class="gli_tjr">
+			<img src="template/default/images/ads1.gif"/>
+		</div>
+		<div class="blank25"></div>
+		<img src="template/default/images/ads2.gif"/>
+		<div class="blank15"></div>
+
+		<div class="gli_pl">
+			<!--{template space_pinglun}-->
+			
+			
+			<ul>
+				<li><a href="space-{$_SGLOBAL['supe_uid']}.html"><!--{avatar($_SGLOBAL['supe_uid'],fmiddle)}--></a></li>
+				<li class="pl" id="lp_hf">
+					
+					<textarea name="comment[content]"></textarea>
+					<div class="blank5"></div>
+					<input type="hidden" name="comment[parentid]" value="0" id="lp_parent"/>
+					<input type="hidden" name="comment[replyid]" value="0" id="lp_replyid"/>
+					<input type="hidden" name="comment[type]" value="1" />
+					<input type="hidden" name="comment[articleid]" value="{$articleinfo.articleid}" />
+					<!--<input type="checkbox" name="comment[is_private]" id="lp_is_private" value="1" /><font color="#BCBCBC">私人回應</font>-->
+					<input type="submit" name="dosubmit" style="border:none; background:url(template/default/images/btn_bg8.gif); width:72px; height:31px; margin-right:5px;color:#ffffff;font-size:19px;" class="f_r" value="回應" />
+				</li>
+			</ul>
+			
+			<div class="clear"></div>
+			<script>
+				function change_private()
+				{
+					document.getElementById('lp_is_private').checked = true;
+				}
+			</script>
+		</div>
+		<!--lp 评论 end-->
+		<div class="class"></div>
+	</div><!--/left -->
+	<!--{template lbi_article_right}-->
+	<!--/right -->
+</div>
+
+<!--{template footer}-->

@@ -1,0 +1,27 @@
+.rg_tit{border-bottom:2px solid #95806f;padding-bottom:15px;padding-left:25px;overflow:hidden;clear:both;font-size:28px;color:#95806f}
+.rg_yh{padding:15px;background:url(../images/line5.gif) repeat-x scroll left bottom;overflow:hidden;}
+.rg_yh label{font-size:15px;}
+.yh_info{padding-top:10px;}
+.explain{padding:25px 0px 25px 40px; overflow:hidden; color:#cc2328;font-size:15px}
+.explain img{vertical-align:middle}
+.input_css{width:482px;height:21px;line-height:21px; border:1px solid #dcdcdc}
+.rg_item dl{padding-left:25px;}
+.rg_item dl dt{padding:7px 0px;font-size:16px;}
+.rg_item dl dd{padding:7px 0px;padding-left:12px;clear:both;overflow:hidden}
+.rg_item dl dd label{font-size:14px}
+.rg_item dl img{vertical-align:middle}
+.rg_item dl font{color:#808080;font-size:14px;}
+.txtare_css{width:482px;border:1px solid #dcdcdc;height:78px;}
+.rg_item dl dt.option{padding-left:12px;}
+.sel_css{border:1px solid #dcdcdc;}
+
+.rg_item dl dd span{width:65px;float:left;height:21px;line-height:21px;font-size:14px;}
+
+.register_btn{background:url(../images/register_btn.gif) no-repeat scroll;width:73px;height:31px; border:0px}
+
+.register_btn1 {
+    background: url("../images/register_btn1.gif") no-repeat scroll 0 0 transparent;
+    border: 0 none;
+    height: 31px;
+    width: 73px;
+}
